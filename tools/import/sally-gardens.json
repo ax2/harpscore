@@ -1,0 +1,18 @@
+{
+  "id": "sally-gardens",
+  "title": "爱尔兰画眉",
+  "subtitle": "Down by the Sally Gardens",
+  "composer": "爱尔兰传统民歌 / 叶芝 词",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位 (1st Position)",
+  "timeSignature": "4/4",
+  "tempo": 96,
+  "difficulty": 2,
+  "tags": ["爱尔兰", "民谣", "经典"],
+  "source": "传统民歌（公有领域）；参照 thesession.org D 调版本移至 C 调",
+  "notes": "十孔口琴经典入门曲。附点与八分音符较多，注意节奏平稳；长音可用手震音。",
+  "order": 4,
+  "melody": "1/ 2/ | 3 2/ 1/ 2 3/ 5/ | 6 - 5 2'/ 5/ | 6 5/ 3/ 2. 1/ | 1 - - 1/ 2/ |\n3 2/ 1/ 2 3/ 5/ | 6 - 5 2'/ 5/ | 6 5/ 3/ 2. 1/ | 1 - - 5 |\n2' 1'/ 5/ 6 1'/ 2'/ | 1' - 5 3/ 5/ | 6 5/ 3/ 5/ 6/ 2'/ 3'/ | 2' - - 1/ 2/ |\n3 2/ 1/ 2 3/ 5/ | 6 - 5 2'/ 5/ | 6 5/ 3/ 2. 1/ | 1 - - - ||"
+}

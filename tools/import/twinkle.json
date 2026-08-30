@@ -1,0 +1,18 @@
+{
+  "id": "twinkle",
+  "title": "小星星",
+  "subtitle": "Twinkle Twinkle Little Star",
+  "composer": "法国童谣",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位 (1st Position)",
+  "timeSignature": "4/4",
+  "tempo": 104,
+  "difficulty": 1,
+  "tags": ["儿歌", "入门"],
+  "source": "公有领域标准旋律",
+  "notes": "全部自然音，入门第一首。注意 6 在 6 孔吸音。",
+  "order": 1,
+  "melody": "1 1 5 5 | 6 6 5 - | 4 4 3 3 | 2 2 1 - |\n5 5 4 4 | 3 3 2 - | 5 5 4 4 | 3 3 2 - |\n1 1 5 5 | 6 6 5 - | 4 4 3 3 | 2 2 1 - ||"
+}
