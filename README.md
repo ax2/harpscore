@@ -57,6 +57,10 @@ npm run scores:validate # 校验全部内置谱
 
 Vite + React + TypeScript，乐谱为纯 SVG 渲染，无重型依赖。
 
+## 相关文章
+
+- [HarpScore：我做了一个开源的布鲁斯口琴乐谱软件](https://zicode.com/blog/harpscore/) —— 从 Prompt 到实现的全过程记录，含内置曲谱的音高校验与来源标注说明。
+
 ## License
 
 MIT © 2026 ax2
