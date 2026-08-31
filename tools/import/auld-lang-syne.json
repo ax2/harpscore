@@ -1,18 +1,18 @@
 {
   "id": "auld-lang-syne",
   "title": "友谊地久天长",
-  "subtitle": "Auld Lang Syne · 电影《魂断蓝桥》插曲",
+  "subtitle": "Auld Lang Syne · 苏格兰民歌",
   "composer": "苏格兰民歌",
   "key": "C",
   "octaveShift": 1,
   "harmonicaKey": "C",
-  "position": "第一把位 (1st Position)",
+  "position": "第一把位",
   "timeSignature": "4/4",
-  "tempo": 92,
+  "tempo": 80,
   "difficulty": 2,
   "tags": ["民歌", "经典"],
-  "source": "苏格兰传统民歌（公有领域）；参照 autopiano.cn 1=C 版本核对",
-  "notes": "附点节奏（长-短）是本曲的灵魂，吹奏时注意强弱对比。",
-  "order": 5,
-  "melody": "5. | 1/ 1 1 3 | 2. 1/ 2 3 | 1. 1/ 3 5 |\n6. 6/ 6 - | 5. 3/ 3 1 | 2. 1/ 2 3 | 1. 6/ 6 5 | 1 - - - ||"
+  "source": "公有领域（苏格兰民歌）；采用 C 调十孔口琴常用移调版，中高音区零压音",
+  "notes": "采用口琴常用的移调版（主音放在中高音区，4-7 孔），全曲零压音。旋律以级进为主，适合练习气息与连奏。",
+  "order": 4,
+  "melody": "1 1 | 2 3 | 3 2 | 1 - | 1 1 | 2 3 | 3 2 | 1 - |\n3 3 | 4 5 | 5 4 | 3 1 | 2 2 | 3 1 | 2 - | 1 - ||"
 }

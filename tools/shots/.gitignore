@@ -1,3 +1,5 @@
 # 原始 AI 生成底图（未叠加标题的高分辨率背景图），避免大文件进仓库
 A_professional_close_up_*.png
+# Playwright 运行时截图（大文件，按需放入公众号/博客目录）
+shot_*.png
 

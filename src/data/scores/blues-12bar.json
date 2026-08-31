@@ -5,7 +5,7 @@
   "composer": "HarpScore 原创练习曲",
   "key": "G",
   "harmonicaKey": "C",
-  "position": "第二把位",
+  "position": "第二把位 (2nd Position / Cross Harp)",
   "timeSignature": "4/4",
   "tempo": 96,
   "difficulty": 4,
@@ -915,5 +915,5 @@
       }
     ]
   ],
-  "updatedAt": "2026-08-30T14:48:43.316Z"
+  "updatedAt": "2026-08-31T03:32:05.633Z"
 }
