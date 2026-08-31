@@ -6,6 +6,9 @@
 /** 吹吸方向 */
 export type Breath = 'blow' | 'draw';
 
+/** 曲谱核对所依据的原始材料类型 */
+export type ScoreSourceFormat = 'jianpu-text' | 'jianpu-image' | 'original';
+
 /** 演奏技巧标记 */
 export type Technique =
   | 'vibrato'   // 颤音 ~~~
@@ -67,7 +70,7 @@ export interface Score {
   composer?: string;
   /** 调号（简谱 1=X），如 "C"、"G" */
   key: string;
-  /** 整体八度移位：1 = 记谱比演奏低一个八度（主音放到中音区，如 4 孔吹音 C5） */
+  /** 演奏整体八度移位：只影响 MIDI/孔位，不改变来源简谱显示；1 = 演奏升一个八度 */
   octaveShift?: number;
   /** 口琴调性（用哪把口琴），如 "C" */
   harmonicaKey: string;
@@ -83,8 +86,16 @@ export interface Score {
   tags: string[];
   /** 曲谱来源说明 */
   source?: string;
+  /** 主核对来源链接（原创曲可省略） */
+  sourceUrl?: string;
+  /** 主核对来源格式；内置传统曲目应优先使用简谱 */
+  sourceFormat?: ScoreSourceFormat;
+  /** 最近一次逐音核对日期（YYYY-MM-DD） */
+  sourceCheckedAt?: string;
   /** 是否内置 */
   builtin?: boolean;
+  /** 内置曲库排序（生成阶段使用） */
+  order?: number;
   /** 备注/演奏提示 */
   notes?: string;
   /** 正文：按行分组的小节（每行通常 4 小节） */

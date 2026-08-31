@@ -1,0 +1,21 @@
+{
+  "id": "happy-birthday",
+  "title": "祝你生日快乐",
+  "subtitle": "Happy Birthday to You",
+  "composer": "Patty Hill / Mildred J. Hill 曲",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "3/4",
+  "tempo": 92,
+  "difficulty": 1,
+  "tags": ["生日", "入门", "经典"],
+  "source": "黄冈师范学院音乐学院吉他教材数字简谱《祝你生日快乐》",
+  "sourceUrl": "https://music.hgnu.edu.cn/_upload/article/files/09/d4/faf43ffb4e08b61cf64ee0adaf16/ec5df379-7cae-4b24-9ece-880a54ee478b.pdf",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-08-31",
+  "notes": "保留 3/4 拍弱起；应用内以两个休止拍补足首小节，演奏整体升八度。",
+  "order": 11,
+  "melody": "0 0 5/ 5/ | 6 5 1' | 7 - 5/ 5/ | 6 5 2' |\n1' - 5/ 5/ | 5' 3' 1' | 7 6 4'/ 4'/ | 3' 1' 2' | 1' - - ||"
+}

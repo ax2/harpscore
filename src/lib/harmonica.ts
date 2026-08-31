@@ -121,6 +121,11 @@ export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis
   score.lines.forEach((line, li) => {
     line.forEach((measure, mi) => {
       measure.notes.forEach((note, ni) => {
+        // 清除导入文件或上一次分析留下的派生孔位，避免不可奏音显示陈旧标记。
+        note.hole = null;
+        note.breath = null;
+        note.bend = 0;
+        note.overblow = false;
         if (note.degree === 0) return;
         totalNotes++;
         const midi = noteToMidi(score.key, note, score.octaveShift ?? 0);

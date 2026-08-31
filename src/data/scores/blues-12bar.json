@@ -15,9 +15,11 @@
     "进阶"
   ],
   "source": "HarpScore 原创（可自由使用）",
+  "sourceFormat": "original",
+  "sourceCheckedAt": "2026-08-31",
   "builtin": true,
-  "notes": "C 调口琴第二把位奏 G 调布鲁斯。核心音：2=3孔吸音压全音(3'')，b3=3孔吸音压半音(3')，b5=4孔吸音压半音(4')。跟着 shuffle 节奏摇摆，八分音符吹成swing。",
   "order": 6,
+  "notes": "C 调口琴第二把位奏 G 调布鲁斯。核心音：2=3孔吸音压全音(3'')，b3=3孔吸音压半音(3')，b5=4孔吸音压半音(4')。跟着 shuffle 节奏摇摆，八分音符吹成swing。",
   "lines": [
     [
       {
@@ -318,7 +320,7 @@
             "degree": 1,
             "accidental": 0,
             "octave": 0,
-            "beats": 3,
+            "beats": 2,
             "hole": 3,
             "breath": "blow",
             "bend": 0,
@@ -458,7 +460,7 @@
             "degree": 2,
             "accidental": 0,
             "octave": 0,
-            "beats": 3,
+            "beats": 2,
             "hole": 3,
             "breath": "draw",
             "bend": 2,
@@ -596,7 +598,7 @@
             "degree": 1,
             "accidental": 0,
             "octave": 0,
-            "beats": 3,
+            "beats": 2,
             "hole": 3,
             "breath": "blow",
             "bend": 0,
@@ -904,7 +906,7 @@
             "degree": 1,
             "accidental": 0,
             "octave": 0,
-            "beats": 3,
+            "beats": 2,
             "hole": 3,
             "breath": "blow",
             "bend": 0,
@@ -914,6 +916,5 @@
         "sectionEnd": true
       }
     ]
-  ],
-  "updatedAt": "2026-08-31T03:32:05.633Z"
+  ]
 }

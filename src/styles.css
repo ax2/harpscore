@@ -177,6 +177,9 @@ body {
 .analysis .warn { color: var(--accent); }
 .analysis .err { color: var(--danger); }
 .analysis .ok { color: var(--ok); }
+.analysis .score-source { margin-top: 2px; }
+.analysis .score-source a { color: var(--accent-2); text-underline-offset: 2px; }
+.analysis .score-source span { color: var(--text-dim); }
 
 /* ---------- 弹窗 ---------- */
 .modal-mask {
@@ -244,4 +247,28 @@ body {
   .main { padding: 14px 14px 60px; }
   .toolbar { gap: 6px; }
   .score-paper { padding: 8px; }
+}
+.visually-hidden {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.notice {
+  margin: 10px 18px 0;
+  padding: 9px 12px;
+  border: 1px solid #a9cfb3;
+  border-radius: 6px;
+  background: #edf8f0;
+  color: #246235;
+  font-size: 13px;
+}
+
+.modal-help {
+  margin: -4px 0 10px;
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.5;
 }

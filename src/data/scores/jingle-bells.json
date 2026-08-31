@@ -4,6 +4,7 @@
   "subtitle": "Jingle Bells",
   "composer": "James Pierpont（1857）",
   "key": "C",
+  "octaveShift": 1,
   "harmonicaKey": "C",
   "position": "第一把位",
   "timeSignature": "4/4",
@@ -14,10 +15,13 @@
     "圣诞",
     "入门"
   ],
-  "source": "公有领域（James Pierpont, 1857）",
+  "source": "黄冈师范学院音乐学院吉他教材简谱《铃儿响叮当》；James Pierpont 公有领域旋律",
+  "sourceUrl": "https://music.hgnu.edu.cn/_upload/article/files/09/d4/faf43ffb4e08b61cf64ee0adaf16/ec5df379-7cae-4b24-9ece-880a54ee478b.pdf",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-08-31",
   "builtin": true,
-  "notes": "旋律整体放在中音区（孔 5-9）演奏，全部自然音、零压音，适合练习吐音与节奏稳定性。原谱的「4」若移到低音区需要 2 孔吸气压全音（2''），等压音过关后再尝试低八度版本。",
   "order": 7,
+  "notes": "按教材 1=C 简谱逐小节核对后整体升八度，全部自然音、零压音，适合练习吐音与节奏稳定性。",
   "lines": [
     [
       {
@@ -25,7 +29,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -35,7 +39,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -45,7 +49,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 2,
             "hole": 5,
             "breath": "blow",
@@ -59,7 +63,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -69,7 +73,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -79,7 +83,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 2,
             "hole": 5,
             "breath": "blow",
@@ -93,7 +97,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -103,7 +107,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -113,9 +117,9 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 7,
+            "hole": 4,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -123,9 +127,9 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 8,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -137,9 +141,9 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 4,
-            "hole": 8,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -153,7 +157,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -163,7 +167,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -173,7 +177,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 2,
             "hole": 5,
             "breath": "draw",
@@ -187,17 +191,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "hole": 5,
-            "breath": "draw",
-            "bend": 0,
-            "overblow": false
-          },
-          {
-            "degree": 4,
-            "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -207,9 +201,9 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 8,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -217,9 +211,9 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 2,
-            "beats": 1,
-            "hole": 8,
+            "octave": 0,
+            "beats": 2,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -231,9 +225,9 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 8,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -241,9 +235,9 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 8,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -251,9 +245,9 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 8,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -261,9 +255,9 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 7,
+            "hole": 4,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -275,9 +269,9 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 2,
-            "hole": 8,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -285,7 +279,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 2,
             "hole": 6,
             "breath": "blow",
@@ -301,7 +295,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -311,7 +305,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -321,7 +315,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 2,
             "hole": 5,
             "breath": "blow",
@@ -335,7 +329,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -345,7 +339,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -355,7 +349,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 2,
             "hole": 5,
             "breath": "blow",
@@ -369,7 +363,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -379,7 +373,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -389,9 +383,9 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 7,
+            "hole": 4,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -399,9 +393,9 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 8,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -413,9 +407,9 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 4,
-            "hole": 8,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -429,7 +423,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -439,7 +433,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -449,7 +443,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 2,
             "hole": 5,
             "breath": "draw",
@@ -463,17 +457,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "hole": 5,
-            "breath": "draw",
-            "bend": 0,
-            "overblow": false
-          },
-          {
-            "degree": 4,
-            "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -483,9 +467,9 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 8,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -493,9 +477,9 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 2,
-            "beats": 1,
-            "hole": 8,
+            "octave": 0,
+            "beats": 2,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -507,9 +491,9 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 9,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -517,9 +501,9 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 9,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -527,9 +511,9 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 9,
+            "hole": 5,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -537,9 +521,9 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 1,
-            "hole": 8,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -551,9 +535,9 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 2,
+            "octave": 0,
             "beats": 4,
-            "hole": 7,
+            "hole": 4,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -562,6 +546,5 @@
         "sectionEnd": true
       }
     ]
-  ],
-  "updatedAt": "2026-08-31T03:32:04.785Z"
+  ]
 }

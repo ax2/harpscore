@@ -4,19 +4,23 @@
   "subtitle": "Dreaming of Home and Mother",
   "composer": "J·P·奥德威 曲 / 李叔同 词",
   "key": "C",
+  "octaveShift": 1,
   "harmonicaKey": "C",
   "position": "第一把位 (1st Position)",
   "timeSignature": "4/4",
   "tempo": 72,
-  "difficulty": 3,
+  "difficulty": 2,
   "tags": [
     "民歌",
     "经典"
   ],
-  "source": "公有领域（Ordway, 1868）；旋律参照人民音乐出版社教材标准版",
+  "source": "江阴市长泾实验小学音乐教材简谱《送别》（李叔同词、J. P. Ordway 曲）；应用内由 1=E 移调为 1=C",
+  "sourceUrl": "https://cxqx.jyc.edu.cn/__local/3/D5/71/B7A1BD225359A39D710C8C3021A_A9C90F62_167DC01.pdf",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-08-31",
   "builtin": true,
-  "notes": "低音区演奏（主音=1孔吹音）。有 3 处压音：两处 4（2孔压全音 2''）、一处 6（3孔压全音 3''），是练习低音压音的好教材；长音可加入手震音。",
   "order": 3,
+  "notes": "按教材 24 小节完整展开版逐音核对，并整体升八度适配 C 调十孔口琴；全部音符可自然吹奏。",
   "lines": [
     [
       {
@@ -26,8 +30,7 @@
             "accidental": 0,
             "octave": 0,
             "beats": 1,
-            "lyric": "长",
-            "hole": 3,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -36,9 +39,8 @@
             "degree": 3,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "亭",
-            "hole": 2,
+            "beats": 0.5,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -47,9 +49,8 @@
             "degree": 5,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "外",
-            "hole": 3,
+            "beats": 0.5,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -58,9 +59,8 @@
             "degree": 1,
             "accidental": 0,
             "octave": 1,
-            "beats": 1,
-            "lyric": "古",
-            "hole": 4,
+            "beats": 2,
+            "hole": 7,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -72,11 +72,20 @@
           {
             "degree": 6,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
-            "lyric": "道",
             "hole": 6,
             "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 7,
+            "breath": "blow",
             "bend": 0,
             "overblow": false
           },
@@ -84,9 +93,8 @@
             "degree": 5,
             "accidental": 0,
             "octave": 0,
-            "beats": 3,
-            "lyric": "边",
-            "hole": 3,
+            "beats": 2,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -100,8 +108,7 @@
             "accidental": 0,
             "octave": 0,
             "beats": 1,
-            "lyric": "芳",
-            "hole": 3,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -110,9 +117,8 @@
             "degree": 1,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "草",
-            "hole": 1,
+            "beats": 0.5,
+            "hole": 4,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -121,9 +127,8 @@
             "degree": 2,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "碧",
-            "hole": 1,
+            "beats": 0.5,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -133,8 +138,27 @@
             "accidental": 0,
             "octave": 0,
             "beats": 1,
-            "lyric": "连",
-            "hole": 2,
+            "hole": 5,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 4,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -147,30 +171,29 @@
             "degree": 2,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "天",
-            "hole": 1,
-            "breath": "draw",
-            "bend": 0,
-            "overblow": false
-          },
-          {
-            "degree": 1,
-            "accidental": 0,
-            "octave": 0,
-            "beats": 1,
-            "hole": 1,
-            "breath": "blow",
-            "bend": 0,
-            "overblow": false
-          },
-          {
-            "degree": 2,
-            "accidental": 0,
-            "octave": 0,
             "beats": 2,
-            "hole": 1,
+            "hole": 4,
             "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
             "bend": 0,
             "overblow": false
           }
@@ -185,8 +208,7 @@
             "accidental": 0,
             "octave": 0,
             "beats": 1,
-            "lyric": "晚",
-            "hole": 3,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -195,9 +217,8 @@
             "degree": 3,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "风",
-            "hole": 2,
+            "beats": 0.5,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -206,9 +227,8 @@
             "degree": 5,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "拂",
-            "hole": 3,
+            "beats": 0.5,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -218,9 +238,19 @@
             "accidental": 0,
             "octave": 1,
             "beats": 1,
-            "lyric": "柳",
-            "hole": 4,
+            "dotted": true,
+            "hole": 7,
             "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 7,
+            "breath": "draw",
             "bend": 0,
             "overblow": false
           }
@@ -229,24 +259,22 @@
       {
         "notes": [
           {
-            "degree": 7,
+            "degree": 6,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
-            "lyric": "笛",
-            "hole": 7,
+            "hole": 6,
             "breath": "draw",
             "bend": 0,
             "overblow": false
           },
           {
-            "degree": 6,
+            "degree": 1,
             "accidental": 0,
             "octave": 1,
             "beats": 1,
-            "lyric": "声",
-            "hole": 6,
-            "breath": "draw",
+            "hole": 7,
+            "breath": "blow",
             "bend": 0,
             "overblow": false
           },
@@ -255,8 +283,7 @@
             "accidental": 0,
             "octave": 0,
             "beats": 2,
-            "lyric": "残",
-            "hole": 3,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -270,8 +297,7 @@
             "accidental": 0,
             "octave": 0,
             "beats": 1,
-            "lyric": "夕",
-            "hole": 3,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -280,9 +306,8 @@
             "degree": 2,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "阳",
-            "hole": 1,
+            "beats": 0.5,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -291,9 +316,8 @@
             "degree": 3,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "山",
-            "hole": 2,
+            "beats": 0.5,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -303,10 +327,20 @@
             "accidental": 0,
             "octave": 0,
             "beats": 1,
-            "lyric": "外",
-            "hole": 2,
+            "dotted": true,
+            "hole": 5,
             "breath": "draw",
-            "bend": 2,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": -1,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 0,
             "overblow": false
           }
         ]
@@ -314,23 +348,32 @@
       {
         "notes": [
           {
-            "degree": 7,
+            "degree": 1,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "lyric": "山",
-            "hole": 7,
-            "breath": "draw",
+            "octave": 0,
+            "beats": 2,
+            "hole": 4,
+            "breath": "blow",
             "bend": 0,
             "overblow": false
           },
           {
-            "degree": 1,
+            "degree": 0,
             "accidental": 0,
-            "octave": 1,
-            "beats": 3,
-            "hole": 4,
-            "breath": "blow",
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
             "bend": 0,
             "overblow": false
           }
@@ -343,9 +386,8 @@
           {
             "degree": 6,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
-            "lyric": "天",
             "hole": 6,
             "breath": "draw",
             "bend": 0,
@@ -356,20 +398,18 @@
             "accidental": 0,
             "octave": 1,
             "beats": 1,
-            "lyric": "之",
-            "hole": 4,
+            "hole": 7,
             "breath": "blow",
             "bend": 0,
             "overblow": false
           },
           {
-            "degree": 7,
+            "degree": 1,
             "accidental": 0,
             "octave": 1,
             "beats": 2,
-            "lyric": "涯",
             "hole": 7,
-            "breath": "draw",
+            "breath": "blow",
             "bend": 0,
             "overblow": false
           }
@@ -378,11 +418,20 @@
       {
         "notes": [
           {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 7,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
             "degree": 6,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "lyric": "地",
+            "octave": 0,
+            "beats": 0.5,
             "hole": 6,
             "breath": "draw",
             "bend": 0,
@@ -391,9 +440,8 @@
           {
             "degree": 7,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "lyric": "之",
+            "octave": 0,
+            "beats": 0.5,
             "hole": 7,
             "breath": "draw",
             "bend": 0,
@@ -404,8 +452,7 @@
             "accidental": 0,
             "octave": 1,
             "beats": 2,
-            "lyric": "角",
-            "hole": 4,
+            "hole": 7,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -415,12 +462,41 @@
       {
         "notes": [
           {
+            "degree": 6,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 6,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
             "degree": 7,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "lyric": "知",
+            "octave": 0,
+            "beats": 0.5,
             "hole": 7,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 6,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 6,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -428,9 +504,8 @@
           {
             "degree": 6,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "lyric": "交",
+            "octave": 0,
+            "beats": 0.5,
             "hole": 6,
             "breath": "draw",
             "bend": 0,
@@ -440,62 +515,8 @@
             "degree": 5,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "半",
-            "hole": 3,
-            "breath": "blow",
-            "bend": 0,
-            "overblow": false
-          },
-          {
-            "degree": 6,
-            "accidental": 0,
-            "octave": 0,
-            "beats": 1,
-            "lyric": "零",
-            "hole": 3,
-            "breath": "draw",
-            "bend": 2,
-            "overblow": false
-          }
-        ]
-      },
-      {
-        "notes": [
-          {
-            "degree": 7,
-            "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "lyric": "落",
-            "hole": 7,
-            "breath": "draw",
-            "bend": 0,
-            "overblow": false
-          },
-          {
-            "degree": 5,
-            "accidental": 0,
-            "octave": 0,
-            "beats": 3,
-            "hole": 3,
-            "breath": "blow",
-            "bend": 0,
-            "overblow": false
-          }
-        ]
-      }
-    ],
-    [
-      {
-        "notes": [
-          {
-            "degree": 5,
-            "accidental": 0,
-            "octave": 0,
-            "beats": 1,
-            "lyric": "一",
-            "hole": 3,
+            "beats": 0.5,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -504,20 +525,8 @@
             "degree": 3,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "壶",
-            "hole": 2,
-            "breath": "blow",
-            "bend": 0,
-            "overblow": false
-          },
-          {
-            "degree": 5,
-            "accidental": 0,
-            "octave": 0,
-            "beats": 1,
-            "lyric": "浊",
-            "hole": 3,
+            "beats": 0.5,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -525,9 +534,8 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "lyric": "酒",
+            "octave": 0,
+            "beats": 0.5,
             "hole": 4,
             "breath": "blow",
             "bend": 0,
@@ -538,24 +546,113 @@
       {
         "notes": [
           {
-            "degree": 7,
+            "degree": 2,
             "accidental": 0,
-            "octave": 1,
-            "beats": 1,
-            "lyric": "尽",
-            "hole": 7,
+            "octave": 0,
+            "beats": 2,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
           },
           {
-            "degree": 6,
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 3,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 5,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
             "accidental": 0,
             "octave": 1,
             "beats": 1,
-            "lyric": "余",
+            "dotted": true,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 7,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 6,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
             "hole": 6,
             "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 7,
+            "breath": "blow",
             "bend": 0,
             "overblow": false
           },
@@ -564,8 +661,7 @@
             "accidental": 0,
             "octave": 0,
             "beats": 2,
-            "lyric": "欢",
-            "hole": 3,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -579,8 +675,7 @@
             "accidental": 0,
             "octave": 0,
             "beats": 1,
-            "lyric": "今",
-            "hole": 3,
+            "hole": 6,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -589,9 +684,8 @@
             "degree": 2,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "宵",
-            "hole": 1,
+            "beats": 0.5,
+            "hole": 4,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -600,9 +694,8 @@
             "degree": 3,
             "accidental": 0,
             "octave": 0,
-            "beats": 1,
-            "lyric": "别",
-            "hole": 2,
+            "beats": 0.5,
+            "hole": 5,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -612,10 +705,20 @@
             "accidental": 0,
             "octave": 0,
             "beats": 1,
-            "lyric": "梦",
-            "hole": 2,
+            "dotted": true,
+            "hole": 5,
             "breath": "draw",
-            "bend": 2,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": -1,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 0,
             "overblow": false
           }
         ]
@@ -623,12 +726,91 @@
       {
         "notes": [
           {
-            "degree": 7,
+            "degree": 1,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 2,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 3,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 5,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
             "accidental": 0,
             "octave": 1,
-            "beats": 1,
-            "lyric": "寒",
+            "beats": 2,
             "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 6,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 6,
             "breath": "draw",
             "bend": 0,
             "overblow": false
@@ -637,9 +819,297 @@
             "degree": 1,
             "accidental": 0,
             "octave": 1,
-            "beats": 3,
+            "beats": 1,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 2,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
             "hole": 4,
             "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 3,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 5,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 2,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 3,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 5,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "dotted": true,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 7,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 6,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 6,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 2,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 3,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 5,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 4,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "dotted": true,
+            "hole": 5,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": -1,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 2,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
             "bend": 0,
             "overblow": false
           }
@@ -647,6 +1117,5 @@
         "sectionEnd": true
       }
     ]
-  ],
-  "updatedAt": "2026-08-31T03:32:01.012Z"
+  ]
 }

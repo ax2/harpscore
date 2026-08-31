@@ -1,0 +1,21 @@
+{
+  "id": "mary-little-lamb",
+  "title": "玛丽有只小羊羔",
+  "subtitle": "Mary Had a Little Lamb",
+  "composer": "美国传统童谣",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "4/4",
+  "tempo": 104,
+  "difficulty": 1,
+  "tags": ["儿歌", "入门"],
+  "source": "LINTJ 文字数字简谱《Mary Had a Little Lamb》；按常见 4/4 教学分句补全时值",
+  "sourceUrl": "https://www.lintj.com/collections/2020/04/08/SimpleMusic12345.html",
+  "sourceFormat": "jianpu-text",
+  "sourceCheckedAt": "2026-08-31",
+  "notes": "旋律只使用 1、2、3、5，整体升八度后全部为自然音，适合练习相邻音换气与重复吐音。",
+  "order": 10,
+  "melody": "3 2 1 2 | 3 3 3 - | 2 2 2 - | 3 5 5 - |\n3 2 1 2 | 3 3 3 3 | 2 2 3 2 | 1 - - - ||"
+}

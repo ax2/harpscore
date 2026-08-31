@@ -1,0 +1,21 @@
+{
+  "id": "amazing-grace",
+  "title": "奇异恩典",
+  "subtitle": "Amazing Grace",
+  "composer": "美国传统赞美诗曲调 New Britain",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "3/4",
+  "tempo": 70,
+  "difficulty": 3,
+  "tags": ["赞美诗", "附点", "经典"],
+  "source": "Wikimedia Commons 公有领域四声部数字简谱《Amazing Grace》的最高声部主旋律",
+  "sourceUrl": "https://commons.wikimedia.org/wiki/File:AmazingGraceNumberedMusicalNotation.png",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-08-31",
+  "notes": "只录入公有领域简谱的最高声部单旋律；首小节用两个休止拍补足弱起，整体升八度适配 C 调口琴。",
+  "order": 14,
+  "melody": "0 0 5, | 1' - 3'/ 1'/ | 3' - 2' | 1' - 6 |\n5 - 5 | 1' - 3'/ 1'/ | 3' - 2'/ 3'/ | 5 - 2'/ 3'/ |\n5 - 3'/ 1'/ | 3' - 3'/ 2'/ | 1' - 6 | 5 - 5 |\n1' - 3'/ 1'/ | 3' - 2' | 1' - - ||"
+}

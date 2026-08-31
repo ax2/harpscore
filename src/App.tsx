@@ -3,7 +3,7 @@ import type { Score } from './types/score';
 import { analyzeScore } from './lib/harmonica';
 import {
   loadLibrary, allScores, findScore, saveUserScore, deleteUserScore,
-  importScoreJson, type Library,
+  importScoreJson, uniqueScoreId, type Library,
 } from './lib/store';
 import { exportSvg, exportPng, exportPdf, exportJson } from './lib/export';
 import ScoreSheet from './components/ScoreSheet';
@@ -26,6 +26,13 @@ function AnalysisPanel({ score }: { score: Score }) {
   const a = useMemo(() => analyzeScore(score, false), [score]);
   const warns = a.issues.filter((i) => i.severity === 'warning');
   const errs = a.issues.filter((i) => i.severity === 'error');
+  const sourceFormat = score.sourceFormat === 'jianpu-text'
+    ? '文字简谱'
+    : score.sourceFormat === 'jianpu-image'
+      ? '数字简谱'
+      : score.sourceFormat === 'original'
+        ? '原创'
+        : '';
   return (
     <div className="analysis">
       <b>{score.title}</b>　音符 <b>{a.totalNotes}</b> 个　
@@ -36,6 +43,16 @@ function AnalysisPanel({ score }: { score: Score }) {
         ? <span className="ok">· 可完整演奏</span>
         : <span className="err">· {errs.length} 个音超出能力范围</span>}
       {score.notes && <div>演奏提示：{score.notes}</div>}
+      {score.source && (
+        <div className="score-source">
+          来源：{score.sourceUrl
+            ? <a href={score.sourceUrl} target="_blank" rel="noreferrer">{score.source}</a>
+            : score.source}
+          {(sourceFormat || score.sourceCheckedAt) && (
+            <span>（{[sourceFormat, score.sourceCheckedAt ? `${score.sourceCheckedAt} 核对` : ''].filter(Boolean).join(' · ')}）</span>
+          )}
+        </div>
+      )}
       {warns.length > 0 && warns.length <= 12 && (
         <div className="warn">
           {warns.map((w, i) => (
@@ -55,6 +72,7 @@ export default function App() {
   const [importOpen, setImportOpen] = useState(false);
   const [importText, setImportText] = useState('');
   const [importError, setImportError] = useState('');
+  const [notice, setNotice] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
 
   const scores = useMemo(() => {
@@ -71,17 +89,21 @@ export default function App() {
   const current = currentId ? findScore(lib, currentId) : undefined;
 
   const doImport = (text: string) => {
-    const { score, error } = importScoreJson(text);
-    if (error || !score) {
+    const { score: parsedScore, error, warnings } = importScoreJson(text);
+    if (error || !parsedScore) {
       setImportError(error ?? '导入失败');
       return;
     }
+    const score = uniqueScoreId(parsedScore, allScores(lib).map((item) => item.id));
     const newLib = saveUserScore(lib, score);
     setLib(newLib);
     setCurrentId(score.id);
     setImportOpen(false);
     setImportText('');
     setImportError('');
+    setNotice(warnings.length
+      ? `已导入《${score.title}》，另有 ${warnings.length} 个节拍提示`
+      : `已导入《${score.title}》`);
   };
 
   return (
@@ -114,6 +136,17 @@ export default function App() {
       </aside>
 
       <main className="main">
+        <input ref={fileRef} type="file" accept=".json,application/json" className="visually-hidden"
+          aria-label="选择曲谱 JSON 文件"
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setImportText(await file.text());
+              setImportError('');
+            }
+            e.target.value = '';
+          }} />
+        {notice && <div className="notice" role="status">{notice}</div>}
         {current ? (
           <>
             <div className="toolbar">
@@ -142,12 +175,6 @@ export default function App() {
               <button className="btn menu-btn" onClick={() => setSidebarOpen(true)}>曲库</button>
               <div className="spacer" />
               <button className="btn" onClick={() => setImportOpen(true)}>导入曲谱</button>
-              <input ref={fileRef} type="file" accept=".json,application/json" style={{ display: 'none' }}
-                onChange={async (e) => {
-                  const f = e.target.files?.[0];
-                  if (f) doImport(await f.text());
-                  e.target.value = '';
-                }} />
             </div>
             <div className="empty">
               <div className="big">🎵</div>
@@ -166,18 +193,27 @@ export default function App() {
 
       {importOpen && (
         <div className="modal-mask" onClick={() => setImportOpen(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h3>导入曲谱（HarpScore JSON）</h3>
+          <div className="modal" role="dialog" aria-modal="true" aria-labelledby="import-title" onClick={(e) => e.stopPropagation()}>
+            <h3 id="import-title">导入曲谱</h3>
+            <p className="modal-help">支持 HarpScore 完整 JSON，以及含 <code>melody</code> 字段的旋律 DSL JSON。</p>
             <textarea
               placeholder='粘贴曲谱 JSON… 或点击下方按钮选择文件'
               value={importText}
-              onChange={(e) => setImportText(e.target.value)}
+              aria-label="曲谱 JSON"
+              onChange={(e) => { setImportText(e.target.value); setImportError(''); }}
             />
             {importError && <div className="error">{importError}</div>}
             <div className="row">
               <button className="btn" onClick={() => fileRef.current?.click()}>选择文件…</button>
               <button className="btn" onClick={() => setImportOpen(false)}>取消</button>
-              <button className="btn primary" onClick={() => doImport(importText)}>导入</button>
+              <button className="btn primary" onClick={() => {
+                const preview = importScoreJson(importText);
+                if (preview.error || !preview.score) {
+                  setImportError(preview.error ?? '导入失败');
+                  return;
+                }
+                doImport(importText);
+              }}>导入</button>
             </div>
           </div>
         </div>

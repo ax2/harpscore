@@ -4,6 +4,9 @@
 import type { Score } from '../types/score';
 import { analyzeScore } from './harmonica';
 import { BUILTIN_SCORES } from '../data/builtin';
+import { scoreFromObject } from './scoreImport';
+
+export { importScoreJson, uniqueScoreId } from './scoreImport';
 
 const LS_KEY = 'harpscore.userScores.v1';
 
@@ -11,8 +14,12 @@ export function loadUserScores(): Score[] {
   try {
     const raw = localStorage.getItem(LS_KEY);
     if (!raw) return [];
-    const arr = JSON.parse(raw) as Score[];
-    return Array.isArray(arr) ? arr : [];
+    const arr: unknown = JSON.parse(raw);
+    if (!Array.isArray(arr)) return [];
+    return arr.flatMap((item) => {
+      const result = scoreFromObject(item);
+      return result.score ? [result.score] : [];
+    });
   } catch {
     return [];
   }
@@ -60,22 +67,4 @@ export function deleteUserScore(lib: Library, id: string): Library {
   const user = loadUserScores().filter((s) => s.id !== id);
   persist(user);
   return { ...lib, user };
-}
-
-/** 导入 JSON 文本为曲谱；返回错误或曲谱 */
-export function importScoreJson(text: string): { score?: Score; error?: string } {
-  try {
-    const obj = JSON.parse(text) as Score;
-    if (!obj || typeof obj !== 'object') return { error: '不是有效的 JSON 对象' };
-    if (!obj.title || !obj.key || !obj.timeSignature || !Array.isArray(obj.lines)) {
-      return { error: '缺少必需字段（title / key / timeSignature / lines）' };
-    }
-    if (!obj.id) obj.id = `user-${Date.now().toString(36)}`;
-    obj.tags = obj.tags ?? [];
-    obj.difficulty = obj.difficulty ?? 1;
-    obj.harmonicaKey = obj.harmonicaKey ?? 'C';
-    return { score: obj };
-  } catch (e) {
-    return { error: `JSON 解析失败：${(e as Error).message}` };
-  }
 }

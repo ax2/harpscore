@@ -1,0 +1,102 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { importScoreJson, parseMelodyDsl, scoreFromObject, uniqueScoreId } from '../src/lib/scoreImport';
+
+const base = {
+  title: '测试曲', key: 'C', harmonicaKey: 'C', timeSignature: '4/4', difficulty: 1, tags: [],
+};
+
+test('imports full HarpScore JSON and removes untrusted derived fingering', () => {
+  const result = scoreFromObject({
+    ...base,
+    id: 'demo',
+    lines: [[{ notes: [{ degree: 1, beats: 4, hole: 99, breath: 'draw' }] }]],
+  });
+  assert.equal(result.error, undefined);
+  assert.equal(result.score?.lines[0][0].notes[0].hole, undefined);
+  assert.deepEqual(result.warnings, []);
+});
+
+test('imports melody DSL including BOM, lyrics, accidentals, durations and final bar', () => {
+  const result = importScoreJson(`\uFEFF${JSON.stringify({
+    ...base,
+    melody: "1=你 2/ #3/ 4~ | 5 - - - ||",
+  })}`);
+  assert.equal(result.format, 'melody-dsl');
+  assert.equal(result.error, undefined);
+  assert.equal(result.score?.lines[0][0].notes[0].lyric, '你');
+  assert.equal(result.score?.lines[0][0].notes[2].accidental, 1);
+  assert.equal(result.score?.lines[0][0].notes[3].tie, true);
+  assert.equal(result.score?.lines[0][1].notes[0].beats, 4);
+  assert.equal(result.score?.lines[0][1].sectionEnd, true);
+});
+
+test('preserves source notation while octaveShift changes only performance pitch', () => {
+  const result = scoreFromObject({ ...base, octaveShift: 1, melody: '1 - - -' });
+  assert.equal(result.error, undefined);
+  assert.equal(result.score?.octaveShift, 1);
+  assert.equal(result.score?.lines[0][0].notes[0].octave, 0);
+});
+
+test('accepts complementary opening and closing pickup measures without warnings', () => {
+  const result = scoreFromObject({ ...base, melody: '5 | 1 - - - |\n2 - - - | 1 - -' });
+  assert.equal(result.error, undefined);
+  assert.deepEqual(result.warnings, []);
+});
+
+test('rejects malformed nested score data with a precise path', () => {
+  const result = scoreFromObject({ ...base, lines: [[{ notes: [{ degree: 9, beats: -1 }] }]] });
+  assert.match(result.error ?? '', /lines\[0\]\[0\]\.notes\[0\]\.degree/);
+  assert.match(result.error ?? '', /beats/);
+});
+
+test('rejects unsupported DSL tokens and extension without a note', () => {
+  assert.throws(() => parseMelodyDsl('- 1 | 2 3'), /延长符前没有音符/);
+  assert.throws(() => parseMelodyDsl('H4 1 | 2 3'), /无法识别音符/);
+});
+
+test('reports beat mismatches without rejecting a structurally valid score', () => {
+  const result = scoreFromObject({ ...base, melody: '1 2 | 3 - - -' });
+  assert.equal(result.error, undefined);
+  assert.equal(result.warnings.length, 1);
+});
+
+test('accepts a single-item array and wrapper object', () => {
+  const lines = [[{ notes: [{ degree: 1, beats: 4 }] }]];
+  assert.equal(scoreFromObject([{ ...base, lines }]).error, undefined);
+  assert.equal(scoreFromObject({ score: { ...base, lines } }).error, undefined);
+  assert.match(scoreFromObject([{ ...base, lines }, { ...base, lines }]).error ?? '', /一次只能导入一首/);
+});
+
+test('creates a non-destructive ID when an imported ID already exists', () => {
+  const score = scoreFromObject({ ...base, id: 'demo', lines: [[{ notes: [{ degree: 1, beats: 4 }] }]] }).score!;
+  assert.equal(uniqueScoreId(score, ['demo', 'demo-2']).id, 'demo-3');
+});
+
+test('preserves traceable numbered-notation source metadata', () => {
+  const result = scoreFromObject({
+    ...base,
+    source: '教学简谱',
+    sourceUrl: 'https://example.com/score.pdf',
+    sourceFormat: 'jianpu-image',
+    sourceCheckedAt: '2026-08-31',
+    melody: '1 - - -',
+  });
+  assert.equal(result.error, undefined);
+  assert.equal(result.score?.sourceUrl, 'https://example.com/score.pdf');
+  assert.equal(result.score?.sourceFormat, 'jianpu-image');
+  assert.equal(result.score?.sourceCheckedAt, '2026-08-31');
+});
+
+test('rejects unsafe or malformed source metadata', () => {
+  const result = scoreFromObject({
+    ...base,
+    sourceUrl: 'javascript:alert(1)',
+    sourceFormat: 'staff-ocr',
+    sourceCheckedAt: '31/08/2026',
+    melody: '1 - - -',
+  });
+  assert.match(result.error ?? '', /sourceFormat/);
+  assert.match(result.error ?? '', /sourceUrl/);
+  assert.match(result.error ?? '', /sourceCheckedAt/);
+});
