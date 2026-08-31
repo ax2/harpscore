@@ -31,11 +31,11 @@ test('imports melody DSL including BOM, lyrics, accidentals, durations and final
   assert.equal(result.score?.lines[0][1].sectionEnd, true);
 });
 
-test('preserves source notation while octaveShift changes only performance pitch', () => {
+test('bakes octaveShift into note octave and removes the field', () => {
   const result = scoreFromObject({ ...base, octaveShift: 1, melody: '1 - - -' });
   assert.equal(result.error, undefined);
-  assert.equal(result.score?.octaveShift, 1);
-  assert.equal(result.score?.lines[0][0].notes[0].octave, 0);
+  assert.equal(result.score?.octaveShift, undefined);
+  assert.equal(result.score?.lines[0][0].notes[0].octave, 1);
 });
 
 test('accepts complementary opening and closing pickup measures without warnings', () => {

@@ -70,7 +70,7 @@ export interface Score {
   composer?: string;
   /** 调号（简谱 1=X），如 "C"、"G" */
   key: string;
-  /** 演奏整体八度移位：只影响 MIDI/孔位，不改变来源简谱显示；1 = 演奏升一个八度 */
+  /** @deprecated 演奏整体八度移位已废弃，生成阶段直接烘焙到每个音符的 octave 字段 */
   octaveShift?: number;
   /** 口琴调性（用哪把口琴），如 "C" */
   harmonicaKey: string;

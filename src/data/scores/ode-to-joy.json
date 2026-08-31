@@ -4,7 +4,6 @@
   "subtitle": "Ode to Joy · 贝多芬第九交响曲",
   "composer": "贝多芬 曲",
   "key": "C",
-  "octaveShift": 1,
   "harmonicaKey": "C",
   "position": "第一把位 (1st Position)",
   "timeSignature": "4/4",
@@ -28,7 +27,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -38,7 +37,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -48,7 +47,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -58,7 +57,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -72,7 +71,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -82,7 +81,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -92,7 +91,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -102,7 +101,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -116,7 +115,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -126,7 +125,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -136,7 +135,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -146,7 +145,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -160,7 +159,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "dotted": true,
             "hole": 5,
@@ -171,7 +170,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 4,
             "breath": "draw",
@@ -181,7 +180,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 2,
             "hole": 4,
             "breath": "draw",
@@ -197,7 +196,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -207,7 +206,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -217,7 +216,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -227,7 +226,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -241,7 +240,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -251,7 +250,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -261,7 +260,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -271,7 +270,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -285,7 +284,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -295,7 +294,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -305,7 +304,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -315,7 +314,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -329,7 +328,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "dotted": true,
             "hole": 4,
@@ -340,7 +339,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 4,
             "breath": "blow",
@@ -350,7 +349,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 2,
             "hole": 4,
             "breath": "blow",
@@ -366,7 +365,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -376,7 +375,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -386,7 +385,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -396,7 +395,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -410,7 +409,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -420,7 +419,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 5,
             "breath": "blow",
@@ -430,7 +429,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 5,
             "breath": "draw",
@@ -440,7 +439,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -450,7 +449,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -464,7 +463,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -474,7 +473,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 5,
             "breath": "blow",
@@ -484,7 +483,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 5,
             "breath": "draw",
@@ -494,7 +493,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -504,7 +503,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -518,7 +517,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -528,7 +527,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -538,7 +537,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -548,7 +547,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -564,7 +563,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -574,7 +573,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -584,7 +583,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -594,7 +593,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -608,7 +607,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -618,7 +617,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "draw",
@@ -628,7 +627,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -638,7 +637,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 5,
             "breath": "draw",
@@ -648,7 +647,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 4,
             "breath": "draw",
@@ -662,7 +661,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -672,7 +671,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "blow",
@@ -682,7 +681,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 4,
             "breath": "draw",
@@ -692,7 +691,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 5,
             "breath": "blow",
@@ -706,7 +705,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "dotted": true,
             "hole": 4,
@@ -717,7 +716,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 4,
             "breath": "blow",
@@ -727,7 +726,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 2,
             "hole": 4,
             "breath": "blow",

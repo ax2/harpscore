@@ -298,13 +298,26 @@ export function scoreFromObject(value: unknown): ImportResult {
     return { error: errors.slice(0, 8).join('；'), warnings: [], format };
   }
 
+  // octaveShift 在生成阶段直接烘焙到每个音符的 octave 字段中。
+  // 这样简谱八度点、孔位计算、音域分析三者完全一致，避免运行时只改一处导致显示与实际音高对不上。
+  if (octaveShift) {
+    for (const line of lines) {
+      for (const measure of line) {
+        for (const note of measure.notes) {
+          if (note.degree !== 0) {
+            note.octave = (note.octave ?? 0) + octaveShift;
+          }
+        }
+      }
+    }
+  }
+
   const score: Score = {
     id: makeId(root.id, title),
     title,
     ...(optionalString(root.subtitle) ? { subtitle: optionalString(root.subtitle) } : {}),
     ...(optionalString(root.composer) ? { composer: optionalString(root.composer) } : {}),
     key,
-    ...(octaveShift !== undefined ? { octaveShift } : {}),
     harmonicaKey,
     ...(optionalString(root.position) ? { position: optionalString(root.position) } : {}),
     timeSignature,
@@ -322,8 +335,6 @@ export function scoreFromObject(value: unknown): ImportResult {
     ...(optionalString(root.notes) ? { notes: optionalString(root.notes) } : {}),
     lines,
   };
-  // octaveShift 只改变实际演奏音高和口琴孔位，不改写来源简谱的八度点。
-  // 这样既能保持简谱转录忠实，也能把超出口琴低音域的版本整体移到可奏音区。
   return { score, warnings: beatWarnings(score), format };
 }
 

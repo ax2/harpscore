@@ -4,7 +4,6 @@
   "subtitle": "Happy Birthday to You",
   "composer": "Patty Hill / Mildred J. Hill 曲",
   "key": "C",
-  "octaveShift": 1,
   "harmonicaKey": "C",
   "position": "第一把位",
   "timeSignature": "3/4",
@@ -49,7 +48,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 6,
             "breath": "blow",
@@ -59,7 +58,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 6,
             "breath": "blow",
@@ -73,7 +72,7 @@
           {
             "degree": 6,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "draw",
@@ -83,7 +82,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -93,7 +92,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 1,
             "hole": 7,
             "breath": "blow",
@@ -107,7 +106,7 @@
           {
             "degree": 7,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 2,
             "hole": 7,
             "breath": "draw",
@@ -117,7 +116,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 6,
             "breath": "blow",
@@ -127,7 +126,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 6,
             "breath": "blow",
@@ -141,7 +140,7 @@
           {
             "degree": 6,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "draw",
@@ -151,7 +150,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "blow",
@@ -161,7 +160,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 1,
             "hole": 8,
             "breath": "draw",
@@ -177,7 +176,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 2,
             "hole": 7,
             "breath": "blow",
@@ -187,7 +186,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 6,
             "breath": "blow",
@@ -197,7 +196,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 0.5,
             "hole": 6,
             "breath": "blow",
@@ -211,7 +210,7 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 1,
             "hole": 9,
             "breath": "blow",
@@ -221,7 +220,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 1,
             "hole": 8,
             "breath": "blow",
@@ -231,7 +230,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 1,
             "hole": 7,
             "breath": "blow",
@@ -245,7 +244,7 @@
           {
             "degree": 7,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 7,
             "breath": "draw",
@@ -255,7 +254,7 @@
           {
             "degree": 6,
             "accidental": 0,
-            "octave": 0,
+            "octave": 1,
             "beats": 1,
             "hole": 6,
             "breath": "draw",
@@ -265,7 +264,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 0.5,
             "hole": 9,
             "breath": "draw",
@@ -275,7 +274,7 @@
           {
             "degree": 4,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 0.5,
             "hole": 9,
             "breath": "draw",
@@ -289,7 +288,7 @@
           {
             "degree": 3,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 1,
             "hole": 8,
             "breath": "blow",
@@ -299,7 +298,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 1,
             "hole": 7,
             "breath": "blow",
@@ -309,7 +308,7 @@
           {
             "degree": 2,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 1,
             "hole": 8,
             "breath": "draw",
@@ -323,7 +322,7 @@
           {
             "degree": 1,
             "accidental": 0,
-            "octave": 1,
+            "octave": 2,
             "beats": 3,
             "hole": 7,
             "breath": "blow",
