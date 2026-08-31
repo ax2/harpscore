@@ -153,7 +153,7 @@ export default function App() {
               <div className="big">🎵</div>
               从左侧选择一首曲谱开始<br />
               <span style={{ fontSize: 12.5 }}>
-                上行简谱 · 下行口琴孔位（<b style={{ color: '#c0392b' }}>+N 吹</b> / <b style={{ color: '#1f618d' }}>-N 吸</b>）
+                上行简谱 · 下行口琴孔位（<b style={{ color: '#c0392b' }}>↑ 吹气</b> / <b style={{ color: '#1f618d' }}>↓ 吸气</b>）
               </span>
             </div>
           </>
