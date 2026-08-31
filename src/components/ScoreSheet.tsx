@@ -6,7 +6,6 @@
  */
 import React from 'react';
 import type { Measure, Note, Score } from '../types/score';
-import { holeLabel } from '../lib/harmonica';
 
 /* ---------- 排版常量 ---------- */
 export const LAYOUT = {
@@ -113,6 +112,42 @@ export function layoutScore(score: Score): { lines: PlacedLine[]; width: number;
 
 /* ---------- 渲染 ---------- */
 
+/**
+ * 吹 / 吸箭头路径：吹气向上、吸气向下。
+ * x = 竖杆中心 x，y = 文字基线 y，s = 缩放系数
+ */
+function arrowD(x: number, y: number, up: boolean, s = 1): string {
+  const wing = 4.3 * s;   // 箭头翼半宽
+  const half = 1.4 * s;   // 竖杆半宽
+  const tipY = up ? y - 9 * s : y + 4.5 * s;        // 箭尖
+  const tailY = up ? y + 4.5 * s : y - 9 * s;       // 杆尾
+  const shoulder = up ? y - 1.5 * s : y - 3.5 * s;  // 箭头肩部
+  return `M ${x} ${tipY} L ${x - wing} ${shoulder} L ${x - half} ${shoulder} L ${x - half} ${tailY} `
+    + `L ${x + half} ${tailY} L ${x + half} ${shoulder} L ${x + wing} ${shoulder} Z`;
+}
+
+/** 口琴孔位标记：箭头（吹↑ / 吸↓）+ 孔号 + 压音 / 超吹符号 */
+function HoleGlyph({ n, cx, y }: { n: Note; cx: number; y: number }) {
+  if (n.degree === 0 || n.hole == null || !n.breath) return null;
+  const color = n.breath === 'blow' ? BLOW_COLOR : DRAW_COLOR;
+  const bends = n.bend ? "'".repeat(n.bend) : '';
+  const ob = n.overblow ? '°' : '';
+  const vib = n.techniques?.includes('vibrato') ? '~' : '';
+  const ty = y + LAYOUT.tabY;
+  return (
+    <g>
+      <path d={arrowD(cx - 8, ty, n.breath === 'blow')} fill={color} />
+      <text x={cx + 5} y={ty} textAnchor="middle" fontFamily={NUM_FONT}
+        fontSize={14.5} fontWeight={700} fill={color}>
+        {n.hole}
+        {bends && <tspan fontSize={13} dy={-4}>{bends}</tspan>}
+        {ob && <tspan fontSize={12} dy={bends ? 0 : -4}>{ob}</tspan>}
+        {vib && <tspan fontSize={12} dy={bends || ob ? 4 : 0} dx={2}>{vib}</tspan>}
+      </text>
+    </g>
+  );
+}
+
 function BarLine({ x, y, kind }: { x: number; y: number; kind: 'normal' | 'begin' | 'end' | 'final' | 'repeatBegin' | 'repeatEnd' }) {
   const top = y + LAYOUT.barTop;
   const bottom = y + LAYOUT.barBottom;
@@ -159,19 +194,9 @@ function NoteGlyph({ p, y }: { p: PlacedNote; y: number }) {
   if ((n.octave ?? 0) < 0 && n.degree !== 0) {
     els.push(<circle key="ld" cx={cx} cy={y + LAYOUT.lowDotY} r={2.2} fill={INK} />);
   }
-  // 口琴孔位标记
-  const label = holeLabel(n);
-  if (label) {
-    const color = n.breath === 'blow' ? BLOW_COLOR : DRAW_COLOR;
-    els.push(
-      <text key="tab" x={cx} y={y + LAYOUT.tabY} textAnchor="middle"
-        fontFamily={NUM_FONT} fontSize={14.5} fontWeight={700} fill={color}>
-        {label}
-        {n.techniques?.includes('vibrato') && <tspan dx={3} fontSize={12}>~</tspan>}
-      </text>
-    );
-  } else if (n.degree === 0) {
-    // 休止符位置留白
+  // 口琴孔位标记：箭头 + 孔号（吹气↑ / 吸气↓）
+  if (n.hole != null && n.breath) {
+    els.push(<HoleGlyph key="tab" n={n} cx={cx} y={y} />);
   }
   // 歌词
   if (n.lyric) {
@@ -240,6 +265,12 @@ function Ties({ line }: { line: PlacedLine }) {
 function Header({ score }: { score: Score }) {
   const W = LAYOUT.pageWidth;
   const stars = '★'.repeat(score.difficulty) + '☆'.repeat(5 - score.difficulty);
+  // 把位只保留中文，去掉括号里的英文（避免信息条溢出）
+  const pos = (score.position ?? '').replace(/[（(][^）)]*[）)]/g, '').trim();
+  const infoText = `${score.harmonicaKey} 调十孔口琴${pos ? ' · ' + pos : ''} · 难度 ${stars}`;
+  const infoWidth = [...infoText].reduce(
+    (s, ch) => s + (/[\u2e80-\u9fff\u2605\u2606·]/.test(ch) ? 12 : 6.8), 0
+  ) + 26;
   return (
     <g>
       <text x={W / 2} y={LAYOUT.padTop + 18} textAnchor="middle" fontFamily={TITLE_FONT}
@@ -257,12 +288,12 @@ function Header({ score }: { score: Score }) {
         <text x={W - LAYOUT.padX} y={LAYOUT.padTop + 78} textAnchor="end" fontFamily={TITLE_FONT}
           fontSize={13} fill={INK}>{score.composer}</text>
       )}
-      {/* 口琴信息条 */}
+      {/* 口琴信息条：宽度随文本自适应 */}
       <g>
-        <rect x={LAYOUT.padX} y={LAYOUT.padTop + 92} rx={4} width={14 * (score.harmonicaKey.length + 12)} height={22}
+        <rect x={LAYOUT.padX} y={LAYOUT.padTop + 92} rx={4} width={infoWidth} height={22}
           fill="none" stroke={FAINT} strokeWidth={0.8} />
-        <text x={LAYOUT.padX + 10} y={LAYOUT.padTop + 107} fontFamily={NUM_FONT} fontSize={12} fill={FAINT}>
-          {`${score.harmonicaKey} 调十孔口琴${score.position ? ' · ' + score.position : ''} · 难度 ${stars}`}
+        <text x={LAYOUT.padX + 13} y={LAYOUT.padTop + 107} fontFamily={NUM_FONT} fontSize={12} fill={FAINT}>
+          {infoText}
         </text>
       </g>
       <line x1={LAYOUT.padX} y1={LAYOUT.padTop + 124} x2={W - LAYOUT.padX} y2={LAYOUT.padTop + 124}
@@ -274,13 +305,23 @@ function Header({ score }: { score: Score }) {
 /** 图例（首页底部）：吹吸颜色说明 */
 function Legend({ y }: { y: number }) {
   const W = LAYOUT.pageWidth;
+  const x0 = LAYOUT.padX;
+  const ty = y - 3.5; // 箭头基线，与文字视觉对齐
   return (
     <g fontFamily={NUM_FONT} fontSize={11.5} fill={FAINT}>
-      <text x={LAYOUT.padX} y={y}>
-        图例：<tspan fill={BLOW_COLOR} fontWeight={700}>+N</tspan> 吹气 N 孔　
-        <tspan fill={DRAW_COLOR} fontWeight={700}>-N</tspan> 吸气 N 孔　
-        <tspan fontWeight={700}>&apos;</tspan> 压音（每符半音）　
-        <tspan fontWeight={700}>°</tspan> 超吹　~ 颤音
+      <text x={x0} y={y}>图例：</text>
+      <path d={arrowD(x0 + 45, ty, true, 0.85)} fill={BLOW_COLOR} />
+      <text x={x0 + 56} y={y}>吹气</text>
+      <path d={arrowD(x0 + 95, ty, false, 0.85)} fill={DRAW_COLOR} />
+      <text x={x0 + 106} y={y}>吸气</text>
+      <text x={x0 + 145} y={y}>
+        <tspan fill={INK} fontWeight={700}>&apos;</tspan> 压音（每符半音）
+      </text>
+      <text x={x0 + 272} y={y}>
+        <tspan fill={INK} fontWeight={700}>°</tspan> 超吹
+      </text>
+      <text x={x0 + 322} y={y}>
+        <tspan fill={INK} fontWeight={700}>~</tspan> 颤音
       </text>
       <text x={W - LAYOUT.padX} y={y} textAnchor="end">HarpScore</text>
     </g>

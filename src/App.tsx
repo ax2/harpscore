@@ -33,7 +33,7 @@ function AnalysisPanel({ score }: { score: Score }) {
       压音音 <b className={a.bendNotes ? 'warn' : ''}>{a.bendNotes}</b> 个　
       {a.overblowNotes > 0 && <>超吹 <b className="warn">{a.overblowNotes}</b> 个　</>}
       {errs.length === 0
-        ? <span>· 可完整演奏 ✅</span>
+        ? <span className="ok">· 可完整演奏</span>
         : <span className="err">· {errs.length} 个音超出能力范围</span>}
       {score.notes && <div>演奏提示：{score.notes}</div>}
       {warns.length > 0 && warns.length <= 12 && (
@@ -50,6 +50,7 @@ function AnalysisPanel({ score }: { score: Score }) {
 export default function App() {
   const [lib, setLib] = useState<Library>(() => loadLibrary());
   const [currentId, setCurrentId] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [importOpen, setImportOpen] = useState(false);
   const [importText, setImportText] = useState('');
@@ -85,7 +86,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <aside className="sidebar">
+      <aside className={`sidebar${sidebarOpen ? ' open' : ''}`}>
         <div className="brand">
           <h1><span className="harp">Harp</span>Score</h1>
           <div className="sub">布鲁斯口琴乐谱 · 十孔口琴专用</div>
@@ -96,11 +97,13 @@ export default function App() {
         <div className="score-list">
           <div className="group-title">内置曲谱（{lib.builtin.length}）</div>
           {scores.filter((s) => s.builtin).map((s) => (
-            <ScoreItem key={s.id} s={s} active={s.id === currentId} onClick={() => setCurrentId(s.id)} />
+            <ScoreItem key={s.id} s={s} active={s.id === currentId}
+              onClick={() => { setCurrentId(s.id); setSidebarOpen(false); }} />
           ))}
           <div className="group-title">我的曲谱（{lib.user.length}）</div>
           {scores.filter((s) => !s.builtin).map((s) => (
-            <ScoreItem key={s.id} s={s} active={s.id === currentId} onClick={() => setCurrentId(s.id)} />
+            <ScoreItem key={s.id} s={s} active={s.id === currentId}
+              onClick={() => { setCurrentId(s.id); setSidebarOpen(false); }} />
           ))}
           {lib.user.length === 0 && (
             <div style={{ color: 'var(--text-dim)', fontSize: 12, padding: '4px 12px' }}>
@@ -114,6 +117,7 @@ export default function App() {
         {current ? (
           <>
             <div className="toolbar">
+              <button className="btn menu-btn" onClick={() => setSidebarOpen(true)}>曲库</button>
               <button className="btn primary" onClick={() => exportPng(current)}>导出 PNG</button>
               <button className="btn" onClick={() => exportSvg(current)}>导出 SVG</button>
               <button className="btn" onClick={() => exportPdf(current)}>打印 / PDF</button>
@@ -135,6 +139,7 @@ export default function App() {
         ) : (
           <>
             <div className="toolbar">
+              <button className="btn menu-btn" onClick={() => setSidebarOpen(true)}>曲库</button>
               <div className="spacer" />
               <button className="btn" onClick={() => setImportOpen(true)}>导入曲谱</button>
               <input ref={fileRef} type="file" accept=".json,application/json" style={{ display: 'none' }}
@@ -154,6 +159,10 @@ export default function App() {
           </>
         )}
       </main>
+
+      {sidebarOpen && (
+        <div className="sidebar-mask" onClick={() => setSidebarOpen(false)} />
+      )}
 
       {importOpen && (
         <div className="modal-mask" onClick={() => setImportOpen(false)}>
