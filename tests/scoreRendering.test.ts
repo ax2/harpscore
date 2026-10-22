@@ -50,3 +50,32 @@ test('natural signs cancel earlier alterations at the same octave within a measu
   assert.equal((render('#4 - - - | 4 - - -').match(/♮/g) ?? []).length, 0);
   assert.equal((render('#4 #4 #4 #4').match(/♮/g) ?? []).length, 0);
 });
+
+test('an oversized measure wraps without changing its music, repeats or accidental state', () => {
+  const score = fixture('|: #4// 1// 2// 3// 1// 2// 3// 4//~ 4// 1// 2// 3// 1// 2// 3// 4// :|');
+  const original = score.lines.flatMap((line) => line).flatMap((m) => m.notes);
+  const layout = layoutScore(score, 420);
+  const fragments = layout.lines.flatMap((line) => line.measures);
+  assert.equal(fragments.length, 2);
+  assert.deepEqual(fragments.flatMap((m) => m.notes.map((p) => p.note)), original);
+  assert.equal(fragments[0].measure.repeatBegin, true);
+  assert.equal(fragments[0].measure.repeatEnd, false);
+  assert.equal(fragments[1].measure.repeatBegin, false);
+  assert.equal(fragments[1].measure.repeatEnd, true);
+  assert.equal(fragments[0].continuesOnNext, true);
+  assert.equal(fragments[1].continuesFromPrevious, true);
+  for (const fragment of fragments) {
+    for (let i = 1; i < fragment.notes.length; i++) {
+      assert.ok(fragment.notes[i].x - fragment.notes[i - 1].x >= 32);
+    }
+  }
+  const svg = renderToStaticMarkup(React.createElement(ScoreSheetSvg, { score, pageWidth: 420 }));
+  assert.equal((svg.match(/data-notation="measure-continuation"/g) ?? []).length, 2);
+  assert.equal((svg.match(/data-notation="measure-continuation-label"/g) ?? []).length, 1);
+  assert.equal((svg.match(/data-notation="tie"/g) ?? []).length, 2);
+  // A sharp in the first fragment must be cancelled even in the continuation.
+  const crossing = fixture('#4// 1// 2// 3// 1// 2// 3// 1// 4// 1// 2// 3// 1// 2// 3// 4//');
+  const next = layoutScore(crossing, 420).lines[1].measures[0].notes[0];
+  assert.equal(next.note.degree, 4);
+  assert.equal(next.showNatural, true);
+});

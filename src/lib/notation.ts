@@ -11,7 +11,7 @@ export function noteDuration(note: Note): number {
 }
 
 export function isSupportedDuration(note: Pick<Note, 'beats' | 'dotted'>): boolean {
-  return [0.25, 0.5, 1, 2, 3, 4].includes(note.beats)
+  return [0.125, 0.25, 0.5, 1, 2, 3, 4].includes(note.beats)
     && !(note.beats === 3 && note.dotted);
 }
 

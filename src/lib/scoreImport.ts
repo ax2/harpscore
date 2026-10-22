@@ -212,7 +212,7 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
   let notation = equals >= 0 ? token.slice(0, equals) : token;
   const tie = notation.endsWith('~');
   if (tie) notation = notation.slice(0, -1);
-  const match = notation.match(/^([#b]?)([0-7])([',]*)(\/{0,2})(\.)?$/);
+  const match = notation.match(/^([#b]?)([0-7])([',]*)(\/{0,3})(\.)?$/);
   if (!match) throw new Error(`${path} 无法识别音符“${token}”`);
 
   const accidental = match[1] === '#' ? 1 : match[1] === 'b' ? -1 : 0;
@@ -221,7 +221,7 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
     throw new Error(`${path} 不能同时包含高、低八度标记`);
   }
   const octave = octaveMarks.startsWith("'") ? octaveMarks.length : octaveMarks.startsWith(',') ? -octaveMarks.length : 0;
-  const beats = match[4].length === 2 ? 0.25 : match[4].length === 1 ? 0.5 : 1;
+  const beats = 2 ** -match[4].length;
   return {
     degree: Number(match[2]),
     accidental: accidental as -1 | 0 | 1,
@@ -382,7 +382,7 @@ export function scoreFromObject(value: unknown): ImportResult {
   // DSL and full JSON share the same limits: accepted notation must survive export/reimport.
   lines?.forEach((line, li) => line.forEach((measure, mi) => measure.notes.forEach((note, ni) => {
     const path = `lines[${li}][${mi}].notes[${ni}]`;
-    if (!isSupportedDuration(note)) errors.push(`${path}.beats 不支持该时值；请用十六分、八分、四分音符或 2–4 拍长音及合法附点`);
+    if (!isSupportedDuration(note)) errors.push(`${path}.beats 不支持该时值；请用三十二分、十六分、八分、四分音符或 2–4 拍长音及合法附点`);
     const octave = (note.octave ?? 0) + (note.degree === 0 ? 0 : (octaveShift ?? 0));
     if (Math.abs(octave) > 3) errors.push(`${path}.octave 合并移位后必须在 -3–3 范围内`);
     if (note.degree === 0 && (note.accidental || note.octave)) errors.push(`${path} 休止符不能带升降号或八度点`);

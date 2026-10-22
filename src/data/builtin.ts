@@ -30,6 +30,10 @@ import score_27 from './scores/cross-harp-call-response.json';
 import score_28 from './scores/low-blues-scale-study.json';
 import score_29 from './scores/wuxi-jing.json';
 import score_30 from './scores/spring-excursion.json';
+import score_31 from './scores/cuckoo-song.json';
+import score_32 from './scores/rock-a-bye-baby.json';
+import score_33 from './scores/pan-hong-jun.json';
+import score_34 from './scores/meng-jiang-nv.json';
 
 export const BUILTIN_SCORES: Score[] = [
   score_1 as unknown as Score,
@@ -62,4 +66,8 @@ export const BUILTIN_SCORES: Score[] = [
   score_28 as unknown as Score,
   score_29 as unknown as Score,
   score_30 as unknown as Score,
+  score_31 as unknown as Score,
+  score_32 as unknown as Score,
+  score_33 as unknown as Score,
+  score_34 as unknown as Score,
 ];

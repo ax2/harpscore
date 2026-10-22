@@ -54,6 +54,15 @@ interface PlacedMeasure {
   x: number; // 起始 x（含小节线后）
   w: number;
   notes: PlacedNote[];
+  continuesFromPrevious: boolean;
+  continuesOnNext: boolean;
+}
+
+interface MeasureFragment {
+  measure: Measure;
+  original: Measure;
+  continuesFromPrevious: boolean;
+  continuesOnNext: boolean;
 }
 
 interface PlacedLine {
@@ -83,6 +92,7 @@ function symbolCount(n: Note): number {
 }
 
 function beamLevel(n: Note): number {
+  if (n.beats <= 0.125) return 3;
   if (n.beats <= 0.25) return 2;
   if (n.beats <= 0.5) return 1;
   return 0;
@@ -100,29 +110,69 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
   let y = LAYOUT.padTop + LAYOUT.headerHeight + (compact ? 28 : 0);
 
   // Preserve authored line breaks but wrap dense rows instead of clipping the SVG.
-  const rows: Measure[][] = [];
+  const rows: MeasureFragment[][] = [];
   score.lines.forEach((rawLine) => {
-    let row: Measure[] = [];
+    let row: MeasureFragment[] = [];
     let rowWidth = 0;
     rawLine.forEach((measure) => {
-      const width = measure.notes.reduce((sum, n) => sum + noteWidth(n), 0) + 16 + meterWidth(measure);
       const target = avail - (rows.length === 0 ? (compact ? 0 : 64) : 0);
-      if (row.length && rowWidth + width > target / 0.85) {
-        rows.push(row);
-        row = [];
-        rowWidth = 0;
+      // Split an oversized bar at a beat boundary where possible. The fragments
+      // remain one musical measure; dashed edges and “续” distinguish a wrap
+      // from a barline. Never squeeze dense fingerings into overlapping glyphs.
+      let start = 0;
+      let elapsed = 0;
+      const fragments: MeasureFragment[] = [];
+      while (start < measure.notes.length) {
+        let end = start;
+        const beatEnds: { end: number; width: number }[] = [];
+        let used = 16 + (start === 0 ? meterWidth(measure) : 0);
+        let endBeat = elapsed;
+        while (end < measure.notes.length) {
+          const nextWidth = noteWidth(measure.notes[end]);
+          if (end > start && used + nextWidth > target / 0.85) break;
+          used += nextWidth;
+          endBeat += noteDuration(measure.notes[end]);
+          end++;
+          if (Math.abs(endBeat - Math.round(endBeat)) < 1e-8) beatEnds.push({ end, width: used });
+        }
+        if (end < measure.notes.length && beatEnds.length) {
+          const remainingWidth = measure.notes.slice(start).reduce((sum, n) => sum + noteWidth(n), 16);
+          const idealWidth = remainingWidth / Math.ceil(remainingWidth / (target / 0.85));
+          end = beatEnds.reduce((best, candidate) =>
+            Math.abs(candidate.width - idealWidth) < Math.abs(best.width - idealWidth) ? candidate : best).end;
+        }
+        const notes = measure.notes.slice(start, end);
+        fragments.push({
+          original: measure,
+          measure: { ...measure, notes, timeSignature: start === 0 ? measure.timeSignature : undefined,
+            repeatBegin: start === 0 && measure.repeatBegin,
+            repeatEnd: end === measure.notes.length && measure.repeatEnd,
+            sectionEnd: end === measure.notes.length && measure.sectionEnd },
+          continuesFromPrevious: start > 0, continuesOnNext: end < measure.notes.length,
+        });
+        elapsed += notes.reduce((sum, n) => sum + noteDuration(n), 0);
+        start = end;
       }
-      row.push(measure);
-      rowWidth += width;
+      fragments.forEach((fragment) => {
+        const width = fragment.measure.notes.reduce((sum, n) => sum + noteWidth(n), 0) + 16 + meterWidth(fragment.measure);
+        if (row.length && (fragment.continuesFromPrevious || rowWidth + width > target / 0.85)) {
+          rows.push(row);
+          row = [];
+          rowWidth = 0;
+        }
+        row.push(fragment);
+        rowWidth += width;
+      });
     });
     if (row.length) rows.push(row);
   });
+  const accidentalStates = new Map<Measure, Map<string, number>>();
   rows.forEach((rawLine, li) => {
     const firstLineIndent = li === 0 && !compact ? 64 : 0;
-    const hasOrnament = rawLine.some((m) => m.notes.some((n) => n.ornament));
+    const hasOrnament = rawLine.some(({ measure }) => measure.notes.some((n) => n.ornament));
     if (hasOrnament) y += 18;
     // 自然宽度
-    const mWidths = rawLine.map((m) => {
+    const mWidths = rawLine.map(({ measure: m }) => {
       const nw = m.notes.reduce((s, n) => s + noteWidth(n), 0);
       return nw + 16 + meterWidth(m); // 小节内边距及变拍记号
     });
@@ -131,10 +181,12 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     const scale = Math.min(target / natural, 1.9);
 
     let x = LAYOUT.padX + firstLineIndent;
-    const measures: PlacedMeasure[] = rawLine.map((m, mi) => {
+    const measures: PlacedMeasure[] = rawLine.map((fragment, mi) => {
+      const m = fragment.measure;
       const mw = mWidths[mi] * scale;
       let nx = x + (8 + meterWidth(m)) * scale;
-      const accidentals = new Map<string, number>();
+      const accidentals = accidentalStates.get(fragment.original) ?? new Map<string, number>();
+      accidentalStates.set(fragment.original, accidentals);
       const needsNatural = (n: PitchNote) => {
         const pitch = `${n.degree}:${n.octave ?? 0}`;
         const accidental = n.accidental ?? 0;
@@ -156,18 +208,21 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
         const auxiliaryNatural = n.ornament ? needsNatural(n.ornament.auxiliary) : false;
         return { note: n, x: cx, w, showNatural, auxiliaryNatural, graceNotes };
       });
-      const pm = { measure: m, x, w: mw, notes };
+      const pm = { measure: m, x, w: mw, notes,
+        continuesFromPrevious: fragment.continuesFromPrevious, continuesOnNext: fragment.continuesOnNext };
       x += mw;
       return pm;
     });
 
-    const hasLyric = rawLine.some((m) => m.notes.some((n) => n.lyric));
+    const hasLyric = rawLine.some(({ measure }) => measure.notes.some((n) => n.lyric));
     const height = LAYOUT.lineBaseHeight + (hasLyric ? LAYOUT.lyricHeight : 0) + (hasOrnament ? 22 : 0);
     lines.push({ measures, y, height, hasLyric, hasOrnament });
     y += height + LAYOUT.lineGap;
   });
 
-  return { lines, width: W, height: y - LAYOUT.lineGap + LAYOUT.padTop + (compact ? 46 : 0) + (lines.some((line) => line.hasOrnament) ? 24 : 0) };
+  return { lines, width: W, height: y - LAYOUT.lineGap + LAYOUT.padTop + (compact ? 46 : 0)
+    + (lines.some((line) => line.hasOrnament) ? 24 : 0)
+    + (lines.some((line) => line.measures.some((m) => m.continuesOnNext)) ? 24 : 0) };
 }
 
 /* ---------- 渲染 ---------- */
@@ -208,7 +263,7 @@ function HoleGlyph({ n, cx, y }: { n: Note; cx: number; y: number }) {
   );
 }
 
-function BarLine({ x, y, kind }: { x: number; y: number; kind: 'normal' | 'begin' | 'end' | 'final' | 'repeatBegin' | 'repeatEnd' }) {
+function BarLine({ x, y, kind }: { x: number; y: number; kind: 'normal' | 'begin' | 'end' | 'final' | 'repeatBegin' | 'repeatEnd' | 'continuation' }) {
   const top = y + LAYOUT.barTop;
   const bottom = y + LAYOUT.barBottom;
   const els: React.ReactNode[] = [];
@@ -222,6 +277,8 @@ function BarLine({ x, y, kind }: { x: number; y: number; kind: 'normal' | 'begin
     </g>
   );
   switch (kind) {
+    case 'continuation': els.push(<line key="continuation" data-notation="measure-continuation"
+      x1={x} x2={x} y1={top} y2={bottom} stroke={FAINT} strokeWidth={1} strokeDasharray="3 5" />); break;
     case 'normal': els.push(vline(-0.5, 1)); break;
     case 'begin': els.push(vline(-2.5, 3), vline(1.5, 1)); break;
     case 'final': els.push(vline(-1.5, 1), vline(1.5, 3)); break;
@@ -328,17 +385,19 @@ function Beams({ m, y }: { m: PlacedMeasure; y: number }) {
       const x1 = ns[i].x - ns[i].w * 0.32;
       const x2 = ns[j].x + ns[j].w * 0.32;
       els.push(<rect key={`b1-${i}`} x={x1} y={y + LAYOUT.beam1Y} width={x2 - x1} height={2.4} fill={INK} />);
-      // 第二道梁：组内连续的十六分
-      let k = i;
-      while (k <= j) {
-        if (level(ns[k]) === 2) {
-          let l = k;
-          while (l + 1 <= j && level(ns[l + 1]) === 2) l++;
-          const sx = ns[k].x - ns[k].w * 0.32;
-          const ex = ns[l].x + ns[l].w * 0.32;
-          els.push(<rect key={`b2-${k}`} x={sx} y={y + LAYOUT.beam2Y} width={ex - sx} height={2.4} fill={INK} />);
-          k = l + 1;
-        } else k++;
+      // 每一级短梁覆盖该级及更短的音符，三十二分保留三道梁。
+      for (const tier of [2, 3]) {
+        let k = i;
+        while (k <= j) {
+          if (level(ns[k]) >= tier) {
+            let l = k;
+            while (l + 1 <= j && level(ns[l + 1]) >= tier) l++;
+            const sx = ns[k].x - ns[k].w * 0.32;
+            const ex = ns[l].x + ns[l].w * 0.32;
+            els.push(<rect key={`b${tier}-${k}`} data-notation={`beam-${tier}`} x={sx} y={y + LAYOUT.beam2Y + (tier - 2) * 6} width={ex - sx} height={2.4} fill={INK} />);
+            k = l + 1;
+          } else k++;
+        }
       }
       i = j + 1;
     } else i++;
@@ -444,6 +503,7 @@ function Legend({ y, width }: { y: number; width: number }) {
 export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pageWidth }: { score: Score; standalone?: boolean; pageWidth?: number }) {
   const { lines, width, height } = layoutScore(score, pageWidth);
   const hasOrnaments = lines.some((line) => line.hasOrnament);
+  const hasContinuations = lines.some((line) => line.measures.some((m) => m.continuesOnNext));
   const L = LAYOUT;
   return (
     <svg viewBox={`0 0 ${width} ${height}`} width={standalone ? width : '100%'}
@@ -455,11 +515,13 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
         <g key={li}>
           {/* 首行谱号位置：调号拍号（简谱惯例已在头部标明，行首画粗细起线） */}
           <BarLine x={line.measures[0].x} y={line.y}
-            kind={line.measures[0].measure.repeatBegin ? 'repeatBegin' : li === 0 ? 'begin' : 'normal'} />
+            kind={line.measures[0].continuesFromPrevious ? 'continuation' : line.measures[0].measure.repeatBegin ? 'repeatBegin' : li === 0 ? 'begin' : 'normal'} />
+          {line.measures[0].continuesFromPrevious && <text data-notation="measure-continuation-label"
+            x={line.measures[0].x - 22} y={line.y + L.numberY} fontSize={12} fill={FAINT}>续</text>}
           {line.measures.map((m, mi) => {
             const isLast = mi === line.measures.length - 1;
             const isLastLine = li === lines.length - 1;
-            const endKind = m.measure.repeatEnd ? 'repeatEnd'
+            const endKind = m.continuesOnNext ? 'continuation' : m.measure.repeatEnd ? 'repeatEnd'
               : isLast && isLastLine ? 'final'
               : m.measure.sectionEnd ? 'final' : 'normal';
             return (
@@ -479,9 +541,12 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
           <Ties line={line} previous={lines[li - 1]} />
         </g>
       ))}
-      <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0)} width={width} />
-      {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+      <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0) - (hasContinuations ? 24 : 0)} width={width} />
+      {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26 - (hasContinuations ? 24 : 0)} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         波音：主—辅—主；辅为邻音孔位，+ 吹 / − 吸
+      </text>}
+      {hasContinuations && <text x={L.padX} y={height - L.padTop + 26} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+        续／虚线：同一小节换行，拍数连续计算
       </text>}
     </svg>
   );

@@ -11,6 +11,47 @@ function bars(id: string) {
   return score.lines.flat().map((m) => m.notes.map((n) => [noteToMidi(score.key, n), noteDuration(n)]));
 }
 
+test('Cuckoo retains all twelve bars and four phrase rests from the 1927 ABC', () => {
+  const source = bars('cuckoo-song');
+  assert.equal(source.length, 12);
+  assert.deepEqual(source[0], [[79, 1], [76, 1], [null, 1]]);
+  assert.deepEqual(source[5], [[77, 2], [74, 1]]);
+  for (const index of [0, 1, 3, 11]) assert.deepEqual(source[index].at(-1), [null, 1]);
+});
+
+test('Rock-a-bye Baby retains dotted short notes, low register and distinct second endings', () => {
+  const source = bars('rock-a-bye-baby');
+  assert.equal(source.length, 8);
+  assert.deepEqual(source[0], [[64, 0.75], [67, 0.25], [76, 0.5], [74, 1], [72, 0.5]]);
+  assert.deepEqual(source[1].at(-1), [71, 1.5]);
+  assert.deepEqual(source[5].slice(-2), [[71, 1], [69, 0.5]]);
+  assert.deepEqual(source[7].at(-1), [null, 0.5]);
+});
+
+test('Pan Hong Jun retains the low la, high do, and four-quarter-beat tied ending', () => {
+  const source = bars('pan-hong-jun');
+  assert.equal(source.length, 12);
+  assert.deepEqual(source[1], [[76, 0.75], [79, 0.25], [76, 0.5], [69, 0.5]]);
+  assert.deepEqual(source[4], [[76, 0.25], [79, 0.25], [81, 1], [84, 0.5]]);
+  assert.deepEqual(source[9], [[69, 0.5], [72, 1], [69, 0.25], [72, 0.25]]);
+  assert.deepEqual(source.slice(-2), [[[69, 2]], [[69, 2]]]);
+  assert.equal(BUILTIN_SCORES.find((s) => s.id === 'pan-hong-jun')!.lines.flat()[10].notes[0].tie, true);
+});
+
+test('Meng Jiang Nv keeps five thirty-seconds, four eighth-shaped graces and source ties', () => {
+  const source = bars('meng-jiang-nv');
+  assert.equal(source.length, 8);
+  assert.deepEqual(source[0], [[72, 0.5], [72, 1], [74, 0.5], [76, 0.375], [79, 0.125], [76, 0.25], [74, 0.25], [76, 1]]);
+  assert.deepEqual(source[3].slice(-5), [[69, 0.25], [67, 0.25], [72, 0.25], [69, 0.25], [67, 2]]);
+  assert.deepEqual(source[4].slice(0, 5), [[67, 0.25], [64, 0.25], [67, 0.25], [69, 0.25], [72, 1]]);
+  assert.deepEqual(source[3], source[7]);
+  const measures = BUILTIN_SCORES.find((s) => s.id === 'meng-jiang-nv')!.lines.flat();
+  const notes = measures.flatMap((m) => m.notes);
+  assert.equal(notes.filter((n) => n.beats === 0.125).length, 5);
+  assert.deepEqual(notes.flatMap((n) => n.graceNotes ?? []).map((n) => [n.degree, n.octave, n.beats]), [[2, 1, 0.5], [3, 1, 0.5], [6, 0, 0.5], [6, 0, 0.5]]);
+  for (const [m, n] of [[1, 1], [1, 3], [2, 1], [2, 3]]) assert.equal(measures[m].notes[n].tie, true);
+});
+
 test('Spring Excursion keeps the full upper melody, different cadences and chromatic bridge', () => {
   const source = bars('spring-excursion');
   assert.equal(source.length, 16);

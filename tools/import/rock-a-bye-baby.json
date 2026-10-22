@@ -1,0 +1,21 @@
+{
+  "id": "rock-a-bye-baby",
+  "title": "摇篮曲",
+  "subtitle": "Rock-a-bye Baby · 1927歌集版",
+  "composer": "传统曲调",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "6/8",
+  "tempo": 72,
+  "difficulty": 3,
+  "tags": ["西方歌曲", "摇篮曲", "六八拍", "压音"],
+  "source": "The Everyday Song Book（1927）第9首，John Chambers于2015年转录的ABC；完整8小节，原Bb调移为C调（Bb4→C5），保留原相对音区。",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/009_Rock-a-bye_Baby.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-22",
+  "octaveShift": 1,
+  "notes": "每小节六个八分单位；开头附点八分加十六分不是等长八分。保持E4–F5音域，低fa使用2孔吸压全音，低la使用3孔吸压全音。两次相似开头的第2小节结尾不同；最后保留八分休止。省略歌词，速度为四分音符的练习建议。",
+  "order": 32,
+  "melody": "3,/. 5,// 3/ 2 1/ | 3,/. 5,// 1/ 7,. | 4,/. 5,// 4/ 3 2/ | 2/ 1/ 6,/ 5,. |\n3,/. 5,// 3/ 2 1/ | 3,/. 5,// 1/ 7, 6,/ | 5,/ 1/ 4/ 3/ 1 | 2/ 6,/ 7,/ 1 0/ ||"
+}
