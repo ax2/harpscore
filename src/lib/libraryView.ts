@@ -1,5 +1,6 @@
 import type { Score } from '../types/score';
 import { notesForAnalysis } from './notation';
+import { withStorageWriteLock } from './storageLock';
 
 export interface LibraryFilters {
   query: string;
@@ -60,9 +61,5 @@ export async function setFavorite(id: string, favorite: boolean): Promise<string
     catch { throw new Error('收藏未保存：浏览器存储不可用或空间不足，请稍后重试'); }
     return next;
   };
-  if (typeof navigator !== 'undefined' && navigator.locks) {
-    return navigator.locks.request(FAVORITES_KEY, async () => update());
-  }
-  // Synchronous fallback cannot guarantee simultaneous writes across old browsers.
-  return update();
+  return withStorageWriteLock(FAVORITES_KEY, update);
 }

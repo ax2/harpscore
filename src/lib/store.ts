@@ -1,3 +1,4 @@
+import { withStorageWriteLock } from './storageLock';
 /** 曲谱库：内置曲谱 + 用户曲谱（localStorage 持久化）。 */
 import type { Score } from '../types/score';
 import { analyzeScore } from './harmonica';
@@ -75,13 +76,8 @@ function persist(user: Score[]): string {
   return raw;
 }
 
-// Web Locks serializes cooperating tabs on the same origin. Older/insecure
-// browsers fall back to a synchronous read/write (without a cross-tab guarantee).
-async function withWriteLock<T>(action: () => T): Promise<T> {
-  if (typeof navigator !== 'undefined' && navigator.locks) {
-    return navigator.locks.request(LS_KEY, async () => action());
-  }
-  return action();
+function withWriteLock<T>(action: () => T): Promise<T> {
+  return withStorageWriteLock(LS_KEY, action);
 }
 
 function writableState() {

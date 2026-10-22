@@ -128,3 +128,5 @@ Vite + React + TypeScript，乐谱为纯 SVG 渲染，无重型依赖。
 ## License
 
 MIT © 2026 ax2
+
+Firefox 153 与 Chromium 均完成关键导入、收藏并发、曲库恢复和谱面/导出检查；四标签页各20轮保留80条收藏及80首个人曲谱。浏览器范围及已发现的存储可见性问题见 [跨浏览器验证](docs/stages/stage-6-firefox.md)。
