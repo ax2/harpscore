@@ -23,3 +23,6 @@ Pending: Spanish Rowing Song full 16-bar source. The old endpoint fails TLS host
 Automated checks verify internal consistency and selected source landmarks. They are not an independent professional performance review.
 
 Follow-up: the Hunan Grade 1 lower-volume contents entry at p.46 is a different Lu Jingshan tune (opening 2–5–3), not the Spanish melody (opening 5–3–3). The physical-education teacher book p.199 / PDF p.208 uses that other tune as well. Neither supplies the missing eight bars. The known partial corroboration remains Hunan p.49 only.
+
+
+Final source decision at 01:57: adopt the clearly labeled **eight-bar classroom short version** printed in the Hunan Grade 1 lower-volume p.49 activity. The page shows a final double bar after bar 8. Its full sequence is now transcribed and checked, original C raised one octave for C harp. The old sixteen-bar version remains in Git history but is no longer the active builtin. Subtitle and performance notes explicitly distinguish the short version; this does not validate or reconstruct the old missing second half. A complete pitch/duration regression covers all eight bars. The p.46 Lu Jingshan tune remains excluded.

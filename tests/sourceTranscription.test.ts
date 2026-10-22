@@ -440,3 +440,12 @@ test('Santa Lucia preserves its chromatic cancellation and both alternate ending
   assert.deepEqual(source[23], [[74, 0.5], [72, 1]]);
   assert.deepEqual(source.slice(8, 14), source.slice(16, 22));
 });
+
+test('Spanish Rowing Song uses the complete eight-bar Hunan classroom short version', () => {
+  assert.deepEqual(bars('spanish-rowing-song'), [
+    [[79, .5], [76, .5], [76, 1]], [[77, .5], [74, .5], [74, 1]],
+    [[72, .5], [74, .5], [76, .5], [77, .5]], [[79, .5], [79, .5], [79, 1]],
+    [[79, .5], [76, .5], [76, 1]], [[77, .5], [74, .5], [74, 1]],
+    [[72, .5], [76, .5], [79, .5], [79, .5]], [[72, 2]],
+  ]);
+});
