@@ -84,3 +84,9 @@ export function exportJson(score: Score) {
     `${safeName(score.title)}.harpscore.json`
   );
 }
+
+/** Preserve even invalid JSON so a damaged library can be recovered offline. */
+export function exportLibraryBackup(raw: string) {
+  download(new Blob([raw], { type: 'application/json;charset=utf-8' }),
+    `harpscore-library-${new Date().toISOString().slice(0, 10)}.json`);
+}

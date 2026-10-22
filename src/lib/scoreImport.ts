@@ -465,6 +465,7 @@ export function scoreFromObject(value: unknown): ImportResult {
     builtin: false,
     ...(order !== undefined ? { order } : {}),
     ...(optionalString(root.notes) ? { notes: optionalString(root.notes) } : {}),
+    ...(optionalString(root.updatedAt) ? { updatedAt: optionalString(root.updatedAt) } : {}),
     lines,
   };
   return { score, warnings: [...beatWarnings(score), ...tieWarnings(score)], format };
@@ -484,6 +485,7 @@ export function uniqueScoreId(score: Score, occupiedIds: Iterable<string>): Scor
   const occupied = new Set(occupiedIds);
   if (!occupied.has(score.id)) return score;
   let suffix = 2;
-  while (occupied.has(`${score.id}-${suffix}`)) suffix += 1;
-  return { ...score, id: `${score.id}-${suffix}` };
+  const candidate = () => `${score.id.slice(0, 64 - String(suffix).length - 1)}-${suffix}`;
+  while (occupied.has(candidate())) suffix += 1;
+  return { ...score, id: candidate() };
 }

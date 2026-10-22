@@ -3,9 +3,9 @@ import type { Score } from './types/score';
 import { analyzeScore } from './lib/harmonica';
 import {
   loadLibrary, allScores, findScore, saveUserScore, deleteUserScore,
-  importScoreJson, uniqueScoreId, type Library,
+  importScoreJson, userLibraryBackup, type Library,
 } from './lib/store';
-import { exportSvg, exportPng, exportPdf, exportJson } from './lib/export';
+import { exportSvg, exportPng, exportPdf, exportJson, exportLibraryBackup } from './lib/export';
 import ScoreSheet from './components/ScoreSheet';
 import { scoreFromObject } from './lib/scoreImport';
 import { DEFAULT_FILTERS, filterScores, loadFavorites, saveFavorites, type LibraryFilters } from './lib/libraryView';
@@ -84,6 +84,7 @@ export default function App() {
   const [importOpen, setImportOpen] = useState(false);
   const [importText, setImportText] = useState('');
   const [importError, setImportError] = useState('');
+  const [importSaving, setImportSaving] = useState(false);
   const [notice, setNotice] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
   const [actionError, setActionError] = useState('');
@@ -101,19 +102,23 @@ export default function App() {
 
   const current = currentId ? findScore(lib, currentId) : undefined;
 
-  const doImport = (text: string) => {
+  const doImport = async (text: string) => {
+    if (importSaving) return;
     const { score: parsedScore, error, warnings } = importScoreJson(text);
     if (error || !parsedScore) {
       setImportError(error ?? '导入失败');
       return;
     }
-    const score = uniqueScoreId(parsedScore, allScores(lib).map((item) => item.id));
-    let newLib: Library;
-    try { newLib = saveUserScore(lib, score); } catch {
-      setImportError('未保存：浏览器存储不可用或空间不足。请保留曲谱 JSON，释放空间后重试。');
+    setImportSaving(true);
+    let saved: Awaited<ReturnType<typeof saveUserScore>>;
+    try { saved = await saveUserScore(lib, parsedScore); } catch (error) {
+      setImportError(`未保存：${error instanceof Error ? error.message : '保存失败，请保留曲谱 JSON 后重试'}`);
       return;
+    } finally {
+      setImportSaving(false);
     }
-    setLib(newLib);
+    const score = saved.savedScore;
+    setLib(saved.library);
     setCurrentId(score.id);
     setImportOpen(false);
     setImportText('');
@@ -150,6 +155,21 @@ export default function App() {
           <button className="filter-reset" onClick={() => setFilters(DEFAULT_FILTERS)}>清除筛选</button>
           <div className="filter-count" role="status">找到 {scores.length} / {lib.builtin.length + lib.user.length} 首曲谱</div>
         </div>
+        <div className="library-tools">
+          <button className="btn" onClick={() => runAction(() => {
+            setSidebarOpen(false);
+            exportLibraryBackup(userLibraryBackup());
+          })}>备份个人曲库</button>
+          <button className="btn" onClick={() => {
+            const next = loadLibrary();
+            setLib(next);
+            // Clear personal selections: repaired duplicate IDs may have changed.
+            if (!current?.builtin) setCurrentId(null);
+            setActionError('');
+            setSidebarOpen(false);
+            setNotice(next.storageIssue ? '' : '已重新读取个人曲库');
+          }}>重新读取曲库</button>
+        </div>
         <div className="score-list">
           {scores.length === 0 && <p className="no-results">没有符合条件的曲谱。试试清除筛选，或打开一首曲谱后点击「收藏」。</p>}
           <div className="group-title">内置曲谱（{scores.filter((s) => s.builtin).length} / {lib.builtin.length}）</div>
@@ -185,6 +205,7 @@ export default function App() {
           }} />
         {notice && <div className="notice" role="status">{notice}</div>}
         {actionError && <div className="action-error" role="alert">{actionError}</div>}
+        {lib.storageIssue && <div className="action-error" role="alert">{lib.storageIssue}</div>}
         {current ? (
           <>
             <div className="toolbar">
@@ -203,8 +224,8 @@ export default function App() {
               {!current.builtin && (
                 <button className="btn danger" onClick={() => {
                   if (confirm(`确定删除《${current.title}》吗？`)) {
-                    void runAction(() => {
-                      setLib(deleteUserScore(lib, current.id));
+                    void runAction(async () => {
+                      setLib(await deleteUserScore(lib, current.id));
                       setCurrentId(null);
                     });
                   }
@@ -237,28 +258,22 @@ export default function App() {
       )}
 
       {importOpen && (
-        <div className="modal-mask" onClick={() => setImportOpen(false)}>
+        <div className="modal-mask" onClick={() => { if (!importSaving) setImportOpen(false); }}>
           <div className="modal" role="dialog" aria-modal="true" aria-labelledby="import-title" onClick={(e) => e.stopPropagation()}>
             <h3 id="import-title">导入曲谱</h3>
             <p className="modal-help">支持 HarpScore 完整 JSON，以及含 <code>melody</code> 字段的旋律 DSL JSON。</p>
             <textarea
               placeholder='粘贴曲谱 JSON… 或点击下方按钮选择文件'
               value={importText}
+              disabled={importSaving}
               aria-label="曲谱 JSON"
               onChange={(e) => { setImportText(e.target.value); setImportError(''); }}
             />
             {importError && <div className="error">{importError}</div>}
             <div className="row">
-              <button className="btn" onClick={() => fileRef.current?.click()}>选择文件…</button>
-              <button className="btn" onClick={() => setImportOpen(false)}>取消</button>
-              <button className="btn primary" onClick={() => {
-                const preview = importScoreJson(importText);
-                if (preview.error || !preview.score) {
-                  setImportError(preview.error ?? '导入失败');
-                  return;
-                }
-                doImport(importText);
-              }}>导入</button>
+              <button className="btn" disabled={importSaving} onClick={() => fileRef.current?.click()}>选择文件…</button>
+              <button className="btn" disabled={importSaving} onClick={() => setImportOpen(false)}>取消</button>
+              <button className="btn primary" disabled={importSaving} onClick={() => void doImport(importText)}>{importSaving ? '正在保存…' : '导入'}</button>
             </div>
           </div>
         </div>
