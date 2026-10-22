@@ -10,12 +10,15 @@
   "timeSignature": "4/4",
   "tempo": 104,
   "difficulty": 1,
-  "tags": ["儿歌", "入门"],
-  "source": "LINTJ 文字数字简谱《Mary Had a Little Lamb》；按常见 4/4 教学分句补全时值",
-  "sourceUrl": "https://www.lintj.com/collections/2020/04/08/SimpleMusic12345.html",
-  "sourceFormat": "jianpu-text",
-  "sourceCheckedAt": "2026-08-31",
-  "notes": "旋律只使用 1、2、3、5，整体升八度后全部为自然音，适合练习相邻音换气与重复吐音。",
+  "tags": [
+    "儿歌",
+    "入门"
+  ],
+  "source": "The Everyday Song Book (1927), No.77；John Chambers ABC 转录 (2017)",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/077_Mary_Had_a_Little_Lamb.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-23",
+  "notes": "采用可核对时值的 1927 年版本替换旧无节奏文字来源。F4 主音移为 C5，半拍弱起、附点节奏、第 4 完整小节高 sol 同音延音和末尾休止均保留，9 小节含弱起。歌词不录入，速度为编辑建议。",
   "order": 10,
-  "melody": "3 2 1 2 | 3 3 3 - | 2 2 2 - | 3 5 5 - |\n3 2 1 2 | 3 3 3 3 | 2 2 3 2 | 1 - - - ||"
+  "melody": "3/ | 3. 2/ 1 2 | 3 3 3 - | 2 2 2 - | 3 5 5.~ 5/ |\n3. 2/ 1 2 | 3 3 3 3 | 2 2 3. 2/ | 1 - 0 0/ ||"
 }

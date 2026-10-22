@@ -13,13 +13,13 @@
     "民歌",
     "经典"
   ],
-  "source": "江阴市长泾实验小学音乐教材简谱《送别》（李叔同词、J. P. Ordway 曲）；应用内由 1=E 移调为 1=C",
+  "source": "江阴市长泾实验小学所载《中国诗乐二十品》，印刷第 222 页 / PDF 第 238 页《送别》数字简谱",
   "sourceUrl": "https://cxqx.jyc.edu.cn/__local/3/D5/71/B7A1BD225359A39D710C8C3021A_A9C90F62_167DC01.pdf",
   "sourceFormat": "jianpu-image",
-  "sourceCheckedAt": "2026-08-31",
+  "sourceCheckedAt": "2026-10-23",
   "builtin": true,
   "order": 3,
-  "notes": "按教材 24 小节完整展开版逐音核对，并整体升八度适配 C 调十孔口琴；全部音符可自然吹奏。",
+  "notes": "重新逐行核对完整 24 小节，全部音高与时值保持不变。原谱 1=降E（修正旧元数据误写的 E），移为 1=C 并升八度；只读数字简谱，歌词、伴奏与异音连线不录入，速度为编辑建议。",
   "lines": [
     [
       {

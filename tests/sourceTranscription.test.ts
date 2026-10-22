@@ -11,6 +11,104 @@ function bars(id: string) {
   return score.lines.flat().map((m) => m.notes.map((n) => [noteToMidi(score.key, n), noteDuration(n)]));
 }
 
+test('Amazing Grace follows the source soprano register, line-split bar and real pickup', () => {
+  const source = bars('amazing-grace');
+  assert.equal(source.length, 15);
+  assert.deepEqual(source[0], [[67, 1]]);
+  assert.deepEqual(source[1], [[72, 2], [76, 0.5], [72, 0.5]]);
+  assert.deepEqual(source[7], [[79, 2], [74, 0.5], [76, 0.5]]);
+  assert.deepEqual(source[8], [[79, 2], [76, 0.5], [72, 0.5]]);
+  assert.deepEqual(source[14], [[72, 2]]);
+  assert.equal(BUILTIN_SCORES.find(s => s.id === 'amazing-grace')!.pickupBeats, 1);
+});
+
+test('Ode to Joy retains the low dominant, cross-bar tie and second-section repeat', () => {
+  const score = BUILTIN_SCORES.find(s => s.id === 'ode-to-joy')!;
+  const measures = score.lines.flat();
+  assert.equal(measures.length, 16);
+  assert.deepEqual(bars(score.id)[11], [[72, 1], [74, 1], [67, 1], [76, 1]]);
+  assert.equal(measures[11].notes[3].tie, true);
+  assert.equal(measures[8].repeatBegin, true);
+  assert.equal(measures[15].repeatEnd, true);
+});
+
+test('Happy Birthday expands both textbook endings without artificial opening rests', () => {
+  const source = bars('happy-birthday');
+  assert.equal(source.length, 17);
+  assert.deepEqual(source[0], [[79, 0.5], [79, 0.5]]);
+  assert.deepEqual(source[8], [[84, 2], [79, 0.5], [79, 0.5]]);
+  assert.deepEqual(source.slice(1, 8), source.slice(9, 16));
+  assert.deepEqual(source[16], [[84, 3]]);
+});
+
+test('Auld Lang Syne keeps its real pickup and the source full final bar', () => {
+  const score = BUILTIN_SCORES.find(s => s.id === 'auld-lang-syne')!;
+  const source = bars(score.id);
+  assert.equal(source.length, 17);
+  assert.equal(score.pickupBeats, 1);
+  assert.deepEqual(source[0], [[67, 1]]);
+  assert.deepEqual(source[16], [[72, 3], [null, 1]]);
+});
+
+test('Silent Night retains the 1927 six-eight rhythm, rests and low final tonic', () => {
+  const score = BUILTIN_SCORES.find(s => s.id === 'silent-night')!;
+  const source = bars(score.id);
+  assert.equal(score.timeSignature, '6/8');
+  assert.equal(source.length, 12);
+  assert.deepEqual(source[2], [[86, 1], [86, 0.375], [83, 0.125], [83, 1.5]]);
+  assert.deepEqual(source[11], [[72, 1.5], [72, 1], [null, 0.5]]);
+  assert.equal(score.lines.flat()[11].notes[0].tie, true);
+  assert.equal(source.flat().filter(n => n[0] === null).length, 4);
+});
+
+test('Mary retains the source pickup, dotted pairs, high-sol tie and ending rests', () => {
+  const source = bars('mary-little-lamb');
+  assert.equal(source.length, 9);
+  assert.deepEqual(source[0], [[76, 0.5]]);
+  assert.deepEqual(source[1], [[76, 1.5], [74, 0.5], [72, 1], [74, 1]]);
+  assert.deepEqual(source[4], [[76, 1], [79, 1], [79, 1.5], [79, 0.5]]);
+  assert.equal(BUILTIN_SCORES.find(s => s.id === 'mary-little-lamb')!.lines.flat()[4].notes[2].tie, true);
+  assert.deepEqual(source[8], [[72, 2], [null, 1], [null, 0.5]]);
+});
+
+test('Frere Jacques uses the source two-beat opening and complementary ending', () => {
+  const source = bars('frere-jacques');
+  assert.equal(source.length, 9);
+  assert.deepEqual(source[0], [[72, 1], [74, 1]]);
+  assert.deepEqual(source[6], [[76, 1], [72, 1], [72, 1], [67, 1]]);
+  assert.deepEqual(source[8], [[72, 2]]);
+});
+
+test('Sally Gardens uses the complete Rose X2 melody with its real pickup and repeat', () => {
+  const score = BUILTIN_SCORES.find(s => s.id === 'sally-gardens')!;
+  const source = bars(score.id);
+  assert.equal(source.length, 17);
+  assert.deepEqual(source[0], [[72, 0.5], [74, 0.5]]);
+  assert.deepEqual(source[9], [[84, 1], [83, 0.5], [79, 0.5], [81, 1], [84, 1]]);
+  assert.deepEqual(source[16], [[72, 3]]);
+  assert.equal(score.lines.flat()[16].repeatEnd, true);
+});
+
+test('legacy original exercises retain the declared bar counts and exact bend targets', () => {
+  const bend = BUILTIN_SCORES.find(s => s.id === 'bend-etude')!;
+  const blues = BUILTIN_SCORES.find(s => s.id === 'blues-12bar')!;
+  assert.equal(bend.lines.flat().length, 15);
+  assert.equal(blues.lines.flat().length, 12);
+  for (const [score, targets] of [[bend, [[4, 0, 2, 2], [6, 0, 3, 2]]], [blues, [[2, 0, 3, 2], [3, -1, 3, 1], [5, -1, 4, 1]]]] as const) {
+    const notes = structuredClone(score);
+    analyzeScore(notes);
+    for (const [degree, accidental, hole, depth] of targets) {
+      const matches = notes.lines.flat().flatMap(m => m.notes).filter(n => n.degree === degree && (n.accidental ?? 0) === accidental);
+      assert.ok(matches.length);
+      for (const n of matches) {
+        assert.equal(n.hole, hole);
+        assert.equal(n.breath, 'draw');
+        assert.equal(n.bend, depth);
+      }
+    }
+  }
+});
+
 test('Zhi-mode folk tunes use their G tonic on a C harp, not the jianpu reference pitch', () => {
   // Music Appreciation p.5 (Zou Jiang Zhou); Basic Music Theory p.85 ex.7-3(d) (Xiao Bai Cai).
   for (const id of ['xiao-bai-cai', 'zou-jiang-zhou']) {

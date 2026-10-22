@@ -10,12 +10,15 @@
   "timeSignature": "4/4",
   "tempo": 104,
   "difficulty": 1,
-  "tags": ["儿歌", "入门"],
-  "source": "FunnyAI 文本简谱《小星星》；公有领域法国童谣",
-  "sourceUrl": "https://www.funnyai.com/animate/music/",
-  "sourceFormat": "jianpu-text",
-  "sourceCheckedAt": "2026-08-31",
-  "notes": "全部自然音，入门第一首。注意 6 在 6 孔吸音。",
+  "tags": [
+    "儿歌",
+    "入门"
+  ],
+  "source": "黄冈师范学院音乐学院所载吉他教材，印刷第 28 页 / PDF 第 32 页《闪烁的小星星》数字简谱",
+  "sourceUrl": "https://music.hgnu.edu.cn/_upload/article/files/09/d4/faf43ffb4e08b61cf64ee0adaf16/ec5df379-7cae-4b24-9ece-880a54ee478b.pdf",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-10-23",
+  "notes": "完整 12 小节逐行核对，旋律与节奏未改；由原谱 1=C 整体升八度至 C5–A5。吉他指法不录入，练习速度为编辑建议。",
   "order": 1,
   "melody": "1 1 5 5 | 6 6 5 - | 4 4 3 3 | 2 2 1 - |\n5 5 4 4 | 3 3 2 - | 5 5 4 4 | 3 3 2 - |\n1 1 5 5 | 6 6 5 - | 4 4 3 3 | 2 2 1 - ||"
 }
