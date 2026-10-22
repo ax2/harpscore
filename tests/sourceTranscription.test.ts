@@ -11,6 +11,46 @@ function bars(id: string) {
   return score.lines.flat().map((m) => m.notes.map((n) => [noteToMidi(score.key, n), noteDuration(n)]));
 }
 
+test('Lassie preserves the source pickup, middle rest and complementary ending', () => {
+  const source = bars('did-you-ever-see-a-lassie');
+  assert.equal(source.length, 17);
+  assert.deepEqual(source[0], [[72, 0.5], [76, 0.5]]);
+  assert.deepEqual(source[1], [[79, 1.5], [81, 0.5], [79, 0.5], [77, 0.5]]);
+  assert.deepEqual(source[8], [[72, 1], [null, 1], [72, 1]]);
+  assert.deepEqual(source[16], [[72, 2]]);
+});
+
+test('traditional Golden Slumbers preserves low opening, three-beat notes and repeat', () => {
+  const source = bars('golden-slumbers');
+  assert.equal(source.length, 16);
+  assert.deepEqual(source[0], [[67, 1], [64, 1], [65, 1]]);
+  assert.deepEqual(source[3], [[69, 3]]);
+  assert.deepEqual(source[8], [[74, 1], [76, 1], [77, 1]]);
+  assert.deepEqual(source[15], [[72, 3]]);
+  const measures = BUILTIN_SCORES.find((s) => s.id === 'golden-slumbers')!.lines.flat();
+  assert.equal(measures[0].repeatBegin, true);
+  assert.equal(measures[7].repeatEnd, true);
+});
+
+test('Spotted Dove keeps the complete nine-bar vocal melody and sixteenth-note calls', () => {
+  const source = bars('spotted-dove-song');
+  assert.equal(source.length, 9);
+  assert.deepEqual(source[0], [[84, 0.5], [84, 0.25], [81, 0.25], [79, 0.25], [81, 0.25], [86, 0.25], [84, 0.25]]);
+  assert.deepEqual(source[5], [[88, 0.5], [88, 0.5], [86, 1]]);
+  assert.deepEqual(source[7], [[76, 0.75], [74, 0.25], [76, 0.25], [74, 0.25], [76, 0.25], [81, 0.25]]);
+  assert.deepEqual(source[8], [[79, 2]]);
+});
+
+test('Flying Kites expands both endings while retaining the different response octaves', () => {
+  const source = bars('flying-kites');
+  assert.equal(source.length, 24);
+  assert.deepEqual(source.slice(0, 11), source.slice(12, 23));
+  assert.deepEqual(source[0], [[86, 1], [88, 1], [86, 0.5], [86, 0.25], [88, 0.25], [86, 0.5], [84, 0.5]]);
+  assert.deepEqual(source[9].slice(0, 4), [[84, 0.5], [86, 0.5], [89, 0.5], [88, 0.5]]);
+  assert.deepEqual(source[11], [[86, 1], [81, 0.5], [81, 0.5], [74, 1], [null, 1]]);
+  assert.deepEqual(source[23], [[86, 1], [81, 0.5], [81, 0.5], [86, 1], [null, 1]]);
+});
+
 test('Cuckoo retains all twelve bars and four phrase rests from the 1927 ABC', () => {
   const source = bars('cuckoo-song');
   assert.equal(source.length, 12);

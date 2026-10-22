@@ -48,6 +48,13 @@ Suggested practice tempi are editorial choices unless the source gives a numeric
 
 Grade 6 source: https://lywgyxx.szftedu.cn/xkjc/yinyue/202209/P020220910588732922659.pdf
 
+## Fifth batch — 2026-10-22
+
+- **did-you-ever-see-a-lassie**: *The Everyday Song Book* (1927), No.10, John Chambers ABC (2015). Seventeen written bars including a one-quarter-beat pickup, with a complementary two-beat last bar; 3/4. G4 tonic becomes C5. Independent ABC decoding matches all 53 note/rest events. The middle rest and extended question/answer section are retained. [ABC](https://trillian.mit.edu/~jc/music/book/EverydaySongBook/010_Did_You_Ever_See_a_Lassie.abc).
+- **golden-slumbers**: Same book, No.175, ABC (2017). Sixteen written bars, first eight repeated; 3/4. Bb4 tonic becomes C5, adapted E4–G5 range. Independent ABC decoding matches all 35 events; repeat boundaries separately verified. This is the historical lullaby tune in that edition. Lyrics and different-pitch slurs omitted, tempo editorial. [ABC](https://trillian.mit.edu/~jc/music/book/EverydaySongBook/175_Golden_Slumbers.abc).
+- **spotted-dove-song**: Guangdong/Huacheng grade 6 upper, printed p.38 / PDF p.39. Enlarged comparison of the complete nine-bar vocal melody beginning at 回原速. The preceding bird-dialogue introduction and two-part instrumental passage are expressly outside this solo version. 1=C retained, up one octave, E5–E6 natural reeds. Eighth/sixteenth calls, dotted rhythm in bar 8, two-beat ending and repeat retained.
+- **flying-kites**: Same book, printed p.15 / PDF p.16, traditional Taiwanese 一只鸟仔 tune; modern replacement lyrics excluded. All four rows visually compared, with endings enlarged. 1=A becomes 1=C, up one octave. Eleven common bars plus each of two alternate endings expanded to 24 bars. The first ending's response has middle re, while the second has upper re: they must not be copied as identical endings. Instrumental responses in parentheses and every rest retained. D5–F6 adapted natural-reed range. Lyrics/different-pitch slurs omitted, tempo editorial.
+
 ## Pending / rejected sources (current)
 
 - Fengyang Flower Drum concern resolved in batch 3 using the PEP edition; see its accepted ledger entry above.
@@ -60,3 +67,5 @@ Grade 6 source: https://lywgyxx.szftedu.cn/xkjc/yinyue/202209/P02022091058873292
 - PEP grade 7 PDF download initially stopped partway; resumed successfully, then verified as 79 readable pages before inspection. National platform PDF was unavailable (403); it was not treated as read.
 - All Through the Night No.108 ABC has a five-quarter-beat bar in 4/4; Lavender's Blue No.126 has suspect bar divisions and a short last bar. Both require original scan comparison before admission.
 - Grade 6 月亮月光光 is credited to composer 钟哲亮; it was not treated as an anonymous traditional melody. Grade 5 Old MacDonald is a two-part teaching arrangement with melody transferred between parts; the student part alone is not a complete source tune.
+
+- Good King Wenceslas No.153 ABC has a suspect relationship between key signature and melody; pending original edition comparison. Grade 6 金瓶似的小山 additionally credits 冰河曲, so it was not treated as an anonymous traditional composition.

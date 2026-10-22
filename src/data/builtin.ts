@@ -34,6 +34,10 @@ import score_31 from './scores/cuckoo-song.json';
 import score_32 from './scores/rock-a-bye-baby.json';
 import score_33 from './scores/pan-hong-jun.json';
 import score_34 from './scores/meng-jiang-nv.json';
+import score_35 from './scores/did-you-ever-see-a-lassie.json';
+import score_36 from './scores/golden-slumbers.json';
+import score_37 from './scores/spotted-dove-song.json';
+import score_38 from './scores/flying-kites.json';
 
 export const BUILTIN_SCORES: Score[] = [
   score_1 as unknown as Score,
@@ -70,4 +74,8 @@ export const BUILTIN_SCORES: Score[] = [
   score_32 as unknown as Score,
   score_33 as unknown as Score,
   score_34 as unknown as Score,
+  score_35 as unknown as Score,
+  score_36 as unknown as Score,
+  score_37 as unknown as Score,
+  score_38 as unknown as Score,
 ];
