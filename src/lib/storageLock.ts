@@ -7,9 +7,11 @@ export async function withStorageWriteLock<T>(key: string, action: () => T): Pro
       // Firefox can retain a localStorage snapshot for the current task.
       // Start fresh, then let writes leave that task before releasing the lock.
       await nextTask();
-      const result = action();
-      await nextTask();
-      return result;
+      try { return action(); }
+      finally {
+        // A failed restore may still have written its recovery snapshot.
+        await nextTask();
+      }
     });
   }
   // Older/insecure browsers have no simultaneous cross-tab guarantee.
