@@ -239,6 +239,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .menu-btn { display: none; }
 
 .sidebar-mask {
+  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
@@ -246,6 +247,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 }
 
 @media (max-width: 860px) {
+  .sidebar-mask { display: block; }
   .app { grid-template-columns: 1fr; }
   .sidebar {
     position: fixed;

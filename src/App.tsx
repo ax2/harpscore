@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Score } from './types/score';
 import { analyzeScore } from './lib/harmonica';
 import {
@@ -10,7 +10,7 @@ import ScoreSheet from './components/ScoreSheet';
 import LibraryRestoreDialog from './components/LibraryRestoreDialog';
 import ImportScoreDialog from './components/ImportScoreDialog';
 import { scoreFromObject } from './lib/scoreImport';
-import { DEFAULT_FILTERS, filterScores, loadFavorites, saveFavorites, type LibraryFilters } from './lib/libraryView';
+import { DEFAULT_FILTERS, FAVORITES_KEY, filterScores, loadFavorites, setFavorite, type LibraryFilters } from './lib/libraryView';
 
 function ScoreItem({ s, active, favorite, onClick }: { s: Score; active: boolean; favorite: boolean; onClick: () => void }) {
   return (
@@ -83,6 +83,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filters, setFilters] = useState<LibraryFilters>(DEFAULT_FILTERS);
   const [favorites, setFavorites] = useState(loadFavorites);
+  const [favoriteSaving, setFavoriteSaving] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [restoreOpen, setRestoreOpen] = useState(false);
   const [importText, setImportText] = useState('');
@@ -90,6 +91,13 @@ export default function App() {
   const [importSaving, setImportSaving] = useState(false);
   const [notice, setNotice] = useState('');
   const [actionError, setActionError] = useState('');
+  useEffect(() => {
+    const refreshFavorites = (event: StorageEvent) => {
+      if (event.key === FAVORITES_KEY || event.key === null) setFavorites(loadFavorites());
+    };
+    window.addEventListener('storage', refreshFavorites);
+    return () => window.removeEventListener('storage', refreshFavorites);
+  }, []);
   const runAction = async (action: () => void | Promise<void>) => {
     setActionError('');
     try { await action(); } catch (error) {
@@ -167,6 +175,7 @@ export default function App() {
           <button className="btn" onClick={() => {
             const next = loadLibrary();
             setLib(next);
+            setFavorites(loadFavorites());
             // Clear personal selections: repaired duplicate IDs may have changed.
             if (!current?.builtin) setCurrentId(null);
             setActionError('');
@@ -202,10 +211,10 @@ export default function App() {
           <>
             <div className="toolbar">
               <button className="btn menu-btn" onClick={() => setSidebarOpen(true)}>曲库</button>
-              <button className="btn" aria-pressed={favorites.includes(current.id)} onClick={() => runAction(() => {
-                const next = favorites.includes(current.id) ? favorites.filter((id) => id !== current.id) : [...favorites, current.id];
-                saveFavorites(next);
-                setFavorites(next);
+              <button className="btn" aria-pressed={favorites.includes(current.id)} disabled={favoriteSaving} onClick={() => runAction(async () => {
+                setFavoriteSaving(true);
+                try { await setFavorite(current.id, !favorites.includes(current.id)); setFavorites(loadFavorites()); }
+                finally { setFavoriteSaving(false); }
               })}>{favorites.includes(current.id) ? '★ 已收藏' : '☆ 收藏'}</button>
               <button className="btn primary" onClick={() => runAction(() => exportPng(current))}>导出 PNG</button>
               <button className="btn" onClick={() => runAction(() => exportSvg(current))}>导出 SVG</button>

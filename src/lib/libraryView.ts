@@ -35,16 +35,34 @@ export function filterScores(scores: Score[], filters: LibraryFilters, favorites
   return result;
 }
 
-const FAVORITES_KEY = 'harpscore.favorites.v1';
+export const FAVORITES_KEY = 'harpscore.favorites.v1';
 
-export function loadFavorites(): string[] {
-  try {
-    const value: unknown = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]');
-    return Array.isArray(value) ? [...new Set(value.filter((id): id is string => typeof id === 'string' && id.length > 0))] : [];
-  } catch { return []; }
+function readFavorites(strict = true): string[] {
+  const value: unknown = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]');
+  if (!Array.isArray(value) || (strict && value.some(id => typeof id !== 'string' || id.length === 0))) {
+    throw new Error('Invalid favorites');
+  }
+  return [...new Set(value.filter((id): id is string => typeof id === 'string' && id.length > 0))];
 }
 
-export function saveFavorites(ids: string[]): void {
-  try { localStorage.setItem(FAVORITES_KEY, JSON.stringify([...new Set(ids)])); }
-  catch { throw new Error('收藏未保存：浏览器存储不可用或空间不足，请稍后重试'); }
+export function loadFavorites(): string[] {
+  try { return readFavorites(false); } catch { return []; }
+}
+
+/** Apply one explicit choice to fresh storage, preserving other tabs' favorites. */
+export async function setFavorite(id: string, favorite: boolean): Promise<string[]> {
+  const update = () => {
+    let ids: string[];
+    try { ids = readFavorites(); }
+    catch { throw new Error('收藏未保存：无法读取收藏数据或数据已损坏，原数据未覆盖'); }
+    const next = favorite ? [...new Set([...ids, id])] : ids.filter(value => value !== id);
+    try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(next)); }
+    catch { throw new Error('收藏未保存：浏览器存储不可用或空间不足，请稍后重试'); }
+    return next;
+  };
+  if (typeof navigator !== 'undefined' && navigator.locks) {
+    return navigator.locks.request(FAVORITES_KEY, async () => update());
+  }
+  // Synchronous fallback cannot guarantee simultaneous writes across old browsers.
+  return update();
 }
