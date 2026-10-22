@@ -171,6 +171,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     const firstLineIndent = li === 0 && !compact ? 64 : 0;
     const hasOrnament = rawLine.some(({ measure }) => measure.notes.some((n) => n.ornament));
     if (hasOrnament) y += 18;
+    if (rawLine.some(({ measure }) => measure.notes.some((n) => n.fermata))) y += 18;
     // 自然宽度
     const mWidths = rawLine.map(({ measure: m }) => {
       const nw = m.notes.reduce((s, n) => s + noteWidth(n), 0);
@@ -222,6 +223,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
 
   return { lines, width: W, height: y - LAYOUT.lineGap + LAYOUT.padTop + (compact ? 46 : 0)
     + (lines.some((line) => line.hasOrnament) ? 24 : 0)
+    + (score.lines.some((line) => line.some((m) => m.notes.some((n) => n.fermata))) ? 24 : 0)
     + (lines.some((line) => line.measures.some((m) => m.continuesOnNext)) ? 24 : 0) };
 }
 
@@ -293,6 +295,10 @@ function NoteGlyph({ p, y, auxiliaryRow }: { p: PlacedNote; y: number; auxiliary
   const els: React.ReactNode[] = [];
   const cx = p.x;
   const acc = n.accidental === 1 ? '♯' : n.accidental === -1 ? '♭' : p.showNatural ? '♮' : '';
+  if (n.fermata) els.push(<g key="fermata" data-notation="fermata" fill={INK}>
+    <path d={`M ${cx - 11} ${y - 41} Q ${cx} ${y - 63} ${cx + 11} ${y - 41}`} fill="none" stroke={INK} strokeWidth={1.8} />
+    <circle cx={cx} cy={y - 44} r={2} />
+  </g>);
   if (n.ornament) {
     const auxiliary = n.ornament.auxiliary;
     const auxiliaryAcc = auxiliary.accidental === 1 ? '♯' : auxiliary.accidental === -1 ? '♭' : p.auxiliaryNatural ? '♮' : '';
@@ -504,6 +510,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
   const { lines, width, height } = layoutScore(score, pageWidth);
   const hasOrnaments = lines.some((line) => line.hasOrnament);
   const hasContinuations = lines.some((line) => line.measures.some((m) => m.continuesOnNext));
+  const hasFermatas = score.lines.some((line) => line.some((m) => m.notes.some((n) => n.fermata)));
   const L = LAYOUT;
   return (
     <svg viewBox={`0 0 ${width} ${height}`} width={standalone ? width : '100%'}
@@ -541,12 +548,15 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
           <Ties line={line} previous={lines[li - 1]} />
         </g>
       ))}
-      <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0) - (hasContinuations ? 24 : 0)} width={width} />
-      {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26 - (hasContinuations ? 24 : 0)} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+      <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0) - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0)} width={width} />
+      {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26 - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0)} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         波音：主—辅—主；辅为邻音孔位，+ 吹 / − 吸
       </text>}
-      {hasContinuations && <text x={L.padX} y={height - L.padTop + 26} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+      {hasContinuations && <text x={L.padX} y={height - L.padTop + 26 - (hasFermatas ? 24 : 0)} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         续／虚线：同一小节换行，拍数连续计算
+      </text>}
+      {hasFermatas && <text x={L.padX} y={height - L.padTop + 26} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+        延长记号：按乐句自由延长，不固定增加拍数
       </text>}
     </svg>
   );

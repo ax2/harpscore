@@ -1,0 +1,27 @@
+{
+  "key": "C",
+  "harmonicaKey": "C",
+  "sourceCheckedAt": "2026-10-23",
+  "octaveShift": 1,
+  "sourceFormat": "jianpu-image",
+  "id": "red-river-valley",
+  "title": "红河谷",
+  "subtitle": "Red River Valley · 教材版本",
+  "composer": "加拿大民歌",
+  "position": "第一把位",
+  "timeSignature": "4/4",
+  "pickupBeats": 1,
+  "tempo": 88,
+  "difficulty": 3,
+  "tags": [
+    "西方歌曲",
+    "弱起",
+    "半音",
+    "压音"
+  ],
+  "source": "粤教花城《音乐四年级下册·简谱》印刷第39页/PDF第40页，完整8小节加一拍弱起。原1=F改为1=C后整体提高八度，明确保留教材足拍末小节。",
+  "sourceUrl": "https://lywgyxx.szftedu.cn/xkjc/yinyue/202209/P020220910587435677420.pdf#page=40",
+  "notes": "本版本首尾不作互补：首小节一拍弱起，末小节四拍；不要删掉末尾休止。第6个完整小节低la接降la，分别为3孔吸压全音与一又二分之一音。保留同音延音，省略译词及异音连奏线，速度为练习建议。",
+  "melody": "5,/ 1/ | 3 3/ 3/ 3 2/ 3/ | 2/ 1.~ 1/ 0/ 5,/ 1/ |\n3 1/ 3/ 5 4/ 3/ | 2 - - 5/ 4/ | 3 3/ 2/ 1 2/ 3/ |\n5/ 4.~ 4/ 0/ 6,/ b6,/ | 5, 7,/ 1/ 2 3/ 2/ | 1~ - 1 0 ||",
+  "order": 42
+}

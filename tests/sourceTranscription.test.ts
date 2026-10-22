@@ -11,6 +11,69 @@ function bars(id: string) {
   return score.lines.flat().map((m) => m.notes.map((n) => [noteToMidi(score.key, n), noteDuration(n)]));
 }
 
+test('Jasmine Flower keeps all seven rows of the selected simple Jiangsu version', () => {
+  const source = bars('jasmine-flower');
+  assert.equal(source.length, 28);
+  assert.deepEqual(source[0], [[76, 1], [76, 0.5], [79, 0.5]]);
+  assert.deepEqual(source[1], [[81, 0.5], [84, 0.5], [84, 0.5], [81, 0.5]]);
+  assert.deepEqual(source[21], [[74, 0.5], [76, 0.5], [72, 0.5], [69, 0.5]]);
+  assert.deepEqual(source[23], [[69, 1], [72, 1]]);
+  assert.deepEqual(source[27], [[67, 1], [null, 1]]);
+});
+
+test('What Boat preserves the 3/8 low-register answer and dotted whole-bar endings', () => {
+  const source = bars('what-boat');
+  assert.equal(source.length, 12);
+  assert.deepEqual(source[3], [[71, 0.5], [69, 0.5], [67, 0.5]]);
+  assert.deepEqual(source[4], [[72, 1], [67, 0.5]]);
+  for (const index of [7, 11]) assert.deepEqual(source[index], [[67, 1.5]]);
+  assert.deepEqual(source[5], source[9]);
+});
+
+test('Home on the Range preserves full verse and chorus, ties and complementary pickup', () => {
+  const source = bars('home-on-the-range');
+  assert.equal(source.length, 33);
+  assert.deepEqual(source[0], [[67, 0.5], [67, 0.5]]);
+  assert.deepEqual(source[18], [[77, 1], [76, 1.5], [74, 0.5]]);
+  assert.deepEqual(source[32], [[72, 2]]);
+  const measures = BUILTIN_SCORES.find((s) => s.id === 'home-on-the-range')!.lines.flat();
+  assert.deepEqual(measures.flatMap((m, i) => m.notes.some((n) => n.tie) ? [i] : []), [7, 15, 19, 23, 31]);
+});
+
+test('Red River Valley retains its full final bar and low chromatic descent', () => {
+  const score = BUILTIN_SCORES.find((s) => s.id === 'red-river-valley')!;
+  const source = bars(score.id);
+  assert.equal(source.length, 9);
+  assert.equal(score.pickupBeats, 1);
+  assert.deepEqual(source[6].slice(-2), [[69, 0.5], [68, 0.5]]);
+  assert.deepEqual(source[8], [[72, 2], [72, 1], [null, 1]]);
+  for (const [m, n] of [[2, 1], [6, 1], [8, 0]]) assert.equal(score.lines.flat()[m].notes[n].tie, true);
+});
+
+test('Hong Yan retains the repeat, coda, source-shaped grace groups, ties and fermata', () => {
+  const score = BUILTIN_SCORES.find((s) => s.id === 'hong-yan')!;
+  const source = bars(score.id);
+  assert.equal(source.length, 16);
+  assert.deepEqual(source[1], [[79, 1], [81, 0.75], [84, 0.25], [81, 2]]);
+  assert.deepEqual(source[3], [[76, 0.5], [74, 0.5], [74, 3]]);
+  const measures = score.lines.flat();
+  assert.equal(measures[7].repeatEnd, true);
+  assert.equal(measures[2].notes.at(-1)!.tie, true);
+  assert.equal(measures[3].notes[1].tie, true);
+  for (const m of [6, 10, 14]) assert.deepEqual(measures[m].notes.at(-1)!.graceNotes?.map((n) => [noteToMidi('C', n), n.beats]), [[69, 0.5]]);
+  for (const m of [7, 11, 15]) assert.deepEqual(measures[m].notes[0].graceNotes?.map((n) => [noteToMidi('C', n), n.beats]), [[72, 0.25], [74, 0.25], [72, 0.25]]);
+  assert.deepEqual(measures.flatMap((m, i) => m.notes.some((n) => n.fermata) ? [i] : []), [14]);
+  assert.deepEqual(source[15], [[69, 4]]);
+});
+
+test('Mulberry Bush keeps the ABC sixteenths, low descent and closing rests', () => {
+  const source = bars('mulberry-bush');
+  assert.equal(source.length, 8);
+  assert.deepEqual(source[1], [[79, 1], [76, 0.25], [76, 0.25], [72, 1], [76, 0.5]]);
+  assert.deepEqual(source[3], [[71, 1], [69, 0.25], [69, 0.25], [67, 1], [null, 0.5]]);
+  assert.deepEqual(source[7], [[72, 1.5], [72, 1], [null, 0.5]]);
+});
+
 test('Lassie preserves the source pickup, middle rest and complementary ending', () => {
   const source = bars('did-you-ever-see-a-lassie');
   assert.equal(source.length, 17);

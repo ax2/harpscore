@@ -76,6 +76,7 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowDe
   }
   if (value.dotted !== undefined && typeof value.dotted !== 'boolean') errors.push(`${path}.dotted 必须是布尔值`);
   if (value.tie !== undefined && typeof value.tie !== 'boolean') errors.push(`${path}.tie 必须是布尔值`);
+  if (value.fermata !== undefined && typeof value.fermata !== 'boolean') errors.push(`${path}.fermata 必须是布尔值`);
   if (value.lyric !== undefined && typeof value.lyric !== 'string') errors.push(`${path}.lyric 必须是字符串`);
 
   let techniques: Technique[] | undefined;
@@ -102,8 +103,8 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowDe
       });
     }
   }
-  if (!allowDecorations && (degree === 0 || value.dotted !== undefined || value.tie !== undefined || value.lyric !== undefined || value.techniques !== undefined)) {
-    errors.push(`${path} 装饰辅助音不能是休止符，也不能带附点、延音、歌词或技巧`);
+  if (!allowDecorations && (degree === 0 || value.dotted !== undefined || value.tie !== undefined || value.fermata !== undefined || value.lyric !== undefined || value.techniques !== undefined)) {
+    errors.push(`${path} 装饰辅助音不能是休止符，也不能带附点、延音、延长记号、歌词或技巧`);
   }
 
   let ornament: Mordent | undefined;
@@ -112,7 +113,7 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowDe
       errors.push(`${path}.ornament 必须是带 auxiliary 音高的 upper-mordent 或 lower-mordent`);
     } else {
       const auxiliary = value.ornament.auxiliary;
-      if (['beats', 'dotted', 'tie', 'lyric', 'techniques', 'graceNotes', 'ornament'].some((field) => auxiliary[field] !== undefined)) {
+      if (['beats', 'dotted', 'tie', 'fermata', 'lyric', 'techniques', 'graceNotes', 'ornament'].some((field) => auxiliary[field] !== undefined)) {
         errors.push(`${path}.ornament.auxiliary 只能包含音高，不能带时值或装饰音属性`);
       }
       const pitch = parseNoteObject({ ...auxiliary, beats: 1 }, `${path}.ornament.auxiliary`, errors, false);
@@ -127,6 +128,7 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowDe
     beats,
     ...(value.dotted === true ? { dotted: true } : {}),
     ...(value.tie === true ? { tie: true } : {}),
+    ...(value.fermata === true ? { fermata: true } : {}),
     ...(typeof value.lyric === 'string' && value.lyric ? { lyric: value.lyric } : {}),
     ...(techniques?.length ? { techniques } : {}),
     ...(graceNotes?.length ? { graceNotes } : {}),
@@ -185,7 +187,7 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
     if (!allowDecorations || !match) throw new Error(`${path} 波音格式应为 [U:3']2'/ 或 [L:1]2`);
     const main = parseDslToken(match[3], path, false);
     const auxiliary = parseDslToken(match[2], `${path} 波音辅助音`, false);
-    if (!auxiliary.degree || auxiliary.beats !== 1 || auxiliary.dotted || auxiliary.tie || auxiliary.lyric) {
+    if (!auxiliary.degree || auxiliary.beats !== 1 || auxiliary.dotted || auxiliary.tie || auxiliary.fermata || auxiliary.lyric) {
       throw new Error(`${path} 波音辅助音只能指定音高`);
     }
     main.ornament = { kind: match[1] === 'U' ? 'upper-mordent' : 'lower-mordent', auxiliary: { degree: auxiliary.degree, accidental: auxiliary.accidental, octave: auxiliary.octave } };
@@ -199,7 +201,7 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
     const main = parseDslToken(match[2], path, false);
     main.graceNotes = parts.map((part, index) => {
       const grace = parseDslToken(part, `${path} 倚音 ${index + 1}`, false);
-      if (!grace.degree || grace.dotted || grace.tie || grace.lyric || ![0.25, 0.5, 1].includes(grace.beats)) {
+      if (!grace.degree || grace.dotted || grace.tie || grace.fermata || grace.lyric || ![0.25, 0.5, 1].includes(grace.beats)) {
         throw new Error(`${path} 倚音仅支持无附点的有声音高`);
       }
       return { degree: grace.degree, accidental: grace.accidental, octave: grace.octave, beats: grace.beats === 0.5 ? 0.5 : 0.25 };
@@ -212,6 +214,8 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
   let notation = equals >= 0 ? token.slice(0, equals) : token;
   const tie = notation.endsWith('~');
   if (tie) notation = notation.slice(0, -1);
+  const fermata = notation.endsWith('!');
+  if (fermata) notation = notation.slice(0, -1);
   const match = notation.match(/^([#b]?)([0-7])([',]*)(\/{0,3})(\.)?$/);
   if (!match) throw new Error(`${path} 无法识别音符“${token}”`);
 
@@ -229,6 +233,7 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
     beats,
     ...(match[5] ? { dotted: true } : {}),
     ...(tie ? { tie: true } : {}),
+    ...(fermata ? { fermata: true } : {}),
     ...(lyric ? { lyric } : {}),
   };
 }
@@ -309,6 +314,8 @@ function beatWarnings(score: Score): string[] {
   const hasComplementaryPickup = !changedMeter && first && last && first !== last && Math.abs(first.actual + last.actual - expected) < 0.0001;
   return mismatches
     .filter((item) => !hasComplementaryPickup || (item !== first && item !== last))
+    .filter((item) => !(score.pickupBeats !== undefined && item === first
+      && Math.abs(item.actual - score.pickupBeats) < 0.0001))
     .map((item) => item.message);
 }
 
@@ -379,6 +386,21 @@ export function scoreFromObject(value: unknown): ImportResult {
     lines = parseLines(root.lines, errors);
   }
 
+  let pickupBeats: number | undefined;
+  if (root.pickupBeats !== undefined) {
+    const first = lines?.[0]?.[0];
+    const meter = first?.timeSignature ?? timeSignature;
+    const parts = typeof meter === 'string' ? meter.match(TIME_SIGNATURE_RE) : null;
+    const fullBar = parts ? Number(parts[1]) * 4 / Number(parts[2]) : 0;
+    const value = root.pickupBeats;
+    if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0 || value >= fullBar) {
+      errors.push('pickupBeats 必须大于 0 且小于首小节拍号的完整时长（四分音符为一拍）');
+    } else if (!first || (lines?.flat().length ?? 0) < 2
+      || Math.abs(first.notes.reduce((sum, note) => sum + noteDuration(note), 0) - value) > 0.0001) {
+      errors.push('pickupBeats 必须与首小节实际时长一致，且弱起后至少有一个小节');
+    } else pickupBeats = value;
+  }
+
   // DSL and full JSON share the same limits: accepted notation must survive export/reimport.
   lines?.forEach((line, li) => line.forEach((measure, mi) => measure.notes.forEach((note, ni) => {
     const path = `lines[${li}][${mi}].notes[${ni}]`;
@@ -431,6 +453,7 @@ export function scoreFromObject(value: unknown): ImportResult {
     ...(optionalString(root.position) ? { position: optionalString(root.position) } : {}),
     timeSignature,
     ...(tempo !== undefined ? { tempo } : {}),
+    ...(pickupBeats !== undefined ? { pickupBeats } : {}),
     difficulty: difficulty as Score['difficulty'],
     tags: Array.isArray(root.tags) ? [...new Set(root.tags.map(String).map((tag) => tag.trim()).filter(Boolean))] : [],
     ...(optionalString(root.source) ? { source: optionalString(root.source) } : {}),

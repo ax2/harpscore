@@ -38,6 +38,12 @@ import score_35 from './scores/did-you-ever-see-a-lassie.json';
 import score_36 from './scores/golden-slumbers.json';
 import score_37 from './scores/spotted-dove-song.json';
 import score_38 from './scores/flying-kites.json';
+import score_39 from './scores/jasmine-flower.json';
+import score_40 from './scores/what-boat.json';
+import score_41 from './scores/home-on-the-range.json';
+import score_42 from './scores/red-river-valley.json';
+import score_43 from './scores/hong-yan.json';
+import score_44 from './scores/mulberry-bush.json';
 
 export const BUILTIN_SCORES: Score[] = [
   score_1 as unknown as Score,
@@ -78,4 +84,10 @@ export const BUILTIN_SCORES: Score[] = [
   score_36 as unknown as Score,
   score_37 as unknown as Score,
   score_38 as unknown as Score,
+  score_39 as unknown as Score,
+  score_40 as unknown as Score,
+  score_41 as unknown as Score,
+  score_42 as unknown as Score,
+  score_43 as unknown as Score,
+  score_44 as unknown as Score,
 ];

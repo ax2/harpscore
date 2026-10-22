@@ -44,6 +44,8 @@ export interface Note {
   dotted?: boolean;
   /** 延音线（与下一音相连） */
   tie?: boolean;
+  /** 自由延长记号，不改变书面时值 */
+  fermata?: boolean;
   /** 歌词 */
   lyric?: string;
   /** 主音之前的 1–4 个短倚音；时长从演奏语境决定，不加入小节拍数 */
@@ -98,6 +100,8 @@ export interface Score {
   timeSignature: string;
   /** 速度（BPM） */
   tempo?: number;
+  /** 显式声明首小节弱起时长，以四分音符为一拍；末小节可以足拍 */
+  pickupBeats?: number;
   /** 难度 1-5 */
   difficulty: 1 | 2 | 3 | 4 | 5;
   /** 标签 */

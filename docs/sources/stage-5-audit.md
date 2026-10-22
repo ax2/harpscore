@@ -55,6 +55,21 @@ Grade 6 source: https://lywgyxx.szftedu.cn/xkjc/yinyue/202209/P02022091058873292
 - **spotted-dove-song**: Guangdong/Huacheng grade 6 upper, printed p.38 / PDF p.39. Enlarged comparison of the complete nine-bar vocal melody beginning at 回原速. The preceding bird-dialogue introduction and two-part instrumental passage are expressly outside this solo version. 1=C retained, up one octave, E5–E6 natural reeds. Eighth/sixteenth calls, dotted rhythm in bar 8, two-beat ending and repeat retained.
 - **flying-kites**: Same book, printed p.15 / PDF p.16, traditional Taiwanese 一只鸟仔 tune; modern replacement lyrics excluded. All four rows visually compared, with endings enlarged. 1=A becomes 1=C, up one octave. Eleven common bars plus each of two alternate endings expanded to 24 bars. The first ending's response has middle re, while the second has upper re: they must not be copied as identical endings. Instrumental responses in parentheses and every rest retained. D5–F6 adapted natural-reed range. Lyrics/different-pitch slurs omitted, tempo editorial.
 
+## Sixth batch — 2026-10-23
+
+The school books were initially inspected late on October 22 and transcriptions rechecked after midnight on October 23 (Asia/Shanghai).
+
+- **jasmine-flower**: Guangdong/Huacheng grade 4 lower, printed p.15 / PDF p.16. Selected the complete 28-bar simpler Jiangsu version; do not mix it with the more ornamented version on printed p.12. 1=D to 1=C, raised one octave, including the low sol/la in the final two rows. All phrase-ending rests retained; lyrics and different-pitch slurs omitted.
+- **what-boat**: Same book, printed p.46 / PDF p.47. Complete twelve-bar Shanxi folk tune in 3/8, 1=F to 1=C, raised one octave. The response's low sol/la/ti and dotted-quarter whole-bar endings retained. Modern game lyrics excluded.
+- **home-on-the-range**: Same book, printed p.35 / PDF p.36. Complete verse and chorus, 33 written bars including a one-quarter-beat pickup; the two-beat final bar complements it. 1=Eb to 1=C, up one octave, G4–G5 adapted range. Five cross-bar tie starts retained. Translation, dynamics and different-pitch slurs excluded.
+- **red-river-valley**: Same book, printed p.39 / PDF p.40. One-beat pickup plus eight complete 4/4 bars. The source has a full final bar, so it is explicitly declared with pickupBeats=1; no final rest is deleted to satisfy a complementary-pickup heuristic. In complete bar 6, low la descends to flat low la (A4–Ab4 in the adapted version). Three same-pitch ties retained. 1=F to 1=C, up one octave. Translated lyrics and different-pitch slurs excluded.
+- **hong-yan**: Guangdong/Huacheng grade 5 upper, printed p.40 / PDF p.41, identified on the page as an Urad Mongolian folk tune. The main eight-bar melody repeats, followed by the full eight-bar ending; 16 written bars. All source rows enlarged. 1=D to 1=C, up one octave, G4–C6. Three single pre-graces use eighth-shaped low la; three groups use sixteenth-shaped do–re–do. Same-pitch ties across bars 3–4 and inside bar 4 retained. The last coda's mi has a fermata; its written quarter duration remains unchanged. Modern lyrics and accompaniment arrangement are excluded. Numerical practice tempo is editorial.
+- **mulberry-bush**: *The Everyday Song Book* (1927), No.38, John Chambers ABC (2017), eight bars in 6/8. A4 tonic transposed to C5; source F#/G#/C# follow the A-major signature. Independent ABC decoding, including slash durations, matches all 38 note/rest events. Sixteenth repeated notes, low descending phrase and two eighth rests retained. [ABC](https://trillian.mit.edu/~jc/music/book/EverydaySongBook/038_the_Mulberry_Bush.abc).
+
+Grade 4 source: https://lywgyxx.szftedu.cn/xkjc/yinyue/202209/P020220910587435677420.pdf
+
+Grade 5 source: https://lywgyxx.szftedu.cn/xkjc/yinyue/202209/P020220910587728087297.pdf
+
 ## Pending / rejected sources (current)
 
 - Fengyang Flower Drum concern resolved in batch 3 using the PEP edition; see its accepted ledger entry above.

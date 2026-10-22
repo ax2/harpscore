@@ -115,6 +115,31 @@ test('a single half-filled measure is not a complementary pickup pair', () => {
   assert.equal(scoreFromObject({ ...base, melody: '1 -' }).warnings.length, 1);
 });
 
+test('an explicit pickup permits a complete final bar without hiding other rhythm errors', () => {
+  const result = scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | 3 - - - | 1 - - -' });
+  assert.equal(result.error, undefined);
+  assert.deepEqual(result.warnings, []);
+  assert.equal(result.score?.pickupBeats, 1);
+  const roundTrip = importScoreJson(JSON.stringify(result.score));
+  assert.deepEqual(roundTrip.score, result.score);
+  assert.deepEqual(roundTrip.warnings, []);
+  assert.equal(scoreFromObject({ ...base, melody: '5/ 1/ | 3 - - - | 1 - - -' }).warnings.length, 1);
+  // A short internal bar is never excused by an explicit pickup.
+  assert.equal(scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | 3 - | 1 - - -' }).warnings.length, 1);
+  assert.equal(scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | 3 - - - | 1 -' }).warnings.length, 1);
+  assert.deepEqual(scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | 3 - - - | 1 - -' }).warnings, []);
+  assert.deepEqual(scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | [M:3/4] 1 - -' }).warnings, []);
+});
+
+test('pickup declarations must match the actual first bar and its effective meter', () => {
+  for (const pickupBeats of [-1, 0, 4, 5, '1', null, true, NaN, Infinity, 0.5]) {
+    assert.match(scoreFromObject({ ...base, pickupBeats, melody: '5/ 1/ | 1 - - -' }).error ?? '', /pickupBeats/);
+  }
+  assert.match(scoreFromObject({ ...base, pickupBeats: 1, melody: '1' }).error ?? '', /pickupBeats/);
+  assert.match(scoreFromObject({ ...base, pickupBeats: 2, melody: '[M:2/4] 1 - | 1 -' }).error ?? '', /pickupBeats/);
+  assert.deepEqual(scoreFromObject({ ...base, timeSignature: '6/8', pickupBeats: 0.5, melody: '5/ | 1 - -' }).warnings, []);
+});
+
 test('ties require a following sounding note of the same absolute pitch', () => {
   assert.deepEqual(scoreFromObject({ ...base, melody: '1~ - - - |\n1 - - -' }).warnings, []);
   for (const melody of ['1~ - - -', '1~ - - - | 2 - - -', '0~ - - - | 0 - - -']) {
