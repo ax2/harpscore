@@ -32,7 +32,7 @@ function normalizeKey(value: unknown): string | undefined {
   const raw = nonEmptyString(value);
   if (!raw) return undefined;
   const normalized = `${raw[0].toUpperCase()}${raw.slice(1)}`;
-  return normalized in KEY_ROOTS ? normalized : undefined;
+  return Object.prototype.hasOwnProperty.call(KEY_ROOTS, normalized) ? normalized : undefined;
 }
 
 function makeId(value: unknown, title: string): string {
@@ -41,9 +41,13 @@ function makeId(value: unknown, title: string): string {
     .normalize('NFKC')
     .toLowerCase()
     .replace(/[^\p{Letter}\p{Number}]+/gu, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 64);
-  return slug || `score-${Date.now().toString(36)}`;
+    .replace(/^-+|-+$/g, '');
+  return truncateId(slug, 64) || `score-${Date.now().toString(36)}`;
+}
+
+// Preserve Unicode code points and canonical separators across export/reimport.
+function truncateId(id: string, length: number): string {
+  return [...id].slice(0, length).join('').replace(/-+$/g, '');
 }
 
 function numberIn(value: unknown, min: number, max: number): number | undefined {
@@ -485,7 +489,7 @@ export function uniqueScoreId(score: Score, occupiedIds: Iterable<string>): Scor
   const occupied = new Set(occupiedIds);
   if (!occupied.has(score.id)) return score;
   let suffix = 2;
-  const candidate = () => `${score.id.slice(0, 64 - String(suffix).length - 1)}-${suffix}`;
+  const candidate = () => `${truncateId(score.id, 64 - String(suffix).length - 1)}-${suffix}`;
   while (occupied.has(candidate())) suffix += 1;
   return { ...score, id: candidate() };
 }

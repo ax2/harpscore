@@ -88,7 +88,7 @@ export const RANGE_MAX = 96; // C7
 /** 查找某 MIDI 音高的最佳演奏方式；不可奏返回 null */
 export function harmonicaRoot(key: string): number | null {
   const root = KEY_ROOTS[key];
-  if (root === undefined) return null;
+  if (typeof root !== 'number') return null;
   // Standard Richter G–B instruments start below C4. Low/High models are separate tunings.
   return root >= 67 ? root - 12 : root;
 }

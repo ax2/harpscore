@@ -2,6 +2,15 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { analyzeScore, findHole, harmonicaRoot, holeLabel } from '../src/lib/harmonica';
 import { scoreFromObject } from '../src/lib/scoreImport';
+import { noteToMidi } from '../src/types/score';
+
+test('unknown and prototype keys never produce a pitch or harmonica root', () => {
+  for (const key of ['__proto__', 'constructor', 'toString', 'H']) {
+    assert.equal(harmonicaRoot(key), null);
+    assert.equal(noteToMidi(key, { degree: 1 }), null);
+    assert.equal(findHole(60, false, key), null);
+  }
+});
 
 test('Richter C natural reeds and all stable bends match their absolute pitches', () => {
   const expected: Array<[number, string]> = [

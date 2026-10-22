@@ -7,7 +7,8 @@ import { scoreFromObject } from '../src/lib/scoreImport';
 import { analyzeScore } from '../src/lib/harmonica';
 
 test('ships unique built-in scores with traceable sources', () => {
-  assert.ok(BUILTIN_SCORES.length >= 14);
+  assert.ok(BUILTIN_SCORES.filter(score => score.sourceFormat !== 'original').length >= 40);
+  assert.ok(BUILTIN_SCORES.filter(score => score.sourceFormat === 'original').length >= 4);
   const ids = BUILTIN_SCORES.map((score) => score.id);
   assert.equal(new Set(ids).size, ids.length);
   for (const score of BUILTIN_SCORES) {

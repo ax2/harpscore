@@ -142,7 +142,7 @@ export const KEY_ROOTS: Record<string, number> = {
 export function noteToMidi(key: string, n: PitchNote, octaveShift = 0): number | null {
   if (n.degree === 0) return null;
   const root = KEY_ROOTS[key];
-  if (root === undefined) return null;
+  if (typeof root !== 'number') return null;
   const semi = DEGREE_SEMITONES[n.degree];
   if (semi === undefined) return null;
   return root + semi + (n.accidental ?? 0) + (n.octave ?? 0) * 12 + octaveShift * 12;

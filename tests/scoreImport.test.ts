@@ -6,6 +6,23 @@ const base = {
   title: '测试曲', key: 'C', harmonicaKey: 'C', timeSignature: '4/4', difficulty: 1, tags: [],
 };
 
+test('key validation does not accept inherited object properties as musical keys', () => {
+  for (const field of ['key', 'harmonicaKey']) {
+    assert.match(scoreFromObject({ ...base, [field]: '__proto__', melody: '1 - - -' }).error ?? '', /必须是支持的调名/);
+  }
+});
+
+test('truncated and duplicate IDs stay stable through JSON reimport', () => {
+  for (const id of ['a'.repeat(63) + '-tail', 'a'.repeat(61) + '-bc', '𠀀'.repeat(65)]) {
+    const first = scoreFromObject({ ...base, id, melody: '1 - - -' }).score!;
+    assert.deepEqual(importScoreJson(JSON.stringify(first)).score, first);
+    const duplicate = uniqueScoreId(first, [first.id]);
+    assert.notEqual(duplicate.id, first.id);
+    assert.deepEqual(importScoreJson(JSON.stringify(duplicate)).score, duplicate);
+    assert.ok([...duplicate.id].length <= 64);
+  }
+});
+
 test('imports full HarpScore JSON and removes untrusted derived fingering', () => {
   const result = scoreFromObject({
     ...base,
