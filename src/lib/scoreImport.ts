@@ -489,3 +489,23 @@ export function uniqueScoreId(score: Score, occupiedIds: Iterable<string>): Scor
   while (occupied.has(candidate())) suffix += 1;
   return { ...score, id: candidate() };
 }
+
+/** A library backup is an array; validate every entry before any storage write. */
+export function importLibraryBackup(text: string): { scores: Score[]; errors: string[]; warnings: string[] } {
+  let data: unknown;
+  try { data = JSON.parse(text.replace(/^\uFEFF/, '').trim()); }
+  catch { return { scores: [], errors: ['备份不是有效的 JSON，请选择曲库备份文件'], warnings: [] }; }
+  if (!Array.isArray(data)) return { scores: [], errors: ['曲库备份必须是 JSON 数组；单首曲谱请使用「导入曲谱」'], warnings: [] };
+  const scores: Score[] = [];
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  data.forEach((entry, index) => {
+    const result = scoreFromObject(entry);
+    if (!result.score) errors.push(`第 ${index + 1} 首：${result.error ?? '无法读取'}`);
+    else {
+      scores.push(result.score);
+      warnings.push(...result.warnings.map(warning => `第 ${index + 1} 首《${result.score!.title}》：${warning}`));
+    }
+  });
+  return { scores, errors, warnings };
+}

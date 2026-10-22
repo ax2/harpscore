@@ -7,6 +7,7 @@ import {
 } from './lib/store';
 import { exportSvg, exportPng, exportPdf, exportJson, exportLibraryBackup } from './lib/export';
 import ScoreSheet from './components/ScoreSheet';
+import LibraryRestoreDialog from './components/LibraryRestoreDialog';
 import { scoreFromObject } from './lib/scoreImport';
 import { DEFAULT_FILTERS, filterScores, loadFavorites, saveFavorites, type LibraryFilters } from './lib/libraryView';
 
@@ -82,6 +83,7 @@ export default function App() {
   const [filters, setFilters] = useState<LibraryFilters>(DEFAULT_FILTERS);
   const [favorites, setFavorites] = useState(loadFavorites);
   const [importOpen, setImportOpen] = useState(false);
+  const [restoreOpen, setRestoreOpen] = useState(false);
   const [importText, setImportText] = useState('');
   const [importError, setImportError] = useState('');
   const [importSaving, setImportSaving] = useState(false);
@@ -156,6 +158,7 @@ export default function App() {
           <div className="filter-count" role="status">找到 {scores.length} / {lib.builtin.length + lib.user.length} 首曲谱</div>
         </div>
         <div className="library-tools">
+          <button className="btn" onClick={() => { setSidebarOpen(false); setRestoreOpen(true); }}>恢复个人曲库</button>
           <button className="btn" onClick={() => runAction(() => {
             setSidebarOpen(false);
             exportLibraryBackup(userLibraryBackup());
@@ -278,6 +281,14 @@ export default function App() {
           </div>
         </div>
       )}
+      {restoreOpen && <LibraryRestoreDialog library={lib} onClose={() => setRestoreOpen(false)} onRestored={(next, count, mode) => {
+        setLib(next);
+        setCurrentId(null);
+        setFilters(DEFAULT_FILTERS);
+        setActionError('');
+        setRestoreOpen(false);
+        setNotice(mode === 'merge' ? `已合并恢复 ${count} 首曲谱` : `已替换个人曲库并恢复 ${count} 首曲谱；恢复前副本可在恢复窗口导出`);
+      }} />}
     </div>
   );
 }
