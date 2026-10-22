@@ -5,7 +5,7 @@
  * 小节线 / 反复记号 / 双纵线贯穿两行
  */
 import React, { useEffect, useRef, useState } from 'react';
-import type { Measure, Note, Score } from '../types/score';
+import type { GraceNote, Measure, Note, Score } from '../types/score';
 import { noteDuration } from '../lib/notation';
 
 /* ---------- 排版常量 ---------- */
@@ -44,6 +44,7 @@ interface PlacedNote {
   x: number; // 中心 x
   w: number;
   showNatural: boolean;
+  graceNotes: { note: GraceNote; x: number; showNatural: boolean }[];
 }
 
 interface PlacedMeasure {
@@ -60,10 +61,18 @@ interface PlacedLine {
   hasLyric: boolean;
 }
 
-function noteWidth(n: Note): number {
+function mainNoteWidth(n: Note): number {
   const dur = noteDuration(n);
   if (dur >= 2) return 38 * dur;
   return Math.max(38, 30 + dur * 16);
+}
+
+function graceWidth(n: Note): number {
+  return n.graceNotes?.length ? n.graceNotes.length * 28 + 10 : 0;
+}
+
+function noteWidth(n: Note): number {
+  return mainNoteWidth(n) + graceWidth(n);
 }
 
 function symbolCount(n: Note): number {
@@ -121,17 +130,24 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
       const mw = mWidths[mi] * scale;
       let nx = x + (8 + meterWidth(m)) * scale;
       const accidentals = new Map<string, number>();
+      const needsNatural = (n: Note) => {
+        const pitch = `${n.degree}:${n.octave ?? 0}`;
+        const accidental = n.accidental ?? 0;
+        const natural = n.degree !== 0 && accidental === 0 && !!accidentals.get(pitch);
+        if (n.degree !== 0) accidentals.set(pitch, accidental);
+        return natural;
+      };
       const notes: PlacedNote[] = m.notes.map((n) => {
-        const w = noteWidth(n) * scale;
+        const graceNotes = (n.graceNotes ?? []).map((grace, index) => ({
+          note: grace, x: nx + (index * 28 + 14) * scale, showNatural: needsNatural(grace),
+        }));
+        nx += graceWidth(n) * scale;
+        const w = mainNoteWidth(n) * scale;
         const cx = nx + w / (2 * symbolCount(n));
         nx += w;
         // Imported pitches are explicit per note. Cancel a prior alteration in the
         // same measure so the printed notation agrees with those absolute pitches.
-        const pitch = `${n.degree}:${n.octave ?? 0}`;
-        const accidental = n.accidental ?? 0;
-        const showNatural = n.degree !== 0 && accidental === 0 && !!accidentals.get(pitch);
-        if (n.degree !== 0) accidentals.set(pitch, accidental);
-        return { note: n, x: cx, w, showNatural };
+        return { note: n, x: cx, w, showNatural: needsNatural(n), graceNotes };
       });
       const pm = { measure: m, x, w: mw, notes };
       x += mw;
@@ -213,6 +229,29 @@ function NoteGlyph({ p, y }: { p: PlacedNote; y: number }) {
   const els: React.ReactNode[] = [];
   const cx = p.x;
   const acc = n.accidental === 1 ? '♯' : n.accidental === -1 ? '♭' : p.showNatural ? '♮' : '';
+
+  p.graceNotes.forEach((grace, index) => {
+    const g = grace.note;
+    const accidental = g.accidental === 1 ? '♯' : g.accidental === -1 ? '♭' : grace.showNatural ? '♮' : '';
+    const octave = g.octave ?? 0;
+    els.push(<g key={`grace${index}`} data-notation="grace-note">
+      <text x={grace.x} y={y + 14} fontFamily={NUM_FONT} fontSize={14} textAnchor="middle" fill={INK}>
+        {accidental && <tspan fontSize={10}>{accidental}</tspan>}{g.degree}
+      </text>
+      {Array.from({ length: Math.abs(octave) }, (_, dot) => <circle key={dot} cx={grace.x}
+        cy={y + (octave > 0 ? -1 - dot * 5 : 20 + dot * 5)} r={1.6} fill={INK} />)}
+      <line x1={grace.x - 7} x2={grace.x + 7} y1={y + 38} y2={y + 38} stroke={INK} strokeWidth={1.5} />
+      {g.beats === 0.25 && <line x1={grace.x - 7} x2={grace.x + 7} y1={y + 42} y2={y + 42} stroke={INK} strokeWidth={1.5} />}
+      <g transform={`translate(${grace.x}, ${y + 78}) scale(0.8) translate(${-grace.x}, ${-(y + 78)})`}>
+        <HoleGlyph n={g} cx={grace.x} y={y - 20} />
+      </g>
+    </g>);
+  });
+  if (p.graceNotes.length) {
+    const start = p.graceNotes[0].x;
+    els.push(<path key="grace-arc" data-notation="grace-arc" d={`M ${start} ${y - 18} Q ${(start + cx) / 2} ${y - 32} ${cx - 4} ${y - 4}`}
+      fill="none" stroke={INK} strokeWidth={1.1} />);
+  }
 
   // 高八度点
   if ((n.octave ?? 0) > 0 && n.degree !== 0) {
@@ -360,7 +399,7 @@ function Legend({ y, width }: { y: number; width: number }) {
   const ty = y - 3.5; // 箭头基线，与文字视觉对齐
   if (width < 700) return <g fontFamily={NUM_FONT} fontSize={11} fill={FAINT}>
     <text x={x0} y={y - 42}>↑ 吹气　↓ 吸气　&apos; 每符压低半音</text>
-    <text x={x0} y={y - 22}>° 超吹/超吸　~ 颤音</text>
+    <text x={x0} y={y - 22}>° 超吹/超吸　~ 振音</text>
     <text x={x0} y={y}>HarpScore</text>
   </g>;
   return (
@@ -377,7 +416,7 @@ function Legend({ y, width }: { y: number; width: number }) {
         <tspan fill={INK} fontWeight={700}>°</tspan> 超吹/吸
       </text>
       <text x={x0 + 342} y={y}>
-        <tspan fill={INK} fontWeight={700}>~</tspan> 颤音
+        <tspan fill={INK} fontWeight={700}>~</tspan> 振音
       </text>
       <text x={W - LAYOUT.padX} y={y} textAnchor="end">HarpScore</text>
     </g>

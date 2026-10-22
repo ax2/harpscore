@@ -11,11 +11,16 @@ export type ScoreSourceFormat = 'jianpu-text' | 'jianpu-image' | 'music-text' | 
 
 /** 演奏技巧标记 */
 export type Technique =
-  | 'vibrato'   // 颤音 ~~~
+  | 'vibrato'   // 振音 ~~~
   | 'bend-release' // 压音-释放
   | 'slap'      // 舌堵/拍击
   | 'gliss'     // 滑音
   | 'trill';    // 颤音(快速交替)
+
+/** 前倚音：beats 仅表示小音符形状，不占独立节拍；无递归装饰音。 */
+export type GraceNote = Pick<Note, 'degree' | 'accidental' | 'octave' | 'hole' | 'breath' | 'bend' | 'overblow'> & {
+  beats: 0.25 | 0.5;
+};
 
 /** 单个音符（或休止符） */
 export interface Note {
@@ -33,6 +38,8 @@ export interface Note {
   tie?: boolean;
   /** 歌词 */
   lyric?: string;
+  /** 主音之前的 1–4 个短倚音；时长从演奏语境决定，不加入小节拍数 */
+  graceNotes?: GraceNote[];
 
   /** ---- 口琴演奏标记（导入时由引擎推算，也可手工指定） ---- */
   /** 孔位 1-10，休止符为 null */

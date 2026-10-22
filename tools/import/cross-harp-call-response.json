@@ -1,0 +1,19 @@
+{
+  "id": "cross-harp-call-response",
+  "title": "二把位呼应练习",
+  "subtitle": "Cross-Harp Call and Response",
+  "composer": "HarpScore 原创练习曲",
+  "key": "G",
+  "harmonicaKey": "C",
+  "position": "第二把位",
+  "timeSignature": "4/4",
+  "tempo": 80,
+  "difficulty": 2,
+  "tags": ["布鲁斯", "原创练习", "呼应", "自然音"],
+  "source": "HarpScore 原创：四组各四小节的呼应练习，可自由使用。",
+  "sourceFormat": "original",
+  "sourceCheckedAt": "2026-10-22",
+  "notes": "C 调口琴奏 G 调，使用 G、B、C、D、F、G 高音的自然音；每组前两小节提出短句，后两小节回应，保留休止以练习呼吸。八分音符按等长演奏，不作三连音或 shuffle 标注；只写单音旋律，无伴奏。G4 按自动指法显示 3 孔吹，也可用同音高的 2 孔吸。",
+  "order": 27,
+  "melody": "1 3/ 5/ 0 5 | b7 5 3 0 | 1 3/ 5/ 0 3 | 1 - 0 - |\n4 5/ b7/ 0 b7 | 1' b7 5 0 | 4 5/ b7/ 0 5 | 4 - 0 - |\n5/ 5/ b7 5 0 | 3/ 4/ 5 3 0 | 5/ b7/ 1' b7 5 | 1 - 0 - |\n1 3/ 5/ b7 0 | 4 5/ b7/ 1' 0 | b7/ 5/ 4/ 3/ 1 0 | 1 - - 0 ||"
+}

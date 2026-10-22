@@ -28,13 +28,19 @@ Additional direct sources:
 
 Suggested practice tempi are editorial choices unless the source gives a numerical tempo. Automated checks establish data/rhythm/range consistency; they do not independently prove a transcription matches every folk variant.
 
+## Grace-note batch — 2026-10-22
+
+- **longing-for-spring**: PEP grade 7 lower, printed pp.4–5 / PDF pp.9–10, both pages visually compared again. 6/8, 17 written bars including the eighth pickup; final 2.5 quarter-note beats complement the pickup. Original C4–C5 register retained. C#4 / F#4 remain playable draw bends. The penultimate bar has a small sixteenth G4 before F4, represented as a grace note rather than an extra rhythmic event. Same-pitch ties retained; lyrics and different-pitch slurs omitted explicitly. Regression fixtures cover the chromatic bridge, last two bars, pickup and grace.
+- **cross-harp-call-response**: newly authored 16-bar G/C-harp exercise, four four-bar question/answer groups with phrase-ending rests. Natural reeds only; no claimed folk-song source or 12-bar chord form. Straight eighths, suggested practice tempo.
+- **low-blues-scale-study**: newly authored eight-bar G blues-scale exercise. Pitch classes G/Bb/C/Db/D/F, including octave G; Bb4 is 3-draw half-step bend and Db5 is 4-draw half-step bend. Eleven written bend notes. Straight eighths, with C–Db–D and reverse comparisons. Exercises are counted separately from the song expansion target.
+
 ## Pending / rejected sources
 
 - Fengyang Flower Drum concern resolved in batch 3 using the PEP edition; see its accepted ledger entry above.
 - There's a Hole in the Bucket in the same book: modern introduction/interlude and alternate endings intertwined with the folk tune; seek a simpler original melody source rather than copying an arrangement.
 - The school PDF exceeds the web reader's size limit. Downloaded normally, rendered with Poppler; JP2 fallback warnings occurred but page images and notation were visually legible. Detail crop used to investigate ambiguous octave marks.
 - Existing source policy's statement that octaveShift does not affect displayed octave dots is obsolete. Stage 2 hotfix/current implementation bakes all shifts into note octaves for consistent notation and pitch.
-- Wuxi Jing from Music Appreciation: grace notes and trill need faithful notation support before admission; not silently flattened into an allegedly exact score.
+- Wuxi Jing from Music Appreciation: grace notes are now supported, but the first-bar wavy ornament's identity and auxiliary pitches still need verification. The earlier shorthand calling it a trill was not established evidence; do not admit it with an assumed ornament.
 - Deck the Hall ABC in Everyday Song Book: final bar appears half a beat short; needs original-edition comparison before admission.
-- Longing for Spring, PEP printed pp.4–5: full continuation inspected, but penultimate-bar grace note needs support before a faithful version can be admitted.
+- Longing for Spring's grace-note dependency is resolved; admitted in the grace-note batch above.
 - PEP grade 7 PDF download initially stopped partway; resumed successfully, then verified as 79 readable pages before inspection. National platform PDF was unavailable (403); it was not treated as read.

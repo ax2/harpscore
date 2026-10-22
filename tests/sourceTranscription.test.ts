@@ -3,12 +3,53 @@ import test from 'node:test';
 import { BUILTIN_SCORES } from '../src/data/builtin';
 import { noteToMidi } from '../src/types/score';
 import { noteDuration } from '../src/lib/notation';
+import { analyzeScore } from '../src/lib/harmonica';
 
 function bars(id: string) {
   const score = BUILTIN_SCORES.find((s) => s.id === id)!;
   assert.ok(score, id);
   return score.lines.flat().map((m) => m.notes.map((n) => [noteToMidi(score.key, n), noteDuration(n)]));
 }
+
+test('the original call-response study stays on natural reeds and retains breathing rests', () => {
+  const score = BUILTIN_SCORES.find((s) => s.id === 'cross-harp-call-response')!;
+  const analysis = analyzeScore(score);
+  assert.equal(analysis.playable, true);
+  assert.equal(analysis.bendNotes, 0);
+  assert.equal(analysis.overblowNotes, 0);
+  assert.equal(score.lines.flat().length, 16);
+  for (const index of [3, 7, 11, 15]) assert.equal(score.lines.flat()[index].notes.at(-1)?.degree, 0);
+});
+
+test('the original low blues scale study uses the intended scale and two specific bends', () => {
+  const score = BUILTIN_SCORES.find((s) => s.id === 'low-blues-scale-study')!;
+  const analysis = analyzeScore(score);
+  const notes = score.lines.flat().flatMap((m) => m.notes).filter((n) => n.degree);
+  assert.equal(analysis.playable, true);
+  assert.equal(analysis.overblowNotes, 0);
+  assert.equal(score.lines.flat().length, 8);
+  assert.deepEqual([...new Set(notes.map((n) => noteToMidi(score.key, n)))].sort((a, b) => a! - b!), [67, 70, 72, 73, 74, 77, 79]);
+  for (const note of notes.filter((n) => n.bend)) {
+    assert.equal(note.breath, 'draw');
+    assert.equal(note.bend, 1);
+    assert.equal(note.hole, noteToMidi(score.key, note) === 70 ? 3 : 4);
+  }
+});
+
+test('Longing for Spring preserves the PEP chromatic bridge, grace note and complementary pickup', () => {
+  const source = bars('longing-for-spring');
+  assert.equal(source.length, 17);
+  assert.deepEqual(source[0], [[60, 0.5]]);
+  assert.deepEqual(source[9], [[65, 1], [61, 0.5], [62, 0.5], [64, 0.5], [65, 0.5]]);
+  assert.deepEqual(source[11], [[72, 0.5], [71, 0.5], [69, 0.5], [69, 0.5], [67, 0.5], [66, 0.5]]);
+  assert.deepEqual(source[15], [[67, 0.5], [64, 0.5], [67, 0.5], [65, 0.5], [64, 0.5], [62, 0.5]]);
+  assert.deepEqual(source[16], [[60, 1], [null, 0.5], [null, 1]]);
+  const score = BUILTIN_SCORES.find((s) => s.id === 'longing-for-spring')!;
+  const measures = score.lines.flat();
+  assert.deepEqual(measures[15].notes[3].graceNotes?.map((n) => [noteToMidi(score.key, n), n.beats]), [[67, 0.25]]);
+  assert.equal(measures[2].notes[0].tie, true);
+  assert.equal(measures[6].notes[0].tie, true);
+});
 
 test('Arirang preserves textbook p.53 dotted opening, register and distinct endings', () => {
   const source = bars('arirang');

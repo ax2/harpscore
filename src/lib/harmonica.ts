@@ -4,6 +4,7 @@
  */
 import type { Note, Score, Breath } from '../types/score';
 import { KEY_ROOTS, noteToMidi } from '../types/score';
+import { notesIncludingGrace } from './notation';
 
 /** 孔位演奏方式 */
 export interface HoleOption {
@@ -106,6 +107,7 @@ export interface ScoreIssue {
   lineIndex: number;
   measureIndex: number;
   noteIndex: number;
+  graceIndex?: number;
   midi: number | null;
   reason: string;
   severity: 'error' | 'warning';
@@ -120,6 +122,8 @@ export interface ScoreAnalysis {
   overblowNotes: number;
   /** 总音符数（不含休止符） */
   totalNotes: number;
+  /** 上述总音符中包含的前倚音数 */
+  graceNotes: number;
   /** 最低/最高 MIDI */
   minMidi: number | null;
   maxMidi: number | null;
@@ -128,13 +132,15 @@ export interface ScoreAnalysis {
 /** 为曲谱所有音符自动推算孔位标记，并分析可吹性 */
 export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis {
   const issues: ScoreIssue[] = [];
-  let bendNotes = 0, overblowNotes = 0, totalNotes = 0;
+  let bendNotes = 0, overblowNotes = 0, totalNotes = 0, graceNotes = 0;
   let minMidi: number | null = null, maxMidi: number | null = null;
   const root = harmonicaRoot(score.harmonicaKey);
 
   score.lines.forEach((line, li) => {
     line.forEach((measure, mi) => {
-      measure.notes.forEach((note, ni) => {
+      measure.notes.forEach((main, ni) => notesIncludingGrace(main).forEach((note, index) => {
+        const isGrace = index < (main.graceNotes?.length ?? 0);
+        const location = { lineIndex: li, measureIndex: mi, noteIndex: ni, ...(isGrace ? { graceIndex: index } : {}) };
         // 清除导入文件或上一次分析留下的派生孔位，避免不可奏音显示陈旧标记。
         note.hole = null;
         note.breath = null;
@@ -142,9 +148,10 @@ export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis
         note.overblow = false;
         if (note.degree === 0) return;
         totalNotes++;
+        if (isGrace) graceNotes++;
         const midi = noteToMidi(score.key, note, score.octaveShift ?? 0);
         if (midi === null) {
-          issues.push({ lineIndex: li, measureIndex: mi, noteIndex: ni, midi, reason: '无法解析音高', severity: 'error' });
+          issues.push({ ...location, midi, reason: '无法解析音高', severity: 'error' });
           return;
         }
         if (minMidi === null || midi < minMidi) minMidi = midi;
@@ -155,7 +162,7 @@ export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis
             : midi < root ? `低于口琴最低音 (${midiToName(root)})`
             : midi > root + 36 + (allowOverblow ? 1 : 0) ? `高于当前模式最高音 (${midiToName(root + 36 + (allowOverblow ? 1 : 0))})`
             : '该音需要超吹/超吸等高级技巧';
-          issues.push({ lineIndex: li, measureIndex: mi, noteIndex: ni, midi, reason: why, severity: 'error' });
+          issues.push({ ...location, midi, reason: why, severity: 'error' });
           return;
         }
         // 自动填充演奏标记
@@ -165,18 +172,18 @@ export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis
         note.overblow = opt.overblow;
         if (opt.overblow) {
           overblowNotes++;
-          issues.push({ lineIndex: li, measureIndex: mi, noteIndex: ni, midi, reason: `${opt.hole} 孔${opt.breath === 'blow' ? '超吹' : '超吸'}（高级技巧）`, severity: 'warning' });
+          issues.push({ ...location, midi, reason: `${opt.hole} 孔${opt.breath === 'blow' ? '超吹' : '超吸'}（高级技巧）`, severity: 'warning' });
         } else if (opt.bend > 0) {
           bendNotes++;
-          issues.push({ lineIndex: li, measureIndex: mi, noteIndex: ni, midi, reason: `${opt.hole} 孔${opt.breath === 'blow' ? '吹' : '吸'}${"'".repeat(opt.bend)} ${opt.bend} 级压音`, severity: 'warning' });
+          issues.push({ ...location, midi, reason: `${opt.hole} 孔${opt.breath === 'blow' ? '吹' : '吸'}${"'".repeat(opt.bend)} ${opt.bend} 级压音`, severity: 'warning' });
         }
-      });
+      }));
     });
   });
 
   return {
     playable: issues.every((i) => i.severity !== 'error'),
-    issues, bendNotes, overblowNotes, totalNotes, minMidi, maxMidi,
+    issues, bendNotes, overblowNotes, totalNotes, graceNotes, minMidi, maxMidi,
   };
 }
 

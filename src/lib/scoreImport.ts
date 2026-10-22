@@ -1,4 +1,4 @@
-import type { Measure, Note, Score, ScoreSourceFormat, Technique } from '../types/score';
+import type { GraceNote, Measure, Note, Score, ScoreSourceFormat, Technique } from '../types/score';
 import { KEY_ROOTS } from '../types/score';
 import { isSupportedDuration, noteDuration, tieWarnings } from './notation';
 
@@ -52,7 +52,7 @@ function numberIn(value: unknown, min: number, max: number): number | undefined 
     : undefined;
 }
 
-function parseNoteObject(value: unknown, path: string, errors: string[]): Note | undefined {
+function parseNoteObject(value: unknown, path: string, errors: string[], allowGrace = true): Note | undefined {
   if (!isObject(value)) {
     errors.push(`${path} 必须是音符对象`);
     return undefined;
@@ -87,6 +87,25 @@ function parseNoteObject(value: unknown, path: string, errors: string[]): Note |
     }
   }
 
+  let graceNotes: GraceNote[] | undefined;
+  if (value.graceNotes !== undefined) {
+    if (!allowGrace || !Array.isArray(value.graceNotes) || value.graceNotes.length < 1 || value.graceNotes.length > 4) {
+      errors.push(`${path}.graceNotes 必须是 1–4 个非嵌套的前倚音`);
+    } else {
+      graceNotes = value.graceNotes.flatMap((item, index) => {
+        const grace = parseNoteObject(item, `${path}.graceNotes[${index}]`, errors, false);
+        if (!grace || (grace.beats !== 0.25 && grace.beats !== 0.5)) {
+          errors.push(`${path}.graceNotes[${index}].beats 仅支持八分或十六分倚音`);
+          return [];
+        }
+        return [{ degree: grace.degree, accidental: grace.accidental, octave: grace.octave, beats: grace.beats }];
+      });
+    }
+  }
+  if (!allowGrace && (degree === 0 || value.dotted !== undefined || value.tie !== undefined || value.lyric !== undefined || value.techniques !== undefined)) {
+    errors.push(`${path} 倚音不能是休止符，也不能带附点、延音、歌词或技巧`);
+  }
+
   return {
     degree,
     accidental: accidental as -1 | 0 | 1,
@@ -96,6 +115,7 @@ function parseNoteObject(value: unknown, path: string, errors: string[]): Note |
     ...(value.tie === true ? { tie: true } : {}),
     ...(typeof value.lyric === 'string' && value.lyric ? { lyric: value.lyric } : {}),
     ...(techniques?.length ? { techniques } : {}),
+    ...(graceNotes?.length ? { graceNotes } : {}),
   };
 }
 
@@ -144,7 +164,22 @@ function parseLines(value: unknown, errors: string[]): Measure[][] | undefined {
   return lines.length === value.length ? lines : undefined;
 }
 
-function parseDslToken(token: string, path: string): Note {
+function parseDslToken(token: string, path: string, allowGrace = true): Note {
+  if (token.startsWith('{')) {
+    const match = token.match(/^\{([^{}]+)\}(.+)$/);
+    if (!allowGrace || !match) throw new Error(`${path} 倚音格式应为 {6}1 或 {6;1'}5`);
+    const parts = match[1].split(';');
+    if (parts.length > 4 || parts.some((part) => !part)) throw new Error(`${path} 只支持 1–4 个前倚音`);
+    const main = parseDslToken(match[2], path, false);
+    main.graceNotes = parts.map((part, index) => {
+      const grace = parseDslToken(part, `${path} 倚音 ${index + 1}`, false);
+      if (!grace.degree || grace.dotted || grace.tie || grace.lyric || ![0.25, 0.5, 1].includes(grace.beats)) {
+        throw new Error(`${path} 倚音仅支持无附点的有声音高`);
+      }
+      return { degree: grace.degree, accidental: grace.accidental, octave: grace.octave, beats: grace.beats === 0.5 ? 0.5 : 0.25 };
+    });
+    return main;
+  }
   if (/^-+$/.test(token)) throw new Error(`${path} 的延长符前没有音符`);
   const equals = token.indexOf('=');
   const lyric = equals >= 0 ? token.slice(equals + 1) : undefined;
@@ -325,6 +360,10 @@ export function scoreFromObject(value: unknown): ImportResult {
     const octave = (note.octave ?? 0) + (note.degree === 0 ? 0 : (octaveShift ?? 0));
     if (Math.abs(octave) > 3) errors.push(`${path}.octave 合并移位后必须在 -3–3 范围内`);
     if (note.degree === 0 && (note.accidental || note.octave)) errors.push(`${path} 休止符不能带升降号或八度点`);
+    if (note.degree === 0 && note.graceNotes?.length) errors.push(`${path} 休止符不能附带倚音`);
+    note.graceNotes?.forEach((grace, gi) => {
+      if (Math.abs((grace.octave ?? 0) + (octaveShift ?? 0)) > 3) errors.push(`${path}.graceNotes[${gi}].octave 合并移位后必须在 -3–3 范围内`);
+    });
   })));
 
   if (errors.length || !title || !key || !harmonicaKey || !timeSignature || difficulty === undefined || !lines) {
@@ -340,6 +379,7 @@ export function scoreFromObject(value: unknown): ImportResult {
           if (note.degree !== 0) {
             note.octave = (note.octave ?? 0) + octaveShift;
           }
+          for (const grace of note.graceNotes ?? []) grace.octave = (grace.octave ?? 0) + octaveShift;
         }
       }
     }
