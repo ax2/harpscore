@@ -9,7 +9,7 @@ export type Breath = 'blow' | 'draw';
 /** 曲谱核对所依据的原始材料类型 */
 export type ScoreSourceFormat = 'jianpu-text' | 'jianpu-image' | 'music-text' | 'original';
 
-/** 演奏技巧标记 */
+/** 演奏技巧文字标记；不包含交替音、过程音或和声音的完整数据。 */
 export type Technique =
   | 'vibrato'   // 振音 ~~~
   | 'bend-release' // 压音-释放

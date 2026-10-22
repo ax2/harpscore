@@ -48,9 +48,9 @@ function AnalysisPanel({ score }: { score: Score }) {
       音域 <b>{a.minMidi ?? '—'} ~ {a.maxMidi ?? '—'}</b>（MIDI）　
       压音 <b className={a.bendNotes ? 'warn' : ''}>{a.bendNotes}</b> 个　
       {a.overblowNotes > 0 && <>超吹 <b className="warn">{a.overblowNotes}</b> 个　</>}
-      {errs.length === 0
-        ? <span className="ok">· 可完整演奏</span>
-        : <span className="err">· {errs.length} 个音超出能力范围</span>}
+      {a.totalNotes === 0 ? <span>· 无有声音符</span> : errs.length === 0
+        ? <span className="ok">· 已记音高均有孔位</span>
+        : <span className="err">· {errs.length} 个已记音高暂无孔位（当前不含超吹/超吸）</span>}
       {notationWarnings.length > 0 && <div className="warn">记谱提示：{notationWarnings.join('；')}</div>}
       {errs.length > 0 && <div className="err">{errs.map((e, i) =>
         <span key={i}>第{e.lineIndex + 1}行第{e.measureIndex + 1}小节第{e.noteIndex + 1}音{e.graceIndex !== undefined ? `的倚音${e.graceIndex + 1}` : e.ornament ? '的波音辅助音' : ''}：{e.reason}；</span>)}</div>}
@@ -156,6 +156,7 @@ export default function App() {
           <label className="favorites-filter"><input type="checkbox" checked={filters.favoritesOnly} onChange={(e) => changeFilter('favoritesOnly', e.target.checked)} />仅看收藏</label>
           <button className="filter-reset" onClick={() => setFilters(DEFAULT_FILTERS)}>清除筛选</button>
           <div className="filter-count" role="status">找到 {scores.length} / {lib.builtin.length + lib.user.length} 首曲谱</div>
+          {filters.technique === 'natural' && <div className="filter-note">未明确交替音、过程音或和声音的技巧曲谱暂不列入。</div>}
         </div>
         <div className="library-tools">
           <button className="btn" onClick={() => { setSidebarOpen(false); setRestoreOpen(true); }}>恢复个人曲库</button>

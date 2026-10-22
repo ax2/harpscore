@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useRef, useState } from 'react';
 import type { GraceNote, Measure, Note, PitchNote, Score } from '../types/score';
-import { noteDuration } from '../lib/notation';
+import { noteDuration, TECHNIQUE_LABELS } from '../lib/notation';
 import { holeLabel } from '../lib/harmonica';
 
 /* ---------- 排版常量 ---------- */
@@ -71,12 +71,13 @@ interface PlacedLine {
   height: number;
   hasLyric: boolean;
   hasOrnament: boolean;
+  techniqueRows: number;
 }
 
 function mainNoteWidth(n: Note): number {
   const dur = noteDuration(n);
   if (dur >= 2) return 38 * dur;
-  return Math.max(n.ornament ? 64 : 38, 30 + dur * 16);
+  return Math.max(n.ornament ? 64 : n.techniques?.length ? 56 : 38, 30 + dur * 16);
 }
 
 function graceWidth(n: Note): number {
@@ -216,14 +217,16 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     });
 
     const hasLyric = rawLine.some(({ measure }) => measure.notes.some((n) => n.lyric));
-    const height = LAYOUT.lineBaseHeight + (hasLyric ? LAYOUT.lyricHeight : 0) + (hasOrnament ? 22 : 0);
-    lines.push({ measures, y, height, hasLyric, hasOrnament });
+    const techniqueRows = Math.max(0, ...rawLine.flatMap(({ measure }) => measure.notes.map(n => n.techniques?.length ?? 0)));
+    const height = LAYOUT.lineBaseHeight + (hasLyric ? LAYOUT.lyricHeight : 0) + (hasOrnament ? 22 : 0) + techniqueRows * 16;
+    lines.push({ measures, y, height, hasLyric, hasOrnament, techniqueRows });
     y += height + LAYOUT.lineGap;
   });
 
   return { lines, width: W, height: y - LAYOUT.lineGap + LAYOUT.padTop + (compact ? 46 : 0)
     + (lines.some((line) => line.hasOrnament) ? 24 : 0)
     + (score.lines.some((line) => line.some((m) => m.notes.some((n) => n.fermata))) ? 24 : 0)
+    + (lines.some(line => line.techniqueRows > 0) ? 24 : 0)
     + (lines.some((line) => line.measures.some((m) => m.continuesOnNext)) ? 24 : 0) };
 }
 
@@ -249,7 +252,6 @@ function HoleGlyph({ n, cx, y }: { n: Note; cx: number; y: number }) {
   const color = n.breath === 'blow' ? BLOW_COLOR : DRAW_COLOR;
   const bends = n.bend ? "'".repeat(n.bend) : '';
   const ob = n.overblow ? '°' : '';
-  const vib = n.techniques?.includes('vibrato') ? '~' : '';
   const ty = y + LAYOUT.tabY;
   return (
     <g>
@@ -259,7 +261,6 @@ function HoleGlyph({ n, cx, y }: { n: Note; cx: number; y: number }) {
         {n.hole}
         {bends && <tspan fontSize={13} dy={-4}>{bends}</tspan>}
         {ob && <tspan fontSize={12} dy={bends ? 0 : -4}>{ob}</tspan>}
-        {vib && <tspan fontSize={12} dy={bends || ob ? 4 : 0} dx={2}>{vib}</tspan>}
       </text>
     </g>
   );
@@ -290,7 +291,7 @@ function BarLine({ x, y, kind }: { x: number; y: number; kind: 'normal' | 'begin
   return <g>{els}</g>;
 }
 
-function NoteGlyph({ p, y, auxiliaryRow }: { p: PlacedNote; y: number; auxiliaryRow: boolean }) {
+function NoteGlyph({ p, y, auxiliaryRow, techniqueRows }: { p: PlacedNote; y: number; auxiliaryRow: boolean; techniqueRows: number }) {
   const n = p.note;
   const els: React.ReactNode[] = [];
   const cx = p.x;
@@ -365,10 +366,15 @@ function NoteGlyph({ p, y, auxiliaryRow }: { p: PlacedNote; y: number; auxiliary
   if (n.hole != null && n.breath) {
     els.push(<HoleGlyph key="tab" n={n} cx={cx} y={y} />);
   }
+  n.techniques?.forEach((technique, index) => {
+    els.push(<text key={`technique-${technique}`} data-notation="technique" data-technique={technique}
+      x={cx} y={y + 116 + (auxiliaryRow ? 22 : 0) + index * 16} textAnchor="middle"
+      fontFamily={NUM_FONT} fontSize={11} fill={INK}>{TECHNIQUE_LABELS[technique]}</text>);
+  });
   // 歌词
   if (n.lyric) {
     els.push(
-      <text key="ly" x={cx} y={y + LAYOUT.lyricY + (auxiliaryRow ? 22 : 0)} textAnchor="middle"
+      <text key="ly" data-notation="lyric" x={cx} y={y + LAYOUT.lyricY + (auxiliaryRow ? 22 : 0) + techniqueRows * 16} textAnchor="middle"
         fontFamily={TITLE_FONT} fontSize={13} fill={INK}>
         {n.lyric}
       </text>
@@ -511,6 +517,8 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
   const hasOrnaments = lines.some((line) => line.hasOrnament);
   const hasContinuations = lines.some((line) => line.measures.some((m) => m.continuesOnNext));
   const hasFermatas = score.lines.some((line) => line.some((m) => m.notes.some((n) => n.fermata)));
+  const hasTechniques = lines.some(line => line.techniqueRows > 0);
+  const techniqueFooter = hasTechniques ? 24 : 0;
   const L = LAYOUT;
   return (
     <svg viewBox={`0 0 ${width} ${height}`} width={standalone ? width : '100%'}
@@ -539,7 +547,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
                   <text x={m.x + 23} y={line.y + 24}>{m.measure.timeSignature.split('/')[0]}</text>
                   <text x={m.x + 23} y={line.y + 47}>{m.measure.timeSignature.split('/')[1]}</text>
                 </g>}
-                {m.notes.map((p, ni) => <NoteGlyph key={ni} p={p} y={line.y} auxiliaryRow={line.hasOrnament} />)}
+                {m.notes.map((p, ni) => <NoteGlyph key={ni} p={p} y={line.y} auxiliaryRow={line.hasOrnament} techniqueRows={line.techniqueRows} />)}
                 <Beams m={m} y={line.y} />
                 <BarLine x={m.x + m.w} y={line.y} kind={endKind} />
               </g>
@@ -548,15 +556,18 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
           <Ties line={line} previous={lines[li - 1]} />
         </g>
       ))}
-      <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0) - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0)} width={width} />
-      {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26 - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0)} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+      <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0) - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0) - techniqueFooter} width={width} />
+      {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26 - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0) - techniqueFooter} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         波音：主—辅—主；辅为邻音孔位，+ 吹 / − 吸
       </text>}
-      {hasContinuations && <text x={L.padX} y={height - L.padTop + 26 - (hasFermatas ? 24 : 0)} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+      {hasContinuations && <text x={L.padX} y={height - L.padTop + 26 - (hasFermatas ? 24 : 0) - techniqueFooter} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         续／虚线：同一小节换行，拍数连续计算
       </text>}
-      {hasFermatas && <text x={L.padX} y={height - L.padTop + 26} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+      {hasFermatas && <text x={L.padX} y={height - L.padTop + 26 - techniqueFooter} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         延长记号：按乐句自由延长，不固定增加拍数
+      </text>}
+      {hasTechniques && <text data-notation="technique-scope" x={L.padX} y={height - L.padTop + 26} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+        技巧文字不展开过程音；孔位仅校验已记音高。
       </text>}
     </svg>
   );

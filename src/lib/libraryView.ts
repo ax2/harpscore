@@ -24,8 +24,10 @@ export function filterScores(scores: Score[], filters: LibraryFilters, favorites
     if (score.difficulty > filters.maxDifficulty || (filters.tag && !score.tags.includes(filters.tag))) return false;
     if (filters.favoritesOnly && !favoriteIds.has(score.id)) return false;
     const notes = score.lines.flatMap((line) => line.flatMap((m) => m.notes.flatMap(notesForAnalysis))).filter((n) => n.degree !== 0);
+    const techniques = score.lines.flatMap(line => line.flatMap(m => m.notes.flatMap(n => n.techniques ?? [])));
+    if (filters.technique === 'natural' && techniques.some(t => t !== 'vibrato')) return false;
     if (filters.technique === 'natural' && notes.some((n) => !n.hole || n.bend || n.overblow)) return false;
-    if (filters.technique === 'bends' && !notes.some((n) => n.bend)) return false;
+    if (filters.technique === 'bends' && !notes.some((n) => n.bend) && !techniques.includes('bend-release')) return false;
     return true;
   });
   if (filters.sort === 'difficulty') result.sort((a, b) => a.difficulty - b.difficulty);

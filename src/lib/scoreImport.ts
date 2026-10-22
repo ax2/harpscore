@@ -1,6 +1,6 @@
 import type { GraceNote, Measure, Mordent, Note, Score, ScoreSourceFormat, Technique } from '../types/score';
 import { KEY_ROOTS, noteToMidi } from '../types/score';
-import { isSupportedDuration, noteDuration, tieWarnings } from './notation';
+import { isSupportedDuration, noteDuration, tieWarnings, techniqueWarnings } from './notation';
 
 type JsonObject = Record<string, unknown>;
 
@@ -468,7 +468,7 @@ export function scoreFromObject(value: unknown): ImportResult {
     ...(optionalString(root.updatedAt) ? { updatedAt: optionalString(root.updatedAt) } : {}),
     lines,
   };
-  return { score, warnings: [...beatWarnings(score), ...tieWarnings(score)], format };
+  return { score, warnings: [...beatWarnings(score), ...tieWarnings(score), ...techniqueWarnings(score)], format };
 }
 
 export function importScoreJson(text: string): ImportResult {

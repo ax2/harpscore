@@ -296,3 +296,4 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .restore-hint { color: var(--text-dim); font-size: 12px; line-height: 1.6; }
 .restore-preview { margin: 10px 0; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
 .restore-preview p { margin: 6px 0; }
+.filter-note { color: var(--text-dim); font-size: 11px; line-height: 1.5; }

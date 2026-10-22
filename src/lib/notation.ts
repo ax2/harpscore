@@ -1,5 +1,25 @@
-import type { Note, PitchNote, Score } from '../types/score';
+import type { Note, PitchNote, Score, Technique } from '../types/score';
 import { noteToMidi } from '../types/score';
+
+export const TECHNIQUE_LABELS: Record<Technique, string> = {
+  vibrato: '~ 振音', 'bend-release': '压音释放', slap: '舌拍', gliss: '滑音', trill: '颤音',
+};
+
+/** These legacy flags do not specify all pitches involved in the gesture. */
+export function techniqueWarnings(score: Score): string[] {
+  return score.lines.flatMap((line, li) => line.flatMap((measure, mi) => measure.notes.flatMap((note, ni) => {
+    const location = `第 ${li + 1} 行第 ${mi + 1} 小节第 ${ni + 1} 音`;
+    if (!note.techniques?.length) return [];
+    if (note.degree === 0) return [`${location}为休止符，不应带演奏技巧；请核对原谱`];
+    return note.techniques.flatMap(technique => {
+      if (technique === 'trill') return [`${location}的颤音未指定交替音，只显示文字提示；交替音未作孔位校验`];
+      if (technique === 'gliss') return [`${location}的滑音未指定起止及过程音，只显示文字提示；过程音未作孔位校验`];
+      if (technique === 'bend-release') return [`${location}的压音释放未指定完整音高变化，只显示文字提示；过程音未作孔位校验`];
+      if (technique === 'slap') return [`${location}的舌拍未指定和声音；孔位校验只包含已写出的主音`];
+      return [];
+    });
+  })));
+}
 
 export function notesForAnalysis(note: Note): PitchNote[] {
   return [...(note.graceNotes ?? []), note, ...(note.ornament ? [note.ornament.auxiliary] : [])];
