@@ -7,6 +7,7 @@ import {
 } from './lib/store';
 import { exportSvg, exportPng, exportPdf, exportJson } from './lib/export';
 import ScoreSheet from './components/ScoreSheet';
+import { scoreFromObject } from './lib/scoreImport';
 
 function ScoreItem({ s, active, onClick }: { s: Score; active: boolean; onClick: () => void }) {
   return (
@@ -26,6 +27,7 @@ function AnalysisPanel({ score }: { score: Score }) {
   const a = useMemo(() => analyzeScore(score, false), [score]);
   const warns = a.issues.filter((i) => i.severity === 'warning');
   const errs = a.issues.filter((i) => i.severity === 'error');
+  const notationWarnings = useMemo(() => scoreFromObject(score).warnings, [score]);
   const sourceFormat = score.sourceFormat === 'jianpu-text'
     ? '文字简谱'
     : score.sourceFormat === 'jianpu-image'
@@ -42,6 +44,9 @@ function AnalysisPanel({ score }: { score: Score }) {
       {errs.length === 0
         ? <span className="ok">· 可完整演奏</span>
         : <span className="err">· {errs.length} 个音超出能力范围</span>}
+      {notationWarnings.length > 0 && <div className="warn">记谱提示：{notationWarnings.join('；')}</div>}
+      {errs.length > 0 && <div className="err">{errs.map((e, i) =>
+        <span key={i}>第{e.lineIndex + 1}行第{e.measureIndex + 1}小节第{e.noteIndex + 1}音：{e.reason}；</span>)}</div>}
       {score.notes && <div>演奏提示：{score.notes}</div>}
       {score.source && (
         <div className="score-source">
@@ -56,7 +61,7 @@ function AnalysisPanel({ score }: { score: Score }) {
       {warns.length > 0 && warns.length <= 12 && (
         <div className="warn">
           {warns.map((w, i) => (
-            <span key={i}>第{w.measureIndex + 1}小节 {w.reason}；</span>
+            <span key={i}>第{w.lineIndex + 1}行第{w.measureIndex + 1}小节 {w.reason}；</span>
           ))}
         </div>
       )}
@@ -74,6 +79,13 @@ export default function App() {
   const [importError, setImportError] = useState('');
   const [notice, setNotice] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
+  const [actionError, setActionError] = useState('');
+  const runAction = async (action: () => void | Promise<void>) => {
+    setActionError('');
+    try { await action(); } catch (error) {
+      setActionError(error instanceof Error ? error.message : '操作失败，请重试');
+    }
+  };
 
   const scores = useMemo(() => {
     const all = allScores(lib);
@@ -95,14 +107,18 @@ export default function App() {
       return;
     }
     const score = uniqueScoreId(parsedScore, allScores(lib).map((item) => item.id));
-    const newLib = saveUserScore(lib, score);
+    let newLib: Library;
+    try { newLib = saveUserScore(lib, score); } catch {
+      setImportError('未保存：浏览器存储不可用或空间不足。请保留曲谱 JSON，释放空间后重试。');
+      return;
+    }
     setLib(newLib);
     setCurrentId(score.id);
     setImportOpen(false);
     setImportText('');
     setImportError('');
     setNotice(warnings.length
-      ? `已导入《${score.title}》，另有 ${warnings.length} 个节拍提示`
+      ? `已导入《${score.title}》，另有 ${warnings.length} 个记谱提示，详见谱面下方`
       : `已导入《${score.title}》`);
   };
 
@@ -141,27 +157,32 @@ export default function App() {
           onChange={async (e) => {
             const file = e.target.files?.[0];
             if (file) {
-              setImportText(await file.text());
-              setImportError('');
+              try {
+                setImportText(await file.text());
+                setImportError('');
+              } catch { setImportError('无法读取文件，请重新选择或粘贴 JSON'); }
             }
             e.target.value = '';
           }} />
         {notice && <div className="notice" role="status">{notice}</div>}
+        {actionError && <div className="action-error" role="alert">{actionError}</div>}
         {current ? (
           <>
             <div className="toolbar">
               <button className="btn menu-btn" onClick={() => setSidebarOpen(true)}>曲库</button>
-              <button className="btn primary" onClick={() => exportPng(current)}>导出 PNG</button>
-              <button className="btn" onClick={() => exportSvg(current)}>导出 SVG</button>
-              <button className="btn" onClick={() => exportPdf(current)}>打印 / PDF</button>
-              <button className="btn" onClick={() => exportJson(current)}>导出 JSON</button>
+              <button className="btn primary" onClick={() => runAction(() => exportPng(current))}>导出 PNG</button>
+              <button className="btn" onClick={() => runAction(() => exportSvg(current))}>导出 SVG</button>
+              <button className="btn" onClick={() => runAction(() => exportPdf(current))}>打印 / PDF</button>
+              <button className="btn" onClick={() => runAction(() => exportJson(current))}>导出 JSON</button>
               <div className="spacer" />
               <button className="btn" onClick={() => setImportOpen(true)}>导入曲谱</button>
               {!current.builtin && (
                 <button className="btn danger" onClick={() => {
                   if (confirm(`确定删除《${current.title}》吗？`)) {
-                    setLib(deleteUserScore(lib, current.id));
-                    setCurrentId(null);
+                    void runAction(() => {
+                      setLib(deleteUserScore(lib, current.id));
+                      setCurrentId(null);
+                    });
                   }
                 }}>删除</button>
               )}

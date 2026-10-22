@@ -26,7 +26,8 @@ export function loadUserScores(): Score[] {
 }
 
 function persist(user: Score[]) {
-  localStorage.setItem(LS_KEY, JSON.stringify(user));
+  try { localStorage.setItem(LS_KEY, JSON.stringify(user)); }
+  catch { throw new Error('浏览器存储不可用或空间不足，曲谱尚未保存，请保留原始 JSON'); }
 }
 
 export interface Library {
@@ -40,7 +41,7 @@ export function loadLibrary(): Library {
     return s;
   };
   return {
-    builtin: BUILTIN_SCORES.map(prepare),
+    builtin: BUILTIN_SCORES.map((s) => prepare(structuredClone(s))),
     user: loadUserScores().map(prepare),
   };
 }

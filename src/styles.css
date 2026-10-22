@@ -124,6 +124,8 @@ body {
 
 /* ---------- 主区 ---------- */
 .main { overflow-y: auto; padding: 20px 28px 60px; }
+.main { min-width: 0; }
+.action-error { color: #ff9f94; padding: 10px 0; }
 
 .toolbar {
   display: flex;

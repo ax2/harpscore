@@ -100,3 +100,24 @@ test('rejects unsafe or malformed source metadata', () => {
   assert.match(result.error ?? '', /sourceUrl/);
   assert.match(result.error ?? '', /sourceCheckedAt/);
 });
+
+test('rejects impossible dates, empty source formats, zero meter and unrenderable rhythms', () => {
+  for (const patch of [
+    { sourceCheckedAt: '2026-02-30' }, { sourceCheckedAt: '2026-13-01' },
+    { sourceFormat: 123 }, { sourceFormat: '' }, { timeSignature: '0/4' },
+    { melody: "1'''' - - -" }, { melody: "1''' - - -", octaveShift: 1 },
+    { melody: '0, - - -' },
+    { lines: [[{ notes: [{ degree: 1, beats: 0.3 }] }]], melody: undefined },
+  ]) assert.ok(scoreFromObject({ ...base, melody: '1 - - -', ...patch }).error, JSON.stringify(patch));
+});
+
+test('a single half-filled measure is not a complementary pickup pair', () => {
+  assert.equal(scoreFromObject({ ...base, melody: '1 -' }).warnings.length, 1);
+});
+
+test('ties require a following sounding note of the same absolute pitch', () => {
+  assert.deepEqual(scoreFromObject({ ...base, melody: '1~ - - - |\n1 - - -' }).warnings, []);
+  for (const melody of ['1~ - - -', '1~ - - - | 2 - - -', '0~ - - - | 0 - - -']) {
+    assert.match(scoreFromObject({ ...base, melody }).warnings.join(), /延音线/);
+  }
+});

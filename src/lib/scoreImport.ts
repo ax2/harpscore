@@ -1,5 +1,6 @@
 import type { Measure, Note, Score, ScoreSourceFormat, Technique } from '../types/score';
 import { KEY_ROOTS } from '../types/score';
+import { isSupportedDuration, noteDuration, tieWarnings } from './notation';
 
 type JsonObject = Record<string, unknown>;
 
@@ -12,7 +13,7 @@ export interface ImportResult {
 
 const TECHNIQUES = new Set<Technique>(['vibrato', 'bend-release', 'slap', 'gliss', 'trill']);
 const SOURCE_FORMATS = new Set<ScoreSourceFormat>(['jianpu-text', 'jianpu-image', 'original']);
-const TIME_SIGNATURE_RE = /^(\d{1,2})\/(1|2|4|8|16)$/;
+const TIME_SIGNATURE_RE = /^([1-9]\d?)\/(1|2|4|8|16)$/;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function isObject(value: unknown): value is JsonObject {
@@ -209,7 +210,7 @@ function beatWarnings(score: Score): string[] {
   const expected = Number(match[1]) * 4 / Number(match[2]);
   const mismatches: Array<{ lineIndex: number; measureIndex: number; actual: number; message: string }> = [];
   score.lines.forEach((line, lineIndex) => line.forEach((measure, measureIndex) => {
-    const actual = measure.notes.reduce((sum, note) => sum + note.beats * (note.dotted ? 1.5 : 1), 0);
+    const actual = measure.notes.reduce((sum, note) => sum + noteDuration(note), 0);
     if (Math.abs(actual - expected) > 0.0001) {
       mismatches.push({
         lineIndex,
@@ -223,7 +224,7 @@ function beatWarnings(score: Score): string[] {
   const lastMeasureIndex = score.lines[lastLineIndex].length - 1;
   const first = mismatches.find((item) => item.lineIndex === 0 && item.measureIndex === 0);
   const last = mismatches.find((item) => item.lineIndex === lastLineIndex && item.measureIndex === lastMeasureIndex);
-  const hasComplementaryPickup = first && last && Math.abs(first.actual + last.actual - expected) < 0.0001;
+  const hasComplementaryPickup = first && last && first !== last && Math.abs(first.actual + last.actual - expected) < 0.0001;
   return mismatches
     .filter((item) => !hasComplementaryPickup || (item !== first && item !== last))
     .map((item) => item.message);
@@ -263,7 +264,7 @@ export function scoreFromObject(value: unknown): ImportResult {
   const order = root.order === undefined ? undefined : numberIn(root.order, 0, 10_000);
   if (root.order !== undefined && (order === undefined || !Number.isInteger(order))) errors.push('order 必须是非负整数');
   const sourceFormat = root.sourceFormat === undefined ? undefined : optionalString(root.sourceFormat);
-  if (sourceFormat !== undefined && !SOURCE_FORMATS.has(sourceFormat as ScoreSourceFormat)) {
+  if (root.sourceFormat !== undefined && (!sourceFormat || !SOURCE_FORMATS.has(sourceFormat as ScoreSourceFormat))) {
     errors.push('sourceFormat 只能是 jianpu-text、jianpu-image 或 original');
   }
   const sourceUrl = optionalString(root.sourceUrl);
@@ -277,7 +278,9 @@ export function scoreFromObject(value: unknown): ImportResult {
     }
   }
   const sourceCheckedAt = optionalString(root.sourceCheckedAt);
-  if (root.sourceCheckedAt !== undefined && (!sourceCheckedAt || !ISO_DATE_RE.test(sourceCheckedAt))) {
+  if (root.sourceCheckedAt !== undefined && (!sourceCheckedAt || !ISO_DATE_RE.test(sourceCheckedAt)
+    || !Number.isFinite(Date.parse(sourceCheckedAt))
+    || new Date(sourceCheckedAt).toISOString().slice(0, 10) !== sourceCheckedAt)) {
     errors.push('sourceCheckedAt 必须采用 YYYY-MM-DD 格式');
   }
 
@@ -293,6 +296,15 @@ export function scoreFromObject(value: unknown): ImportResult {
   } else {
     lines = parseLines(root.lines, errors);
   }
+
+  // DSL and full JSON share the same limits: accepted notation must survive export/reimport.
+  lines?.forEach((line, li) => line.forEach((measure, mi) => measure.notes.forEach((note, ni) => {
+    const path = `lines[${li}][${mi}].notes[${ni}]`;
+    if (!isSupportedDuration(note)) errors.push(`${path}.beats 不支持该时值；请用十六分、八分、四分音符或 2–4 拍长音及合法附点`);
+    const octave = (note.octave ?? 0) + (note.degree === 0 ? 0 : (octaveShift ?? 0));
+    if (Math.abs(octave) > 3) errors.push(`${path}.octave 合并移位后必须在 -3–3 范围内`);
+    if (note.degree === 0 && (note.accidental || note.octave)) errors.push(`${path} 休止符不能带升降号或八度点`);
+  })));
 
   if (errors.length || !title || !key || !harmonicaKey || !timeSignature || difficulty === undefined || !lines) {
     return { error: errors.slice(0, 8).join('；'), warnings: [], format };
@@ -335,7 +347,7 @@ export function scoreFromObject(value: unknown): ImportResult {
     ...(optionalString(root.notes) ? { notes: optionalString(root.notes) } : {}),
     lines,
   };
-  return { score, warnings: beatWarnings(score), format };
+  return { score, warnings: [...beatWarnings(score), ...tieWarnings(score)], format };
 }
 
 export function importScoreJson(text: string): ImportResult {

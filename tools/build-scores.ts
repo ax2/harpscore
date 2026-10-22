@@ -14,6 +14,10 @@ const scores = fs.readdirSync(inputDir)
     const result = scoreFromObject(raw);
     if (!result.score || result.error) throw new Error(`${file}: ${result.error ?? '无法生成曲谱'}`);
     const score = result.score;
+    if (result.warnings.length) throw new Error(`${file}: ${result.warnings.join('；')}`);
+    if (!score.sourceFormat || !score.sourceCheckedAt || (score.sourceFormat !== 'original' && !score.sourceUrl)) {
+      throw new Error(`${file}: 内置曲谱必须记录来源格式、核对日期和非原创来源链接`);
+    }
     score.builtin = true;
     const analysis = analyzeScore(score, false);
     if (!analysis.playable) {
@@ -22,6 +26,10 @@ const scores = fs.readdirSync(inputDir)
     return { file, score };
   })
   .sort((a, b) => (a.score.order ?? 9999) - (b.score.order ?? 9999) || a.file.localeCompare(b.file));
+
+if (new Set(scores.map(({ score }) => score.id)).size !== scores.length) {
+  throw new Error('内置曲谱 ID 重复；未写入任何生成文件');
+}
 
 fs.mkdirSync(outputDir, { recursive: true });
 for (const { file, score } of scores) {

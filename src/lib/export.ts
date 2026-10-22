@@ -58,7 +58,8 @@ export async function exportPng(score: Score, scale = 2): Promise<void> {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
-    if (blob) download(blob, `${safeName(score.title)}.png`);
+    if (!blob) throw new Error('PNG 编码失败，请尝试 SVG 导出');
+    download(blob, `${safeName(score.title)}.png`);
   } finally {
     URL.revokeObjectURL(url);
   }
@@ -68,11 +69,12 @@ export async function exportPng(score: Score, scale = 2): Promise<void> {
 export function exportPdf(score: Score) {
   const str = renderToSvgString(score);
   const win = window.open('', '_blank');
-  if (!win) return;
-  win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${score.title} - HarpScore</title>
+  if (!win) throw new Error('打印窗口被浏览器拦截，请允许弹出窗口后重试');
+  win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>HarpScore</title>
 <style>@page{margin:12mm}body{margin:0;display:flex;justify-content:center}svg{max-width:100%;height:auto}</style>
 </head><body>${str}<script>window.onload=()=>{window.print()}<\/script></body></html>`);
   win.document.close();
+  win.document.title = `${score.title} - HarpScore`;
 }
 
 /** 导出曲谱源 JSON */

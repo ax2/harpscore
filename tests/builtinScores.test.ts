@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { BUILTIN_SCORES } from '../src/data/builtin';
+import fs from 'node:fs';
+import path from 'node:path';
+import { scoreFromObject } from '../src/lib/scoreImport';
+import { analyzeScore } from '../src/lib/harmonica';
 
 test('ships fourteen unique built-in scores with traceable sources', () => {
   assert.equal(BUILTIN_SCORES.length, 14);
@@ -12,5 +16,20 @@ test('ships fourteen unique built-in scores with traceable sources', () => {
     if (score.sourceFormat !== 'original') {
       assert.match(score.sourceUrl ?? '', /^https?:\/\//, `${score.id} 缺少 HTTP(S) 来源`);
     }
+  }
+});
+
+test('every built-in score matches its source DSL and passes rhythm, ties and playability', () => {
+  const inputDir = path.resolve(import.meta.dirname, '../tools/import');
+  const files = fs.readdirSync(inputDir).filter((name) => name.endsWith('.json'));
+  assert.equal(files.length, BUILTIN_SCORES.length);
+  for (const file of files) {
+    const result = scoreFromObject(JSON.parse(fs.readFileSync(path.join(inputDir, file), 'utf8')));
+    assert.equal(result.error, undefined, file);
+    assert.deepEqual(result.warnings, [], file);
+    const score = result.score!;
+    score.builtin = true;
+    assert.equal(analyzeScore(score).playable, true, file);
+    assert.deepEqual(score, BUILTIN_SCORES.find((built) => built.id === score.id), `${file} must be rebuilt`);
   }
 });
