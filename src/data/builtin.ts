@@ -14,6 +14,8 @@ import score_11 from './scores/happy-birthday.json';
 import score_12 from './scores/spanish-rowing-song.json';
 import score_13 from './scores/silent-night.json';
 import score_14 from './scores/amazing-grace.json';
+import score_15 from './scores/arirang.json';
+import score_16 from './scores/harvest-song.json';
 
 export const BUILTIN_SCORES: Score[] = [
   score_1 as unknown as Score,
@@ -30,4 +32,6 @@ export const BUILTIN_SCORES: Score[] = [
   score_12 as unknown as Score,
   score_13 as unknown as Score,
   score_14 as unknown as Score,
+  score_15 as unknown as Score,
+  score_16 as unknown as Score,
 ];

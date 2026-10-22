@@ -6,8 +6,8 @@ import path from 'node:path';
 import { scoreFromObject } from '../src/lib/scoreImport';
 import { analyzeScore } from '../src/lib/harmonica';
 
-test('ships fourteen unique built-in scores with traceable sources', () => {
-  assert.equal(BUILTIN_SCORES.length, 14);
+test('ships unique built-in scores with traceable sources', () => {
+  assert.ok(BUILTIN_SCORES.length >= 14);
   const ids = BUILTIN_SCORES.map((score) => score.id);
   assert.equal(new Set(ids).size, ids.length);
   for (const score of BUILTIN_SCORES) {

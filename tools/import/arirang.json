@@ -1,0 +1,21 @@
+{
+  "id": "arirang",
+  "title": "阿里郎",
+  "subtitle": "Arirang · 教材单旋律版",
+  "composer": "朝鲜传统民歌",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "3/4",
+  "tempo": 76,
+  "difficulty": 3,
+  "tags": ["亚洲民歌", "附点", "压音"],
+  "source": "广东教育出版社/花城出版社《音乐三年级下册·简谱》印刷第 53 页（PDF 第 54 页），16 小节单旋律；1=F 移为 1=C，整体升八度适配 C 调口琴。",
+  "sourceUrl": "https://lywgyxx.szftedu.cn/xkjc/yinyue/202209/P020220910586729125995.pdf#page=54",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-10-22",
+  "notes": "保留教材音高、附点、休止和 16 小节结构；仅单旋律，省略歌词与连奏弧线。低音区 la 使用 3 孔吸气全音压音，建议先慢练音准。",
+  "order": 15,
+  "melody": "5,. 6,/ 5,/ 6,/ | 1. 2/ 1/ 2/ | 3 2/ 3/ 1/ 6,/ | 5,. 6,/ 5,/ 6,/ |\n1. 2/ 1/ 2/ | 3/ 2/ 1/ 6,/ 5,/ 6,/ | 1. 2/ 1 | 1 - - |\n5 5 - | 5 3 2 | 3 2/ 3/ 1/ 6,/ | 5,. 6,/ 5,/ 0/ |\n1. 2/ 1/ 2/ | 3/ 2/ 1/ 6,/ 5,/ 6,/ | 1. 2/ 1 | 1 - 0 ||"
+}
