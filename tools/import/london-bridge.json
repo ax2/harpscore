@@ -1,0 +1,21 @@
+{
+  "id": "london-bridge",
+  "title": "伦敦桥",
+  "subtitle": "London Bridge · 1927 歌集版",
+  "composer": "英国传统童谣",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "4/4",
+  "tempo": 112,
+  "difficulty": 1,
+  "tags": ["西方童谣", "附点", "自然音"],
+  "source": "The Everyday Song Book (1927), No.18；John Chambers 2015 年 ABC 转录。取上声部 8 小节完整旋律，原 F 调移至 C 调并升八度。",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/018_London_Bridge.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-22",
+  "notes": "采用该歌集的 4/4 版本：开头附点四分音符，保留同音延音线与末尾休止。不混用常见 2/4 版本的时值；省略下声部与歌词。速度为练习建议。",
+  "order": 18,
+  "melody": "5. 6/ 5 4 | 3 4 5~ 5 | 2 3 4~ 4 | 3 4 5~ 5 |\n5. 6/ 5 4 | 3 4 5~ 5 | 2 - 5 - | 3 1 - 0 ||"
+}

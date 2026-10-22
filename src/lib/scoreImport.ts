@@ -12,7 +12,7 @@ export interface ImportResult {
 }
 
 const TECHNIQUES = new Set<Technique>(['vibrato', 'bend-release', 'slap', 'gliss', 'trill']);
-const SOURCE_FORMATS = new Set<ScoreSourceFormat>(['jianpu-text', 'jianpu-image', 'original']);
+const SOURCE_FORMATS = new Set<ScoreSourceFormat>(['jianpu-text', 'jianpu-image', 'music-text', 'original']);
 const TIME_SIGNATURE_RE = /^([1-9]\d?)\/(1|2|4|8|16)$/;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -122,6 +122,10 @@ function parseLines(value: unknown, errors: string[]): Measure[][] | undefined {
         .map((note, noteIndex) => parseNoteObject(note, `${path}.notes[${noteIndex}]`, errors))
         .filter((note): note is Note => note !== undefined);
       if (notes.length !== measureValue.notes.length) return;
+      if (measureValue.timeSignature !== undefined &&
+        (typeof measureValue.timeSignature !== 'string' || !TIME_SIGNATURE_RE.test(measureValue.timeSignature))) {
+        errors.push(`${path}.timeSignature 必须采用数字拍号（例如 3/4、6/8）`);
+      }
       for (const flag of ['repeatBegin', 'repeatEnd', 'sectionEnd'] as const) {
         if (measureValue[flag] !== undefined && typeof measureValue[flag] !== 'boolean') {
           errors.push(`${path}.${flag} 必须是布尔值`);
@@ -129,6 +133,7 @@ function parseLines(value: unknown, errors: string[]): Measure[][] | undefined {
       }
       line.push({
         notes,
+        ...(typeof measureValue.timeSignature === 'string' ? { timeSignature: measureValue.timeSignature } : {}),
         ...(measureValue.repeatBegin === true ? { repeatBegin: true } : {}),
         ...(measureValue.repeatEnd === true ? { repeatEnd: true } : {}),
         ...(measureValue.sectionEnd === true ? { sectionEnd: true } : {}),
@@ -185,7 +190,16 @@ export function parseMelodyDsl(melody: string): Measure[][] {
         continue;
       }
       const notes: Note[] = [];
+      let timeSignature: string | undefined;
       for (const [tokenIndex, token] of part.split(/\s+/).entries()) {
+        if (token.startsWith('[M:')) {
+          const meter = token.match(/^\[M:([^\]]+)\]$/)?.[1];
+          if (tokenIndex !== 0 || !meter || !TIME_SIGNATURE_RE.test(meter)) {
+            throw new Error(`第 ${lineIndex + 1} 行的变拍记号必须位于小节开头，例如 [M:3/4]`);
+          }
+          timeSignature = meter;
+          continue;
+        }
         if (/^-+$/.test(token)) {
           const previous = notes[notes.length - 1];
           if (!previous) throw new Error(`第 ${lineIndex + 1} 行第 ${measures.length + 1} 小节的延长符前没有音符`);
@@ -195,7 +209,7 @@ export function parseMelodyDsl(melody: string): Measure[][] {
         notes.push(parseDslToken(token, `第 ${lineIndex + 1} 行第 ${measures.length + 1} 小节第 ${tokenIndex + 1} 项`));
       }
       if (!notes.length) throw new Error(`第 ${lineIndex + 1} 行包含空小节`);
-      measures.push({ notes, ...(pendingRepeatBegin ? { repeatBegin: true } : {}) });
+      measures.push({ notes, ...(timeSignature ? { timeSignature } : {}), ...(pendingRepeatBegin ? { repeatBegin: true } : {}) });
       pendingRepeatBegin = false;
     }
     if (!measures.length) throw new Error(`第 ${lineIndex + 1} 行没有小节`);
@@ -207,9 +221,16 @@ export function parseMelodyDsl(melody: string): Measure[][] {
 function beatWarnings(score: Score): string[] {
   const match = score.timeSignature.match(TIME_SIGNATURE_RE);
   if (!match) return [];
-  const expected = Number(match[1]) * 4 / Number(match[2]);
+  let expected = Number(match[1]) * 4 / Number(match[2]);
+  let changedMeter = false;
   const mismatches: Array<{ lineIndex: number; measureIndex: number; actual: number; message: string }> = [];
   score.lines.forEach((line, lineIndex) => line.forEach((measure, measureIndex) => {
+    if (measure.timeSignature) {
+      const [numerator, denominator] = measure.timeSignature.split('/').map(Number);
+      const nextExpected = numerator * 4 / denominator;
+      changedMeter ||= measure.timeSignature !== score.timeSignature;
+      expected = nextExpected;
+    }
     const actual = measure.notes.reduce((sum, note) => sum + noteDuration(note), 0);
     if (Math.abs(actual - expected) > 0.0001) {
       mismatches.push({
@@ -224,7 +245,7 @@ function beatWarnings(score: Score): string[] {
   const lastMeasureIndex = score.lines[lastLineIndex].length - 1;
   const first = mismatches.find((item) => item.lineIndex === 0 && item.measureIndex === 0);
   const last = mismatches.find((item) => item.lineIndex === lastLineIndex && item.measureIndex === lastMeasureIndex);
-  const hasComplementaryPickup = first && last && first !== last && Math.abs(first.actual + last.actual - expected) < 0.0001;
+  const hasComplementaryPickup = !changedMeter && first && last && first !== last && Math.abs(first.actual + last.actual - expected) < 0.0001;
   return mismatches
     .filter((item) => !hasComplementaryPickup || (item !== first && item !== last))
     .map((item) => item.message);
@@ -265,7 +286,7 @@ export function scoreFromObject(value: unknown): ImportResult {
   if (root.order !== undefined && (order === undefined || !Number.isInteger(order))) errors.push('order 必须是非负整数');
   const sourceFormat = root.sourceFormat === undefined ? undefined : optionalString(root.sourceFormat);
   if (root.sourceFormat !== undefined && (!sourceFormat || !SOURCE_FORMATS.has(sourceFormat as ScoreSourceFormat))) {
-    errors.push('sourceFormat 只能是 jianpu-text、jianpu-image 或 original');
+    errors.push('sourceFormat 只能是 jianpu-text、jianpu-image、music-text 或 original');
   }
   const sourceUrl = optionalString(root.sourceUrl);
   if (root.sourceUrl !== undefined && !sourceUrl) errors.push('sourceUrl 必须是非空字符串');

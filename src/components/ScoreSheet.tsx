@@ -75,6 +75,10 @@ function beamLevel(n: Note): number {
   return 0;
 }
 
+function meterWidth(m: Measure): number {
+  return m.timeSignature ? 42 : 0;
+}
+
 export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines: PlacedLine[]; width: number; height: number } {
   const W = pageWidth;
   const compact = W < 700;
@@ -88,7 +92,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     let row: Measure[] = [];
     let rowWidth = 0;
     rawLine.forEach((measure) => {
-      const width = measure.notes.reduce((sum, n) => sum + noteWidth(n), 0) + 16;
+      const width = measure.notes.reduce((sum, n) => sum + noteWidth(n), 0) + 16 + meterWidth(measure);
       const target = avail - (rows.length === 0 ? (compact ? 0 : 64) : 0);
       if (row.length && rowWidth + width > target / 0.85) {
         rows.push(row);
@@ -105,7 +109,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     // 自然宽度
     const mWidths = rawLine.map((m) => {
       const nw = m.notes.reduce((s, n) => s + noteWidth(n), 0);
-      return nw + 16; // 小节内边距
+      return nw + 16 + meterWidth(m); // 小节内边距及变拍记号
     });
     const natural = mWidths.reduce((a, b) => a + b, 0);
     const target = avail - firstLineIndent;
@@ -114,7 +118,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     let x = LAYOUT.padX + firstLineIndent;
     const measures: PlacedMeasure[] = rawLine.map((m, mi) => {
       const mw = mWidths[mi] * scale;
-      let nx = x + 8 * scale;
+      let nx = x + (8 + meterWidth(m)) * scale;
       const notes: PlacedNote[] = m.notes.map((n) => {
         const w = noteWidth(n) * scale;
         const cx = nx + w / (2 * symbolCount(n));
@@ -395,6 +399,11 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
             return (
               <g key={mi}>
                 {mi > 0 && m.measure.repeatBegin && <BarLine x={m.x} y={line.y} kind="repeatBegin" />}
+                {m.measure.timeSignature && <g data-notation="meter-change" fill={INK} fontFamily={NUM_FONT}
+                  fontSize={16} fontWeight={600} textAnchor="middle">
+                  <text x={m.x + 23} y={line.y + 24}>{m.measure.timeSignature.split('/')[0]}</text>
+                  <text x={m.x + 23} y={line.y + 47}>{m.measure.timeSignature.split('/')[1]}</text>
+                </g>}
                 {m.notes.map((p, ni) => <NoteGlyph key={ni} p={p} y={line.y} />)}
                 <Beams m={m} y={line.y} />
                 <BarLine x={m.x + m.w} y={line.y} kind={endKind} />

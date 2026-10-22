@@ -7,7 +7,7 @@
 export type Breath = 'blow' | 'draw';
 
 /** 曲谱核对所依据的原始材料类型 */
-export type ScoreSourceFormat = 'jianpu-text' | 'jianpu-image' | 'original';
+export type ScoreSourceFormat = 'jianpu-text' | 'jianpu-image' | 'music-text' | 'original';
 
 /** 演奏技巧标记 */
 export type Technique =
@@ -50,6 +50,8 @@ export interface Note {
 /** 小节 */
 export interface Measure {
   notes: Note[];
+  /** 从本小节开始生效的拍号；省略则沿用上一小节或曲谱初始拍号 */
+  timeSignature?: string;
   /** 小节起始反复记号 */
   repeatBegin?: boolean;
   /** 小节结束反复记号 */

@@ -1,0 +1,21 @@
+{
+  "id": "oh-susanna",
+  "title": "哦，苏珊娜",
+  "subtitle": "Oh Susanna · 主歌反复展开版",
+  "composer": "Stephen C. Foster",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "2/4",
+  "tempo": 100,
+  "difficulty": 2,
+  "tags": ["西方歌曲", "弱起", "附点"],
+  "source": "Frank Nordberg / musicaviva 的 Oh Susanna ABC 转录，John Chambers 镜像。C 调完整旋律，主歌反复展开两遍后接副歌；音符文本的小写 c 对应本谱高音 do（C5）。",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/abc/mirror/kirby98.fsnet.co.uk/oh/Oh_Susanna_1.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-22",
+  "notes": "开头两个十六分音符为半拍弱起。第一次主歌末尾接下一遍弱起；第二次末尾接八分休止进入副歌。末小节为一拍半，与开头互补。保留原版附点八分与十六分组合，省略和弦。速度为练习建议。",
+  "order": 19,
+  "melody": "1// 2// | 3/ 5/ 5/. 6// | 5/ 3/ 1/. 2// | 3/ 3/ 2/ 1/ | 2. 1// 2// |\n3/ 5/ 5/. 6// | 5/ 3/ 1/. 2// | 3/ 3/ 2/ 2/ | 1. 1// 2// |\n3/ 5/ 5/. 6// | 5/ 3/ 1/. 2// | 3/ 3/ 2/ 1/ | 2. 1// 2// |\n3/ 5/ 5/. 6// | 5/ 3/ 1/. 2// | 3/ 3/ 2/ 2/ | 1. 0/ |\n4 4 | 6/ 6 6/ | 5/ 5/ 3/ 1/ | 2. 1// 2// |\n3/ 5/ 5/. 6// | 5/ 3/ 1/. 2// | 3/ 3/ 2/ 2/ | 1. ||"
+}

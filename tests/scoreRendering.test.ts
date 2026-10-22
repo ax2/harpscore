@@ -32,3 +32,13 @@ test('dense lines wrap without overflowing the page right margin', () => {
     assert.ok(last.x + last.w <= layout.width - 55);
   }
 });
+
+test('meter changes reserve space before the first note on desktop and mobile', () => {
+  const score = fixture('1 - - - | [M:3/4] 2 - - |\n3 - -');
+  const svg = renderToStaticMarkup(React.createElement(ScoreSheetSvg, { score }));
+  assert.equal((svg.match(/data-notation="meter-change"/g) ?? []).length, 1);
+  for (const width of [420, 1080]) {
+    const meter = layoutScore(score, width).lines.flatMap((line) => line.measures).find((m) => m.measure.timeSignature)!;
+    assert.ok(meter.notes[0].x > meter.x + 45);
+  }
+});

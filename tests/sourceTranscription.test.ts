@@ -29,3 +29,45 @@ test('Harvest Song includes textbook p.51 continuation and its high-register bri
   assert.deepEqual(source[19], [[84, 0.5], [88, 0.5], [79, 1]]);
   for (const index of [7, 15, 23]) assert.deepEqual(source[index], [[72, 1], [null, 1]]);
 });
+
+test('Xiao Bai Cai follows the selected folk textbook variant and changes to 4/4 for the coda', () => {
+  const source = bars('xiao-bai-cai');
+  assert.equal(source.length, 6);
+  assert.deepEqual(source[3], [[74, 1], [72, 1], [72, 0.5], [69, 0.5], [67, 2]]);
+  assert.deepEqual(source[4], [[69, 1], [72, 0.5], [69, 0.5], [67, 2]]);
+  assert.deepEqual(source[5], [[69, 0.5], [74, 0.5], [72, 0.5], [69, 0.5], [67, 2]]);
+  const measures = BUILTIN_SCORES.find((s) => s.id === 'xiao-bai-cai')!.lines.flat();
+  assert.equal(measures[4].timeSignature, '4/4');
+  assert.ok(measures[3].repeatEnd && measures[4].repeatBegin && measures[5].repeatEnd);
+});
+
+test('London Bridge retains the 1927 edition rhythm, ties and final rest', () => {
+  const source = bars('london-bridge');
+  assert.equal(source.length, 8);
+  assert.deepEqual(source[0], [[79, 1.5], [81, 0.5], [79, 1], [77, 1]]);
+  assert.deepEqual(source[6], [[74, 2], [79, 2]]);
+  assert.deepEqual(source[7], [[76, 1], [72, 2], [null, 1]]);
+  assert.ok(BUILTIN_SCORES.find((s) => s.id === 'london-bridge')!.lines[0][1].notes[2].tie);
+});
+
+test('Oh Susanna expands the repeat with its pickup and a rest before the chorus', () => {
+  const source = bars('oh-susanna');
+  assert.equal(source.length, 25);
+  assert.deepEqual(source[0], [[72, 0.25], [74, 0.25]]);
+  assert.deepEqual(source[8], [[72, 1.5], [72, 0.25], [74, 0.25]]);
+  assert.deepEqual(source[16], [[72, 1.5], [null, 0.5]]);
+  assert.deepEqual(source[17], [[77, 1], [77, 1]]);
+  assert.deepEqual(source[18], [[81, 0.5], [81, 1], [81, 0.5]]);
+  assert.deepEqual(source[24], [[72, 1.5]]);
+  assert.deepEqual(source.slice(1, 8), source.slice(9, 16));
+});
+
+test('Zou Jiang Zhou distinguishes low notes, upper do and sixteenth rests', () => {
+  const source = bars('zou-jiang-zhou');
+  assert.equal(source.length, 23);
+  assert.deepEqual(source[1], [[72, 0.5], [71, 0.25], [69, 0.25], [67, 1]]);
+  assert.deepEqual(source[2], [[79, 0.75], [84, 0.25], [79, 0.5], [77, 0.5]]);
+  assert.deepEqual(source[5], [[79, 0.25], [null, 0.25], [84, 0.25], [null, 0.25], [79, 0.25], [null, 0.25], [84, 0.25], [null, 0.25]]);
+  assert.deepEqual(source[17], [[67, 0.5], [65, 0.5], [67, 0.5], [65, 0.5]]);
+  assert.deepEqual(source[22], [[67, 2]]);
+});

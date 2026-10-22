@@ -121,3 +121,25 @@ test('ties require a following sounding note of the same absolute pitch', () => 
     assert.match(scoreFromObject({ ...base, melody }).warnings.join(), /延音线/);
   }
 });
+
+test('meter changes persist across rows and survive full JSON round trips', () => {
+  const result = scoreFromObject({ ...base, timeSignature: '5/4', melody: '5 3 3 2 - |\n[M:4/4] 6, 1/ 6,/ 5, - |\n6,/ 2/ 1/ 6,/ 5, -' });
+  assert.equal(result.error, undefined);
+  assert.deepEqual(result.warnings, []);
+  assert.equal(result.score!.lines[1][0].timeSignature, '4/4');
+  const imported = importScoreJson(JSON.stringify(result.score));
+  assert.deepEqual(imported.score, result.score);
+  assert.deepEqual(imported.warnings, []);
+  assert.match(scoreFromObject({ ...base, melody: '[M:3/4] 1 - - | 1 - - -' }).warnings.join(), /要求 3 拍/);
+});
+
+test('invalid or misplaced measure meters are rejected, not silently ignored', () => {
+  for (const melody of ['[M:0/4] 1', '[M:3/3] 1', '1 [M:3/4] 2', '[M:3/4]']) {
+    assert.ok(scoreFromObject({ ...base, melody }).error, melody);
+  }
+  for (const timeSignature of ['0/4', '3/3', 44, null]) {
+    assert.match(scoreFromObject({ ...base, lines: [[{ timeSignature, notes: [{ degree: 1, beats: 4 }] }]] }).error ?? '', /timeSignature/);
+  }
+  // A changed final meter must not hide a missing beat by pairing it with the opening.
+  assert.equal(scoreFromObject({ ...base, melody: '1 | [M:3/4] 1 -' }).warnings.length, 2);
+});

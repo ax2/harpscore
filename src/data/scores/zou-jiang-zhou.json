@@ -1,0 +1,991 @@
+{
+  "id": "zou-jiang-zhou",
+  "title": "走绛州",
+  "subtitle": "山西民歌 · 教材单旋律版",
+  "composer": "山西传统民歌",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "2/4",
+  "tempo": 88,
+  "difficulty": 3,
+  "tags": [
+    "中国民歌",
+    "十六分音符",
+    "压音"
+  ],
+  "source": "郭丽萍、王立民、马志飞主编《音乐鉴赏》（新华出版社）印刷第 6 页，谱例 1-1；PDF 第 13 页。23 小节，1=G 移为 1=C，升八度适配口琴。",
+  "sourceUrl": "https://backend.sjhtbook.com/upload/file/2025/04/80fb4b7923894770828045c9e613e236.pdf#page=13",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-10-22",
+  "builtin": true,
+  "order": 20,
+  "notes": "保留 23 小节主旋律、高低音区及十六分休止；省略歌词、异音连奏弧线和第二/三段歌词的节奏变体。第 6–7 小节短音与休止交替，先慢练吐音；低 fa 为 2 孔吸气全音压音，低 la 为 3 孔吸气全音压音。速度为练习建议。",
+  "lines": [
+    [
+      {
+        "notes": [
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 6,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 2,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "dotted": true,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 2,
+            "beats": 0.25,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 4,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 5,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 2,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 2,
+            "beats": 0.25,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 2,
+            "beats": 0.25,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 2,
+            "beats": 0.25,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 2,
+            "beats": 0.25,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 2,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 2,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 4,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 2,
+            "breath": "draw",
+            "bend": 2,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 6,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 2,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 4,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.25,
+            "hole": 2,
+            "breath": "draw",
+            "bend": 2,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 4,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 2,
+            "breath": "draw",
+            "bend": 2,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 4,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 2,
+            "breath": "draw",
+            "bend": 2,
+            "overblow": false
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "notes": [
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 2,
+            "beats": 0.5,
+            "hole": 7,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 1,
+            "dotted": true,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 7,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": 3,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 2,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "draw",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 1,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.25,
+            "hole": 4,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 2,
+            "hole": 3,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ],
+        "sectionEnd": true
+      }
+    ]
+  ]
+}

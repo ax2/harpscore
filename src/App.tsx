@@ -32,6 +32,8 @@ function AnalysisPanel({ score }: { score: Score }) {
     ? '文字简谱'
     : score.sourceFormat === 'jianpu-image'
       ? '数字简谱'
+      : score.sourceFormat === 'music-text'
+        ? '音符文本（ABC / LilyPond）'
       : score.sourceFormat === 'original'
         ? '原创'
         : '';
