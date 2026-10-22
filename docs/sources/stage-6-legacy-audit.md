@@ -21,3 +21,5 @@
 Pending: Spanish Rowing Song full 16-bar source. The old endpoint fails TLS hostname validation; its HTTP endpoint also returns an explicit storage error. A readable Hunan textbook, PDF p.49, corroborates only the first eight bars, so the second half is still unverified in this stage. Existing source-check date remains unchanged. Grade 5's Ugandan Rowing Song is a different tune. The Everyday Song Book No.112 similarly uses an unrelated Elliott Twinkle tune and must not validate the familiar French melody.
 
 Automated checks verify internal consistency and selected source landmarks. They are not an independent professional performance review.
+
+Follow-up: the Hunan Grade 1 lower-volume contents entry at p.46 is a different Lu Jingshan tune (opening 2–5–3), not the Spanish melody (opening 5–3–3). The physical-education teacher book p.199 / PDF p.208 uses that other tune as well. Neither supplies the missing eight bars. The known partial corroboration remains Hunan p.49 only.

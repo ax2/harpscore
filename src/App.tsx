@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Score } from './types/score';
 import { analyzeScore } from './lib/harmonica';
 import {
@@ -8,6 +8,7 @@ import {
 import { exportSvg, exportPng, exportPdf, exportJson, exportLibraryBackup } from './lib/export';
 import ScoreSheet from './components/ScoreSheet';
 import LibraryRestoreDialog from './components/LibraryRestoreDialog';
+import ImportScoreDialog from './components/ImportScoreDialog';
 import { scoreFromObject } from './lib/scoreImport';
 import { DEFAULT_FILTERS, filterScores, loadFavorites, saveFavorites, type LibraryFilters } from './lib/libraryView';
 
@@ -88,7 +89,6 @@ export default function App() {
   const [importError, setImportError] = useState('');
   const [importSaving, setImportSaving] = useState(false);
   const [notice, setNotice] = useState('');
-  const fileRef = useRef<HTMLInputElement>(null);
   const [actionError, setActionError] = useState('');
   const runAction = async (action: () => void | Promise<void>) => {
     setActionError('');
@@ -195,18 +195,6 @@ export default function App() {
       </aside>
 
       <main className="main">
-        <input ref={fileRef} type="file" accept=".json,application/json" className="visually-hidden"
-          aria-label="选择曲谱 JSON 文件"
-          onChange={async (e) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              try {
-                setImportText(await file.text());
-                setImportError('');
-              } catch { setImportError('无法读取文件，请重新选择或粘贴 JSON'); }
-            }
-            e.target.value = '';
-          }} />
         {notice && <div className="notice" role="status">{notice}</div>}
         {actionError && <div className="action-error" role="alert">{actionError}</div>}
         {lib.storageIssue && <div className="action-error" role="alert">{lib.storageIssue}</div>}
@@ -224,7 +212,7 @@ export default function App() {
               <button className="btn" onClick={() => runAction(() => exportPdf(current))}>打印 / PDF</button>
               <button className="btn" onClick={() => runAction(() => exportJson(current))}>导出 JSON</button>
               <div className="spacer" />
-              <button className="btn" onClick={() => setImportOpen(true)}>导入曲谱</button>
+              <button className="btn" data-import-trigger onClick={() => setImportOpen(true)}>导入曲谱</button>
               {!current.builtin && (
                 <button className="btn danger" onClick={() => {
                   if (confirm(`确定删除《${current.title}》吗？`)) {
@@ -244,7 +232,7 @@ export default function App() {
             <div className="toolbar">
               <button className="btn menu-btn" onClick={() => setSidebarOpen(true)}>曲库</button>
               <div className="spacer" />
-              <button className="btn" onClick={() => setImportOpen(true)}>导入曲谱</button>
+              <button className="btn" data-import-trigger onClick={() => setImportOpen(true)}>导入曲谱</button>
             </div>
             <div className="empty">
               <div className="big">🎵</div>
@@ -261,27 +249,9 @@ export default function App() {
         <div className="sidebar-mask" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {importOpen && (
-        <div className="modal-mask" onClick={() => { if (!importSaving) setImportOpen(false); }}>
-          <div className="modal" role="dialog" aria-modal="true" aria-labelledby="import-title" onClick={(e) => e.stopPropagation()}>
-            <h3 id="import-title">导入曲谱</h3>
-            <p className="modal-help">支持 HarpScore 完整 JSON，以及含 <code>melody</code> 字段的旋律 DSL JSON。</p>
-            <textarea
-              placeholder='粘贴曲谱 JSON… 或点击下方按钮选择文件'
-              value={importText}
-              disabled={importSaving}
-              aria-label="曲谱 JSON"
-              onChange={(e) => { setImportText(e.target.value); setImportError(''); }}
-            />
-            {importError && <div className="error">{importError}</div>}
-            <div className="row">
-              <button className="btn" disabled={importSaving} onClick={() => fileRef.current?.click()}>选择文件…</button>
-              <button className="btn" disabled={importSaving} onClick={() => setImportOpen(false)}>取消</button>
-              <button className="btn primary" disabled={importSaving} onClick={() => void doImport(importText)}>{importSaving ? '正在保存…' : '导入'}</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {importOpen && <ImportScoreDialog text={importText} error={importError} saving={importSaving}
+        onText={setImportText} onError={setImportError} onImport={() => void doImport(importText)}
+        onClose={() => setImportOpen(false)} />}
       {restoreOpen && <LibraryRestoreDialog library={lib} onClose={() => setRestoreOpen(false)} onRestored={(next, count, mode) => {
         setLib(next);
         setCurrentId(null);

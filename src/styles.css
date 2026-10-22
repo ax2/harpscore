@@ -199,7 +199,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.6);
   display: flex; align-items: center; justify-content: center;
-  z-index: 50;
+  z-index: 70;
 }
 .modal {
   background: var(--panel);
@@ -207,6 +207,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   border-radius: 10px;
   width: min(640px, 92vw);
   max-height: 84vh;
+  overflow-y: auto;
   display: flex; flex-direction: column;
   padding: 18px;
 }
@@ -223,7 +224,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   font-size: 12.5px;
   resize: vertical;
 }
-.modal .row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+.modal .row { display: flex; flex-shrink: 0; gap: 8px; justify-content: flex-end; margin-top: 12px; }
 .modal .error { color: var(--danger); font-size: 12.5px; margin-top: 8px; white-space: pre-wrap; }
 
 .empty {
