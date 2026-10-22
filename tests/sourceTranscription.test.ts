@@ -71,3 +71,50 @@ test('Zou Jiang Zhou distinguishes low notes, upper do and sixteenth rests', () 
   assert.deepEqual(source[17], [[67, 0.5], [65, 0.5], [67, 0.5], [65, 0.5]]);
   assert.deepEqual(source[22], [[67, 2]]);
 });
+
+test('Yankee Doodle includes the lower chorus, dotted rhythms and complementary pickup', () => {
+  const source = bars('yankee-doodle');
+  assert.equal(source.length, 17);
+  assert.deepEqual(source[0], [[67, 0.5]]);
+  assert.deepEqual(source[9], [[69, 0.75], [71, 0.25], [69, 0.5], [67, 0.5]]);
+  assert.deepEqual(source[12], [[64, 0.75], [65, 0.25], [67, 0.5], [null, 0.5]]);
+  assert.deepEqual(source[16], [[72, 1], [72, 0.5]]);
+});
+
+test('My Bonnie retains the source ninth opening, low register and tied phrase transitions', () => {
+  const source = bars('my-bonnie');
+  assert.equal(source.length, 33);
+  assert.deepEqual(source[0], [[67, 1]]);
+  assert.deepEqual(source[1], [[76, 1.5], [74, 0.5], [72, 1]]);
+  assert.deepEqual(source[3], [[67, 1], [64, 2]]);
+  assert.deepEqual(source[8], [[74, 2], [67, 1]]);
+  assert.deepEqual(source[19], [[69, 3]]);
+  assert.deepEqual(source[32], [[72, 2]]);
+});
+
+test('Fengyang Flower Drum retains the PEP edition low la and the full rhythmic coda', () => {
+  const source = bars('fengyang-flower-drum');
+  assert.equal(source.length, 15);
+  assert.deepEqual(source[4], [[72, 0.5], [72, 1], [69, 0.5], [79, 1], [79, 0.5], [76, 0.5]]);
+  assert.deepEqual(source[12], [[79, 1], [72, 0.5], [null, 0.5], [79, 1], [72, 0.5], [null, 0.5]]);
+  assert.deepEqual(source[14], [[74, 0.5], [72, 0.5], [69, 0.5], [74, 0.5], [72, 2]]);
+});
+
+test('Click Go the Shears has four phrase-ending rests and the final octave leap', () => {
+  const source = bars('click-go-the-shears');
+  assert.equal(source.length, 16);
+  assert.deepEqual(source[0], [[76, 1], [76, 0.75], [74, 0.25]]);
+  assert.deepEqual(source[12], [[86, 0.75], [84, 0.25], [83, 0.5], [81, 0.5]]);
+  assert.deepEqual(source[14], [[72, 1], [84, 0.75], [83, 0.25]]);
+  for (const index of [3, 7, 11, 15]) assert.deepEqual(source[index].at(-1), [null, 1]);
+});
+
+test('Santa Lucia preserves its chromatic cancellation and both alternate endings', () => {
+  const source = bars('santa-lucia');
+  assert.equal(source.length, 24);
+  assert.deepEqual(source[5], [[67, 0.25], [66, 0.25], [65, 1]]);
+  assert.deepEqual(source[14], [[74, 0.5], [69, 0.75], [71, 0.25]]);
+  assert.deepEqual(source[22], [[74, 0.5], [76, 0.75], [74, 0.25]]);
+  assert.deepEqual(source[23], [[74, 0.5], [72, 1]]);
+  assert.deepEqual(source.slice(8, 14), source.slice(16, 22));
+});

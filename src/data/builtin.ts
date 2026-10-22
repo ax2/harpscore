@@ -20,6 +20,11 @@ import score_17 from './scores/xiao-bai-cai.json';
 import score_18 from './scores/london-bridge.json';
 import score_19 from './scores/oh-susanna.json';
 import score_20 from './scores/zou-jiang-zhou.json';
+import score_21 from './scores/yankee-doodle.json';
+import score_22 from './scores/my-bonnie.json';
+import score_23 from './scores/fengyang-flower-drum.json';
+import score_24 from './scores/click-go-the-shears.json';
+import score_25 from './scores/santa-lucia.json';
 
 export const BUILTIN_SCORES: Score[] = [
   score_1 as unknown as Score,
@@ -42,4 +47,9 @@ export const BUILTIN_SCORES: Score[] = [
   score_18 as unknown as Score,
   score_19 as unknown as Score,
   score_20 as unknown as Score,
+  score_21 as unknown as Score,
+  score_22 as unknown as Score,
+  score_23 as unknown as Score,
+  score_24 as unknown as Score,
+  score_25 as unknown as Score,
 ];

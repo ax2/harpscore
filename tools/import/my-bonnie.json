@@ -1,0 +1,21 @@
+{
+  "id": "my-bonnie",
+  "title": "我的邦妮",
+  "subtitle": "My Bonnie · 1927 歌集版",
+  "composer": "传统歌曲；歌集署 H. J. Fuller",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "3/4",
+  "tempo": 108,
+  "difficulty": 3,
+  "tags": ["西方民谣", "三拍子", "压音"],
+  "source": "The Everyday Song Book (1927), No.6；John Chambers 2015 年 ABC 转录，转录者说明已补足第 5 小节中音的符尾。Bb 调移为 C 调，主音移至 C5。",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/006_My_Bonnie.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-22",
+  "notes": "完整主歌与副歌，共 32 个主小节加一拍弱起。前两段之间将两拍长音与下一段的一拍弱起合为一小节；保留跨小节延音。省略歌词及副歌延长记号的自由时长，按书面拍值练习；速度为练习建议。",
+  "order": 22,
+  "melody": "5, | 3. 2/ 1 | 2 1 6, | 5, 3,~ - | 3, 0 5, |\n3. 2/ 1 | 1 7, 1 | 2~ - - | 2 - 5, |\n3. 2/ 1 | 2 1 6, | 5, 3,~ - | 3, 0 5, |\n6, 2 1 | 7, 6, 7, | 1~ - - | 1 - 0 |\n5, - - | 1 - - | 6, - - | 1 - - |\n7, 7, 7, | 7, 6, 7, | 1 - 2 | 3 - - |\n5, - - | 1 - - | 6, - - | 2 - 1 |\n7, 7, 7, | 7, 6, 7, | 1~ - - | 1 - ||"
+}

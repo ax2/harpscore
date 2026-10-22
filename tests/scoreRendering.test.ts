@@ -42,3 +42,11 @@ test('meter changes reserve space before the first note on desktop and mobile', 
     assert.ok(meter.notes[0].x > meter.x + 45);
   }
 });
+
+test('natural signs cancel earlier alterations at the same octave within a measure', () => {
+  assert.equal((render('#4 4 4 4').match(/♮/g) ?? []).length, 1);
+  assert.equal((render('b7 1 7 7').match(/♮/g) ?? []).length, 1);
+  assert.equal((render("#4 4' 4 4").match(/♮/g) ?? []).length, 1);
+  assert.equal((render('#4 - - - | 4 - - -').match(/♮/g) ?? []).length, 0);
+  assert.equal((render('#4 #4 #4 #4').match(/♮/g) ?? []).length, 0);
+});

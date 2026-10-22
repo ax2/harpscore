@@ -43,6 +43,7 @@ interface PlacedNote {
   note: Note;
   x: number; // 中心 x
   w: number;
+  showNatural: boolean;
 }
 
 interface PlacedMeasure {
@@ -119,11 +120,18 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     const measures: PlacedMeasure[] = rawLine.map((m, mi) => {
       const mw = mWidths[mi] * scale;
       let nx = x + (8 + meterWidth(m)) * scale;
+      const accidentals = new Map<string, number>();
       const notes: PlacedNote[] = m.notes.map((n) => {
         const w = noteWidth(n) * scale;
         const cx = nx + w / (2 * symbolCount(n));
         nx += w;
-        return { note: n, x: cx, w };
+        // Imported pitches are explicit per note. Cancel a prior alteration in the
+        // same measure so the printed notation agrees with those absolute pitches.
+        const pitch = `${n.degree}:${n.octave ?? 0}`;
+        const accidental = n.accidental ?? 0;
+        const showNatural = n.degree !== 0 && accidental === 0 && !!accidentals.get(pitch);
+        if (n.degree !== 0) accidentals.set(pitch, accidental);
+        return { note: n, x: cx, w, showNatural };
       });
       const pm = { measure: m, x, w: mw, notes };
       x += mw;
@@ -204,7 +212,7 @@ function NoteGlyph({ p, y }: { p: PlacedNote; y: number }) {
   const n = p.note;
   const els: React.ReactNode[] = [];
   const cx = p.x;
-  const acc = n.accidental === 1 ? '♯' : n.accidental === -1 ? '♭' : '';
+  const acc = n.accidental === 1 ? '♯' : n.accidental === -1 ? '♭' : p.showNatural ? '♮' : '';
 
   // 高八度点
   if ((n.octave ?? 0) > 0 && n.degree !== 0) {
