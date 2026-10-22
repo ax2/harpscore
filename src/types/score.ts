@@ -17,10 +17,18 @@ export type Technique =
   | 'gliss'     // 滑音
   | 'trill';    // 颤音(快速交替)
 
+/** 一个显式音高及其派生孔位；不含独立时值。 */
+export type PitchNote = Pick<Note, 'degree' | 'accidental' | 'octave' | 'hole' | 'breath' | 'bend' | 'overblow'>;
 /** 前倚音：beats 仅表示小音符形状，不占独立节拍；无递归装饰音。 */
-export type GraceNote = Pick<Note, 'degree' | 'accidental' | 'octave' | 'hole' | 'breath' | 'bend' | 'overblow'> & {
+export type GraceNote = PitchNote & {
   beats: 0.25 | 0.5;
 };
+
+/** 单波音：主音—显式邻音—主音；不指定演奏时值分配。 */
+export interface Mordent {
+  kind: 'upper-mordent' | 'lower-mordent';
+  auxiliary: PitchNote;
+}
 
 /** 单个音符（或休止符） */
 export interface Note {
@@ -40,6 +48,7 @@ export interface Note {
   lyric?: string;
   /** 主音之前的 1–4 个短倚音；时长从演奏语境决定，不加入小节拍数 */
   graceNotes?: GraceNote[];
+  ornament?: Mordent;
 
   /** ---- 口琴演奏标记（导入时由引擎推算，也可手工指定） ---- */
   /** 孔位 1-10，休止符为 null */
@@ -126,7 +135,7 @@ export const KEY_ROOTS: Record<string, number> = {
 };
 
 /** 调内把音符度数换算为 MIDI 音高 */
-export function noteToMidi(key: string, n: Note, octaveShift = 0): number | null {
+export function noteToMidi(key: string, n: PitchNote, octaveShift = 0): number | null {
   if (n.degree === 0) return null;
   const root = KEY_ROOTS[key];
   if (root === undefined) return null;

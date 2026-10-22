@@ -5,8 +5,9 @@
  * 小节线 / 反复记号 / 双纵线贯穿两行
  */
 import React, { useEffect, useRef, useState } from 'react';
-import type { GraceNote, Measure, Note, Score } from '../types/score';
+import type { GraceNote, Measure, Note, PitchNote, Score } from '../types/score';
 import { noteDuration } from '../lib/notation';
+import { holeLabel } from '../lib/harmonica';
 
 /* ---------- 排版常量 ---------- */
 export const LAYOUT = {
@@ -44,6 +45,7 @@ interface PlacedNote {
   x: number; // 中心 x
   w: number;
   showNatural: boolean;
+  auxiliaryNatural: boolean;
   graceNotes: { note: GraceNote; x: number; showNatural: boolean }[];
 }
 
@@ -59,12 +61,13 @@ interface PlacedLine {
   y: number;
   height: number;
   hasLyric: boolean;
+  hasOrnament: boolean;
 }
 
 function mainNoteWidth(n: Note): number {
   const dur = noteDuration(n);
   if (dur >= 2) return 38 * dur;
-  return Math.max(38, 30 + dur * 16);
+  return Math.max(n.ornament ? 64 : 38, 30 + dur * 16);
 }
 
 function graceWidth(n: Note): number {
@@ -116,6 +119,8 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
   });
   rows.forEach((rawLine, li) => {
     const firstLineIndent = li === 0 && !compact ? 64 : 0;
+    const hasOrnament = rawLine.some((m) => m.notes.some((n) => n.ornament));
+    if (hasOrnament) y += 18;
     // 自然宽度
     const mWidths = rawLine.map((m) => {
       const nw = m.notes.reduce((s, n) => s + noteWidth(n), 0);
@@ -130,7 +135,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
       const mw = mWidths[mi] * scale;
       let nx = x + (8 + meterWidth(m)) * scale;
       const accidentals = new Map<string, number>();
-      const needsNatural = (n: Note) => {
+      const needsNatural = (n: PitchNote) => {
         const pitch = `${n.degree}:${n.octave ?? 0}`;
         const accidental = n.accidental ?? 0;
         const natural = n.degree !== 0 && accidental === 0 && !!accidentals.get(pitch);
@@ -147,7 +152,9 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
         nx += w;
         // Imported pitches are explicit per note. Cancel a prior alteration in the
         // same measure so the printed notation agrees with those absolute pitches.
-        return { note: n, x: cx, w, showNatural: needsNatural(n), graceNotes };
+        const showNatural = needsNatural(n);
+        const auxiliaryNatural = n.ornament ? needsNatural(n.ornament.auxiliary) : false;
+        return { note: n, x: cx, w, showNatural, auxiliaryNatural, graceNotes };
       });
       const pm = { measure: m, x, w: mw, notes };
       x += mw;
@@ -155,12 +162,12 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     });
 
     const hasLyric = rawLine.some((m) => m.notes.some((n) => n.lyric));
-    const height = LAYOUT.lineBaseHeight + (hasLyric ? LAYOUT.lyricHeight : 0);
-    lines.push({ measures, y, height, hasLyric });
+    const height = LAYOUT.lineBaseHeight + (hasLyric ? LAYOUT.lyricHeight : 0) + (hasOrnament ? 22 : 0);
+    lines.push({ measures, y, height, hasLyric, hasOrnament });
     y += height + LAYOUT.lineGap;
   });
 
-  return { lines, width: W, height: y - LAYOUT.lineGap + LAYOUT.padTop + (compact ? 46 : 0) };
+  return { lines, width: W, height: y - LAYOUT.lineGap + LAYOUT.padTop + (compact ? 46 : 0) + (lines.some((line) => line.hasOrnament) ? 24 : 0) };
 }
 
 /* ---------- 渲染 ---------- */
@@ -224,11 +231,22 @@ function BarLine({ x, y, kind }: { x: number; y: number; kind: 'normal' | 'begin
   return <g>{els}</g>;
 }
 
-function NoteGlyph({ p, y }: { p: PlacedNote; y: number }) {
+function NoteGlyph({ p, y, auxiliaryRow }: { p: PlacedNote; y: number; auxiliaryRow: boolean }) {
   const n = p.note;
   const els: React.ReactNode[] = [];
   const cx = p.x;
   const acc = n.accidental === 1 ? '♯' : n.accidental === -1 ? '♭' : p.showNatural ? '♮' : '';
+  if (n.ornament) {
+    const auxiliary = n.ornament.auxiliary;
+    const auxiliaryAcc = auxiliary.accidental === 1 ? '♯' : auxiliary.accidental === -1 ? '♭' : p.auxiliaryNatural ? '♮' : '';
+    els.push(<g key="mordent" data-notation={n.ornament.kind} fill={INK}>
+      <path d={`M ${cx - 10} ${y - 23} l 4 -4 l 6 5 l 6 -5 l 4 4`} fill="none" stroke={INK} strokeWidth={2.2} />
+      {n.ornament.kind === 'lower-mordent' && <line x1={cx} x2={cx} y1={y - 32} y2={y - 17} stroke={INK} strokeWidth={1.5} />}
+      {auxiliaryAcc && <text x={cx} y={y - 36} textAnchor="middle" fontFamily={NUM_FONT} fontSize={12}>{auxiliaryAcc}</text>}
+      <text data-notation="auxiliary-fingering" x={cx} y={y + 119} textAnchor="middle" fontFamily={NUM_FONT} fontSize={10}
+        fill={auxiliary.hole == null ? INK : auxiliary.breath === 'blow' ? BLOW_COLOR : DRAW_COLOR}>辅 {holeLabel(auxiliary) || '?'}</text>
+    </g>);
+  }
 
   p.graceNotes.forEach((grace, index) => {
     const g = grace.note;
@@ -287,7 +305,7 @@ function NoteGlyph({ p, y }: { p: PlacedNote; y: number }) {
   // 歌词
   if (n.lyric) {
     els.push(
-      <text key="ly" x={cx} y={y + LAYOUT.lyricY} textAnchor="middle"
+      <text key="ly" x={cx} y={y + LAYOUT.lyricY + (auxiliaryRow ? 22 : 0)} textAnchor="middle"
         fontFamily={TITLE_FONT} fontSize={13} fill={INK}>
         {n.lyric}
       </text>
@@ -425,6 +443,7 @@ function Legend({ y, width }: { y: number; width: number }) {
 
 export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pageWidth }: { score: Score; standalone?: boolean; pageWidth?: number }) {
   const { lines, width, height } = layoutScore(score, pageWidth);
+  const hasOrnaments = lines.some((line) => line.hasOrnament);
   const L = LAYOUT;
   return (
     <svg viewBox={`0 0 ${width} ${height}`} width={standalone ? width : '100%'}
@@ -451,7 +470,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
                   <text x={m.x + 23} y={line.y + 24}>{m.measure.timeSignature.split('/')[0]}</text>
                   <text x={m.x + 23} y={line.y + 47}>{m.measure.timeSignature.split('/')[1]}</text>
                 </g>}
-                {m.notes.map((p, ni) => <NoteGlyph key={ni} p={p} y={line.y} />)}
+                {m.notes.map((p, ni) => <NoteGlyph key={ni} p={p} y={line.y} auxiliaryRow={line.hasOrnament} />)}
                 <Beams m={m} y={line.y} />
                 <BarLine x={m.x + m.w} y={line.y} kind={endKind} />
               </g>
@@ -460,7 +479,10 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
           <Ties line={line} previous={lines[li - 1]} />
         </g>
       ))}
-      <Legend y={height - L.padTop + 26} width={width} />
+      <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0)} width={width} />
+      {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
+        波音：主—辅—主；辅为邻音孔位，+ 吹 / − 吸
+      </text>}
     </svg>
   );
 }

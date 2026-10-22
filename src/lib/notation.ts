@@ -1,8 +1,8 @@
-import type { Note, Score } from '../types/score';
+import type { Note, PitchNote, Score } from '../types/score';
 import { noteToMidi } from '../types/score';
 
-export function notesIncludingGrace(note: Note): Note[] {
-  return [...(note.graceNotes ?? []), note];
+export function notesForAnalysis(note: Note): PitchNote[] {
+  return [...(note.graceNotes ?? []), note, ...(note.ornament ? [note.ornament.auxiliary] : [])];
 }
 
 /** All durations use a quarter note as one beat, including compound meters. */
@@ -22,6 +22,7 @@ export function tieWarnings(score: Score): string[] {
     if (!note.tie) return [];
     const next = notes[index + 1]?.note;
     if (next?.graceNotes?.length) return [`第 ${li + 1} 行第 ${mi + 1} 小节第 ${ni + 1} 音的延音线暂不支持跨过前倚音，请分开记谱`];
+    if (next?.ornament) return [`第 ${li + 1} 行第 ${mi + 1} 小节第 ${ni + 1} 音的延音线暂不支持跨过波音，请分开记谱`];
     if (note.degree !== 0 && next && next.degree !== 0
       && noteToMidi(score.key, note) === noteToMidi(score.key, next)) return [];
     return [`第 ${li + 1} 行第 ${mi + 1} 小节第 ${ni + 1} 音的延音线必须连接后续同音高音符`];

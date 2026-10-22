@@ -1,5 +1,5 @@
 import type { Score } from '../types/score';
-import { notesIncludingGrace } from './notation';
+import { notesForAnalysis } from './notation';
 
 export interface LibraryFilters {
   query: string;
@@ -23,7 +23,7 @@ export function filterScores(scores: Score[], filters: LibraryFilters, favorites
     if (!terms.every((term) => text.includes(term))) return false;
     if (score.difficulty > filters.maxDifficulty || (filters.tag && !score.tags.includes(filters.tag))) return false;
     if (filters.favoritesOnly && !favoriteIds.has(score.id)) return false;
-    const notes = score.lines.flatMap((line) => line.flatMap((m) => m.notes.flatMap(notesIncludingGrace))).filter((n) => n.degree !== 0);
+    const notes = score.lines.flatMap((line) => line.flatMap((m) => m.notes.flatMap(notesForAnalysis))).filter((n) => n.degree !== 0);
     if (filters.technique === 'natural' && notes.some((n) => !n.hole || n.bend || n.overblow)) return false;
     if (filters.technique === 'bends' && !notes.some((n) => n.bend)) return false;
     return true;

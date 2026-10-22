@@ -11,6 +11,34 @@ function bars(id: string) {
   return score.lines.flat().map((m) => m.notes.map((n) => [noteToMidi(score.key, n), noteDuration(n)]));
 }
 
+test('Spring Excursion keeps the full upper melody, different cadences and chromatic bridge', () => {
+  const source = bars('spring-excursion');
+  assert.equal(source.length, 16);
+  assert.deepEqual(source[0], [[67, 1], [67, 0.5], [72, 1], [67, 0.5]]);
+  assert.deepEqual(source[3], [[65, 1], [62, 0.5], [64, 1.5]]);
+  for (const index of [7, 15]) assert.deepEqual(source[index], [[65, 1], [62, 0.5], [60, 1.5]]);
+  assert.deepEqual(source[10], [[67, 1], [67, 0.5], [71, 1], [69, 0.5]]);
+  assert.deepEqual(source[11], [[67, 1], [66, 0.5], [67, 1.5]]);
+  assert.deepEqual(source.slice(4, 8), source.slice(12, 16));
+});
+
+test('Wuxi Jing retains its 16-bar edition, upper mordent and two pre-graces', () => {
+  const source = bars('wuxi-jing');
+  assert.equal(source.length, 16);
+  assert.deepEqual(source[0], [[81, 0.5], [81, 0.25], [79, 0.25], [81, 0.5], [86, 0.5]]);
+  assert.deepEqual(source[4], [[84, 0.5], [84, 1], [86, 0.5]]);
+  assert.deepEqual(source[5], [[88, 0.75], [86, 0.25], [88, 0.75], [86, 0.25]]);
+  assert.deepEqual(source[14], [[76, 0.5], [79, 0.25], [79, 0.25], [79, 0.25], [81, 0.25], [74, 0.5]]);
+  assert.deepEqual(source[15], [[76, 0.25], [79, 0.25], [76, 0.25], [74, 0.25], [72, 1]]);
+  const score = BUILTIN_SCORES.find((s) => s.id === 'wuxi-jing')!;
+  const measures = score.lines.flat();
+  assert.equal(measures[0].notes[4].ornament?.kind, 'upper-mordent');
+  assert.equal(noteToMidi(score.key, measures[0].notes[4].ornament!.auxiliary), 88);
+  assert.equal(noteToMidi(score.key, measures[3].notes[0].graceNotes![0]), 81);
+  assert.equal(noteToMidi(score.key, measures[7].notes[0].graceNotes![0]), 84);
+  assert.equal(analyzeScore(score).bendNotes, 0);
+});
+
 test('the original call-response study stays on natural reeds and retains breathing rests', () => {
   const score = BUILTIN_SCORES.find((s) => s.id === 'cross-harp-call-response')!;
   const analysis = analyzeScore(score);

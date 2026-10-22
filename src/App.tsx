@@ -43,6 +43,7 @@ function AnalysisPanel({ score }: { score: Score }) {
     <div className="analysis">
       <b>{score.title}</b>　音符 <b>{a.totalNotes}</b> 个　
       {a.graceNotes > 0 && <span>（含 {a.graceNotes} 个前倚音）　</span>}
+      {a.ornamentNotes > 0 && <span>（含 {a.ornamentNotes} 个波音辅助音）　</span>}
       音域 <b>{a.minMidi ?? '—'} ~ {a.maxMidi ?? '—'}</b>（MIDI）　
       压音 <b className={a.bendNotes ? 'warn' : ''}>{a.bendNotes}</b> 个　
       {a.overblowNotes > 0 && <>超吹 <b className="warn">{a.overblowNotes}</b> 个　</>}
@@ -51,7 +52,7 @@ function AnalysisPanel({ score }: { score: Score }) {
         : <span className="err">· {errs.length} 个音超出能力范围</span>}
       {notationWarnings.length > 0 && <div className="warn">记谱提示：{notationWarnings.join('；')}</div>}
       {errs.length > 0 && <div className="err">{errs.map((e, i) =>
-        <span key={i}>第{e.lineIndex + 1}行第{e.measureIndex + 1}小节第{e.noteIndex + 1}音{e.graceIndex !== undefined ? `的倚音${e.graceIndex + 1}` : ''}：{e.reason}；</span>)}</div>}
+        <span key={i}>第{e.lineIndex + 1}行第{e.measureIndex + 1}小节第{e.noteIndex + 1}音{e.graceIndex !== undefined ? `的倚音${e.graceIndex + 1}` : e.ornament ? '的波音辅助音' : ''}：{e.reason}；</span>)}</div>}
       {score.notes && <div>演奏提示：{score.notes}</div>}
       {score.source && (
         <div className="score-source">
@@ -66,7 +67,7 @@ function AnalysisPanel({ score }: { score: Score }) {
       {warns.length > 0 && warns.length <= 12 && (
         <div className="warn">
           {warns.map((w, i) => (
-            <span key={i}>第{w.lineIndex + 1}行第{w.measureIndex + 1}小节{w.graceIndex !== undefined ? `第${w.noteIndex + 1}音的倚音${w.graceIndex + 1}` : ''} {w.reason}；</span>
+            <span key={i}>第{w.lineIndex + 1}行第{w.measureIndex + 1}小节{w.graceIndex !== undefined ? `第${w.noteIndex + 1}音的倚音${w.graceIndex + 1}` : w.ornament ? `第${w.noteIndex + 1}音的波音辅助音` : ''} {w.reason}；</span>
           ))}
         </div>
       )}

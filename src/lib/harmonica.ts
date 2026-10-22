@@ -2,9 +2,9 @@
  * 十孔布鲁斯口琴（Richter 音阶，C 调）音高引擎
  * 负责：MIDI 音高 ↔ 孔位/吹吸/压音 映射、曲谱可吹性分析
  */
-import type { Note, Score, Breath } from '../types/score';
+import type { PitchNote, Score, Breath } from '../types/score';
 import { KEY_ROOTS, noteToMidi } from '../types/score';
-import { notesIncludingGrace } from './notation';
+import { notesForAnalysis } from './notation';
 
 /** 孔位演奏方式 */
 export interface HoleOption {
@@ -108,6 +108,7 @@ export interface ScoreIssue {
   measureIndex: number;
   noteIndex: number;
   graceIndex?: number;
+  ornament?: boolean;
   midi: number | null;
   reason: string;
   severity: 'error' | 'warning';
@@ -120,10 +121,12 @@ export interface ScoreAnalysis {
   bendNotes: number;
   /** 需要的超吹音符数 */
   overblowNotes: number;
-  /** 总音符数（不含休止符） */
+  /** 书面主音、倚音和波音辅助音总数（不含休止，不重复计波音返回主音） */
   totalNotes: number;
   /** 上述总音符中包含的前倚音数 */
   graceNotes: number;
+  /** 总计中包含的波音辅助音数量（每个波音记一个辅助音） */
+  ornamentNotes: number;
   /** 最低/最高 MIDI */
   minMidi: number | null;
   maxMidi: number | null;
@@ -132,15 +135,16 @@ export interface ScoreAnalysis {
 /** 为曲谱所有音符自动推算孔位标记，并分析可吹性 */
 export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis {
   const issues: ScoreIssue[] = [];
-  let bendNotes = 0, overblowNotes = 0, totalNotes = 0, graceNotes = 0;
+  let bendNotes = 0, overblowNotes = 0, totalNotes = 0, graceNotes = 0, ornamentNotes = 0;
   let minMidi: number | null = null, maxMidi: number | null = null;
   const root = harmonicaRoot(score.harmonicaKey);
 
   score.lines.forEach((line, li) => {
     line.forEach((measure, mi) => {
-      measure.notes.forEach((main, ni) => notesIncludingGrace(main).forEach((note, index) => {
+      measure.notes.forEach((main, ni) => notesForAnalysis(main).forEach((note, index) => {
         const isGrace = index < (main.graceNotes?.length ?? 0);
-        const location = { lineIndex: li, measureIndex: mi, noteIndex: ni, ...(isGrace ? { graceIndex: index } : {}) };
+        const isOrnament = index > (main.graceNotes?.length ?? 0);
+        const location = { lineIndex: li, measureIndex: mi, noteIndex: ni, ...(isGrace ? { graceIndex: index } : {}), ...(isOrnament ? { ornament: true } : {}) };
         // 清除导入文件或上一次分析留下的派生孔位，避免不可奏音显示陈旧标记。
         note.hole = null;
         note.breath = null;
@@ -149,6 +153,7 @@ export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis
         if (note.degree === 0) return;
         totalNotes++;
         if (isGrace) graceNotes++;
+        if (isOrnament) ornamentNotes++;
         const midi = noteToMidi(score.key, note, score.octaveShift ?? 0);
         if (midi === null) {
           issues.push({ ...location, midi, reason: '无法解析音高', severity: 'error' });
@@ -183,7 +188,7 @@ export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis
 
   return {
     playable: issues.every((i) => i.severity !== 'error'),
-    issues, bendNotes, overblowNotes, totalNotes, graceNotes, minMidi, maxMidi,
+    issues, bendNotes, overblowNotes, totalNotes, graceNotes, ornamentNotes, minMidi, maxMidi,
   };
 }
 
@@ -194,7 +199,7 @@ export function midiToName(midi: number): string {
 }
 
 /** 口琴孔位标记文本，如 +4 / -3'' / +1° */
-export function holeLabel(note: Note): string {
+export function holeLabel(note: PitchNote): string {
   if (note.degree === 0 || note.hole == null || !note.breath) return '';
   const sign = note.breath === 'blow' ? '+' : '-';
   const bend = note.bend ? "'".repeat(note.bend) : '';

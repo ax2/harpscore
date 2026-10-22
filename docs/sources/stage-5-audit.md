@@ -34,13 +34,18 @@ Suggested practice tempi are editorial choices unless the source gives a numeric
 - **cross-harp-call-response**: newly authored 16-bar G/C-harp exercise, four four-bar question/answer groups with phrase-ending rests. Natural reeds only; no claimed folk-song source or 12-bar chord form. Straight eighths, suggested practice tempo.
 - **low-blues-scale-study**: newly authored eight-bar G blues-scale exercise. Pitch classes G/Bb/C/Db/D/F, including octave G; Bb4 is 3-draw half-step bend and Db5 is 4-draw half-step bend. Eleven written bend notes. Straight eighths, with C–Db–D and reverse comparisons. Exercises are counted separately from the song expansion target.
 
-## Pending / rejected sources
+## Mordent batch — 2026-10-22
+
+- **wuxi-jing**: Music Appreciation, printed p.18 / PDF p.25, example 1-8. All three notation rows enlarged and compared. Sixteen bars in 2/4, B tonic changed to C and source-relative octaves raised one octave. Opening high re has a single upper mordent, with high mi auxiliary (D6–E6–D6 on the adapted score); bars 4 and 8 retain pre-graces. The short wave was identified against *Basic Music Theory Course* (revised edition, People's Music Publishing House, 2006), printed p.183 / PDF p.200, example 13-5: its upper-mordent glyph matches the source. The earlier tentative “trill” description was corrected. [Theory scan](https://www.whyx.net.cn/uploads/media/files/gkzp/fj6.pdf#page=200). No performance-timing allocation is asserted. Lyrics and different-pitch slurs omitted; suggested tempo is editorial.
+- **spring-excursion**: PEP grade 7 lower, printed pp.6–7 / PDF pp.11–12. Both complete pages visually compared; only the upper female voice (main melody) is incorporated, as a 16-bar melody. Original C4–C5 register retained, including F#4 in bar 12 so ordinary draw bending suffices. The first four-bar phrase ends on E4; second and final phrases end on C4. Lower voices, lyrics, dynamics and ritardando omitted explicitly. Suggested quarter-note tempo is editorial.
+
+## Pending / rejected sources (current)
 
 - Fengyang Flower Drum concern resolved in batch 3 using the PEP edition; see its accepted ledger entry above.
 - There's a Hole in the Bucket in the same book: modern introduction/interlude and alternate endings intertwined with the folk tune; seek a simpler original melody source rather than copying an arrangement.
 - The school PDF exceeds the web reader's size limit. Downloaded normally, rendered with Poppler; JP2 fallback warnings occurred but page images and notation were visually legible. Detail crop used to investigate ambiguous octave marks.
 - Existing source policy's statement that octaveShift does not affect displayed octave dots is obsolete. Stage 2 hotfix/current implementation bakes all shifts into note octaves for consistent notation and pitch.
-- Wuxi Jing from Music Appreciation: grace notes are now supported, but the first-bar wavy ornament's identity and auxiliary pitches still need verification. The earlier shorthand calling it a trill was not established evidence; do not admit it with an assumed ornament.
+- Wuxi Jing's ornament dependency is resolved in the mordent batch above. It is a single upper mordent, not a verified trill.
 - Deck the Hall ABC in Everyday Song Book: final bar appears half a beat short; needs original-edition comparison before admission.
 - Longing for Spring's grace-note dependency is resolved; admitted in the grace-note batch above.
 - PEP grade 7 PDF download initially stopped partway; resumed successfully, then verified as 79 readable pages before inspection. National platform PDF was unavailable (403); it was not treated as read.

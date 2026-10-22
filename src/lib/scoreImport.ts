@@ -1,5 +1,5 @@
-import type { GraceNote, Measure, Note, Score, ScoreSourceFormat, Technique } from '../types/score';
-import { KEY_ROOTS } from '../types/score';
+import type { GraceNote, Measure, Mordent, Note, Score, ScoreSourceFormat, Technique } from '../types/score';
+import { KEY_ROOTS, noteToMidi } from '../types/score';
 import { isSupportedDuration, noteDuration, tieWarnings } from './notation';
 
 type JsonObject = Record<string, unknown>;
@@ -52,7 +52,7 @@ function numberIn(value: unknown, min: number, max: number): number | undefined 
     : undefined;
 }
 
-function parseNoteObject(value: unknown, path: string, errors: string[], allowGrace = true): Note | undefined {
+function parseNoteObject(value: unknown, path: string, errors: string[], allowDecorations = true): Note | undefined {
   if (!isObject(value)) {
     errors.push(`${path} 必须是音符对象`);
     return undefined;
@@ -89,7 +89,7 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowGr
 
   let graceNotes: GraceNote[] | undefined;
   if (value.graceNotes !== undefined) {
-    if (!allowGrace || !Array.isArray(value.graceNotes) || value.graceNotes.length < 1 || value.graceNotes.length > 4) {
+    if (!allowDecorations || !Array.isArray(value.graceNotes) || value.graceNotes.length < 1 || value.graceNotes.length > 4) {
       errors.push(`${path}.graceNotes 必须是 1–4 个非嵌套的前倚音`);
     } else {
       graceNotes = value.graceNotes.flatMap((item, index) => {
@@ -102,8 +102,22 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowGr
       });
     }
   }
-  if (!allowGrace && (degree === 0 || value.dotted !== undefined || value.tie !== undefined || value.lyric !== undefined || value.techniques !== undefined)) {
-    errors.push(`${path} 倚音不能是休止符，也不能带附点、延音、歌词或技巧`);
+  if (!allowDecorations && (degree === 0 || value.dotted !== undefined || value.tie !== undefined || value.lyric !== undefined || value.techniques !== undefined)) {
+    errors.push(`${path} 装饰辅助音不能是休止符，也不能带附点、延音、歌词或技巧`);
+  }
+
+  let ornament: Mordent | undefined;
+  if (value.ornament !== undefined) {
+    if (!allowDecorations || !isObject(value.ornament) || !['upper-mordent', 'lower-mordent'].includes(String(value.ornament.kind)) || !isObject(value.ornament.auxiliary)) {
+      errors.push(`${path}.ornament 必须是带 auxiliary 音高的 upper-mordent 或 lower-mordent`);
+    } else {
+      const auxiliary = value.ornament.auxiliary;
+      if (['beats', 'dotted', 'tie', 'lyric', 'techniques', 'graceNotes', 'ornament'].some((field) => auxiliary[field] !== undefined)) {
+        errors.push(`${path}.ornament.auxiliary 只能包含音高，不能带时值或装饰音属性`);
+      }
+      const pitch = parseNoteObject({ ...auxiliary, beats: 1 }, `${path}.ornament.auxiliary`, errors, false);
+      if (pitch) ornament = { kind: value.ornament.kind as Mordent['kind'], auxiliary: { degree: pitch.degree, accidental: pitch.accidental, octave: pitch.octave } };
+    }
   }
 
   return {
@@ -116,6 +130,7 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowGr
     ...(typeof value.lyric === 'string' && value.lyric ? { lyric: value.lyric } : {}),
     ...(techniques?.length ? { techniques } : {}),
     ...(graceNotes?.length ? { graceNotes } : {}),
+    ...(ornament ? { ornament } : {}),
   };
 }
 
@@ -164,10 +179,21 @@ function parseLines(value: unknown, errors: string[]): Measure[][] | undefined {
   return lines.length === value.length ? lines : undefined;
 }
 
-function parseDslToken(token: string, path: string, allowGrace = true): Note {
+function parseDslToken(token: string, path: string, allowDecorations = true): Note {
+  if (/^\[(U|L):/.test(token)) {
+    const match = token.match(/^\[(U|L):([^\[\]]+)\](.+)$/);
+    if (!allowDecorations || !match) throw new Error(`${path} 波音格式应为 [U:3']2'/ 或 [L:1]2`);
+    const main = parseDslToken(match[3], path, false);
+    const auxiliary = parseDslToken(match[2], `${path} 波音辅助音`, false);
+    if (!auxiliary.degree || auxiliary.beats !== 1 || auxiliary.dotted || auxiliary.tie || auxiliary.lyric) {
+      throw new Error(`${path} 波音辅助音只能指定音高`);
+    }
+    main.ornament = { kind: match[1] === 'U' ? 'upper-mordent' : 'lower-mordent', auxiliary: { degree: auxiliary.degree, accidental: auxiliary.accidental, octave: auxiliary.octave } };
+    return main;
+  }
   if (token.startsWith('{')) {
     const match = token.match(/^\{([^{}]+)\}(.+)$/);
-    if (!allowGrace || !match) throw new Error(`${path} 倚音格式应为 {6}1 或 {6;1'}5`);
+    if (!allowDecorations || !match) throw new Error(`${path} 倚音格式应为 {6}1 或 {6;1'}5`);
     const parts = match[1].split(';');
     if (parts.length > 4 || parts.some((part) => !part)) throw new Error(`${path} 只支持 1–4 个前倚音`);
     const main = parseDslToken(match[2], path, false);
@@ -364,6 +390,15 @@ export function scoreFromObject(value: unknown): ImportResult {
     note.graceNotes?.forEach((grace, gi) => {
       if (Math.abs((grace.octave ?? 0) + (octaveShift ?? 0)) > 3) errors.push(`${path}.graceNotes[${gi}].octave 合并移位后必须在 -3–3 范围内`);
     });
+    if (note.ornament) {
+      const auxiliary = note.ornament.auxiliary;
+      if (!note.degree || note.graceNotes?.length || note.techniques?.length) errors.push(`${path} 波音必须附着于有声主音，暂不与其他装饰或技巧叠加`);
+      if (Math.abs((auxiliary.octave ?? 0) + (octaveShift ?? 0)) > 3) errors.push(`${path}.ornament.auxiliary.octave 合并移位后必须在 -3–3 范围内`);
+      const direction = note.ornament.kind === 'upper-mordent' ? 1 : -1;
+      const steps = auxiliary.degree - note.degree + 7 * ((auxiliary.octave ?? 0) - (note.octave ?? 0));
+      const interval = key ? noteToMidi(key, auxiliary)! - noteToMidi(key, note)! : 0;
+      if (steps !== direction || interval * direction <= 0) errors.push(`${path}.ornament.auxiliary 必须是指定方向的相邻音级`);
+    }
   })));
 
   if (errors.length || !title || !key || !harmonicaKey || !timeSignature || difficulty === undefined || !lines) {
@@ -380,6 +415,7 @@ export function scoreFromObject(value: unknown): ImportResult {
             note.octave = (note.octave ?? 0) + octaveShift;
           }
           for (const grace of note.graceNotes ?? []) grace.octave = (grace.octave ?? 0) + octaveShift;
+          if (note.ornament) note.ornament.auxiliary.octave = (note.ornament.auxiliary.octave ?? 0) + octaveShift;
         }
       }
     }
