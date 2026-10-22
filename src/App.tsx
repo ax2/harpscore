@@ -8,8 +8,9 @@ import {
 import { exportSvg, exportPng, exportPdf, exportJson } from './lib/export';
 import ScoreSheet from './components/ScoreSheet';
 import { scoreFromObject } from './lib/scoreImport';
+import { DEFAULT_FILTERS, filterScores, loadFavorites, saveFavorites, type LibraryFilters } from './lib/libraryView';
 
-function ScoreItem({ s, active, onClick }: { s: Score; active: boolean; onClick: () => void }) {
+function ScoreItem({ s, active, favorite, onClick }: { s: Score; active: boolean; favorite: boolean; onClick: () => void }) {
   return (
     <button className={`score-item${active ? ' active' : ''}`} onClick={onClick}>
       <div className="t">{s.title}</div>
@@ -17,6 +18,7 @@ function ScoreItem({ s, active, onClick }: { s: Score; active: boolean; onClick:
         <span>1={s.key}</span>
         <span>{s.timeSignature}</span>
         <span className="stars">{'★'.repeat(s.difficulty)}</span>
+        {favorite && <span className="favorite-mark">已收藏</span>}
         {s.tags.slice(0, 2).map((t) => <span key={t}>#{t}</span>)}
       </div>
     </button>
@@ -75,7 +77,8 @@ export default function App() {
   const [lib, setLib] = useState<Library>(() => loadLibrary());
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const [filters, setFilters] = useState<LibraryFilters>(DEFAULT_FILTERS);
+  const [favorites, setFavorites] = useState(loadFavorites);
   const [importOpen, setImportOpen] = useState(false);
   const [importText, setImportText] = useState('');
   const [importError, setImportError] = useState('');
@@ -89,16 +92,10 @@ export default function App() {
     }
   };
 
-  const scores = useMemo(() => {
-    const all = allScores(lib);
-    if (!query.trim()) return all;
-    const q = query.trim().toLowerCase();
-    return all.filter((s) =>
-      s.title.toLowerCase().includes(q) ||
-      (s.subtitle ?? '').toLowerCase().includes(q) ||
-      s.tags.some((t) => t.toLowerCase().includes(q))
-    );
-  }, [lib, query]);
+  const scores = useMemo(() => filterScores(allScores(lib), filters, favorites), [lib, filters, favorites]);
+  const tags = useMemo(() => [...new Set(allScores(lib).flatMap((s) => s.tags))].sort((a, b) => a.localeCompare(b, 'zh-CN')), [lib]);
+  const changeFilter = <K extends keyof LibraryFilters>(key: K, value: LibraryFilters[K]) =>
+    setFilters((old) => ({ ...old, [key]: value }));
 
   const current = currentId ? findScore(lib, currentId) : undefined;
 
@@ -132,17 +129,35 @@ export default function App() {
           <div className="sub">布鲁斯口琴乐谱 · 十孔口琴专用</div>
         </div>
         <div className="search-box">
-          <input placeholder="搜索曲名 / 标签…" value={query} onChange={(e) => setQuery(e.target.value)} />
+          <input aria-label="搜索曲谱" placeholder="搜索曲名 / 标签…" value={filters.query} onChange={(e) => changeFilter('query', e.target.value)} />
+        </div>
+        <div className="library-filters">
+          <label>最高难度<select aria-label="最高难度" value={filters.maxDifficulty} onChange={(e) => changeFilter('maxDifficulty', Number(e.target.value))}>
+            {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n === 5 ? '不限难度' : `${n} 星及以下`}</option>)}
+          </select></label>
+          <label>演奏技巧<select aria-label="演奏技巧" value={filters.technique} onChange={(e) => changeFilter('technique', e.target.value as LibraryFilters['technique'])}>
+            <option value="all">全部技巧</option><option value="natural">无需压音</option><option value="bends">需要压音</option>
+          </select></label>
+          <label>曲目标签<select aria-label="曲目标签" value={filters.tag} onChange={(e) => changeFilter('tag', e.target.value)}>
+            <option value="">全部标签</option>{tags.map((tag) => <option key={tag} value={tag}>{tag}</option>)}
+          </select></label>
+          <label>排序<select aria-label="排序" value={filters.sort} onChange={(e) => changeFilter('sort', e.target.value as LibraryFilters['sort'])}>
+            <option value="default">曲库顺序</option><option value="difficulty">从易到难</option><option value="title">曲名顺序</option>
+          </select></label>
+          <label className="favorites-filter"><input type="checkbox" checked={filters.favoritesOnly} onChange={(e) => changeFilter('favoritesOnly', e.target.checked)} />仅看收藏</label>
+          <button className="filter-reset" onClick={() => setFilters(DEFAULT_FILTERS)}>清除筛选</button>
+          <div className="filter-count" role="status">找到 {scores.length} / {lib.builtin.length + lib.user.length} 首曲谱</div>
         </div>
         <div className="score-list">
-          <div className="group-title">内置曲谱（{lib.builtin.length}）</div>
+          {scores.length === 0 && <p className="no-results">没有符合条件的曲谱。试试清除筛选，或打开一首曲谱后点击「收藏」。</p>}
+          <div className="group-title">内置曲谱（{scores.filter((s) => s.builtin).length} / {lib.builtin.length}）</div>
           {scores.filter((s) => s.builtin).map((s) => (
-            <ScoreItem key={s.id} s={s} active={s.id === currentId}
+            <ScoreItem key={s.id} s={s} active={s.id === currentId} favorite={favorites.includes(s.id)}
               onClick={() => { setCurrentId(s.id); setSidebarOpen(false); }} />
           ))}
-          <div className="group-title">我的曲谱（{lib.user.length}）</div>
+          <div className="group-title">我的曲谱（{scores.filter((s) => !s.builtin).length} / {lib.user.length}）</div>
           {scores.filter((s) => !s.builtin).map((s) => (
-            <ScoreItem key={s.id} s={s} active={s.id === currentId}
+            <ScoreItem key={s.id} s={s} active={s.id === currentId} favorite={favorites.includes(s.id)}
               onClick={() => { setCurrentId(s.id); setSidebarOpen(false); }} />
           ))}
           {lib.user.length === 0 && (
@@ -172,6 +187,11 @@ export default function App() {
           <>
             <div className="toolbar">
               <button className="btn menu-btn" onClick={() => setSidebarOpen(true)}>曲库</button>
+              <button className="btn" aria-pressed={favorites.includes(current.id)} onClick={() => runAction(() => {
+                const next = favorites.includes(current.id) ? favorites.filter((id) => id !== current.id) : [...favorites, current.id];
+                saveFavorites(next);
+                setFavorites(next);
+              })}>{favorites.includes(current.id) ? '★ 已收藏' : '☆ 收藏'}</button>
               <button className="btn primary" onClick={() => runAction(() => exportPng(current))}>导出 PNG</button>
               <button className="btn" onClick={() => runAction(() => exportSvg(current))}>导出 SVG</button>
               <button className="btn" onClick={() => runAction(() => exportPdf(current))}>打印 / PDF</button>
