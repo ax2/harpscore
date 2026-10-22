@@ -451,7 +451,7 @@ function Header({ score, width }: { score: Score; width: number }) {
     (s, ch) => s + (/[\u2e80-\u9fff\u2605\u2606·]/.test(ch) ? 12 : 6.8), 0
   ) + 26;
   return (
-    <g>
+    <g data-score-part="header">
       <text x={W / 2} y={LAYOUT.padTop + 18} textAnchor="middle" fontFamily={TITLE_FONT}
         fontSize={compact ? 24 : 30} fontWeight={700} fill={INK}>{score.title}</text>
       {score.subtitle && (
@@ -527,7 +527,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
       <rect x={0} y={0} width={width} height={height} fill={PAPER} />
       <Header score={score} width={width} />
       {lines.map((line, li) => (
-        <g key={li}>
+        <g key={li} data-score-row={li}>
           {/* 首行谱号位置：调号拍号（简谱惯例已在头部标明，行首画粗细起线） */}
           <BarLine x={line.measures[0].x} y={line.y}
             kind={line.measures[0].continuesFromPrevious ? 'continuation' : line.measures[0].measure.repeatBegin ? 'repeatBegin' : li === 0 ? 'begin' : 'normal'} />
@@ -556,6 +556,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
           <Ties line={line} previous={lines[li - 1]} />
         </g>
       ))}
+      <g data-score-part="footer">
       <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0) - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0) - techniqueFooter} width={width} />
       {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26 - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0) - techniqueFooter} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         波音：主—辅—主；辅为邻音孔位，+ 吹 / − 吸
@@ -569,6 +570,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
       {hasTechniques && <text data-notation="technique-scope" x={L.padX} y={height - L.padTop + 26} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         技巧文字不展开过程音；孔位仅校验已记音高。
       </text>}
+      </g>
     </svg>
   );
 }

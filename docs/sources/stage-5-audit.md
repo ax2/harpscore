@@ -1,5 +1,7 @@
 # Stage 5 transcription ledger
 
+2026-10-23 metadata correction: Xiao Bai Cai and Zou Jiang Zhou use G as the Zhi-mode tonic after transposition to a C jianpu reference, so both use second position on a C harp. Their melody/fingering arrays are unchanged. Sources: Music Appreciation printed p.5/PDF p.12 for Zou Jiang Zhou's original D Zhi cadence; Basic Music Theory revised edition printed p.85/PDF p.102, ex.7-3(d), for Xiao Bai Cai's mode classification. See [Stage 6 evidence and links](../stages/stage-6-print.md). The theory example was used only for the written mode label, not as a melody transcription source.
+
 All dates use Asia/Shanghai. Only melodic note/rhythm data are incorporated. Source page artwork, lyrics and accompaniments are excluded. A source-check date denotes an actual comparison with the specified version, not a universal claim across folk variants.
 
 | ID | Primary source and location | Comparison and adaptation |

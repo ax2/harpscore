@@ -11,6 +11,17 @@ function bars(id: string) {
   return score.lines.flat().map((m) => m.notes.map((n) => [noteToMidi(score.key, n), noteDuration(n)]));
 }
 
+test('Zhi-mode folk tunes use their G tonic on a C harp, not the jianpu reference pitch', () => {
+  // Music Appreciation p.5 (Zou Jiang Zhou); Basic Music Theory p.85 ex.7-3(d) (Xiao Bai Cai).
+  for (const id of ['xiao-bai-cai', 'zou-jiang-zhou']) {
+    const score = BUILTIN_SCORES.find(s => s.id === id)!;
+    assert.equal(score.key, 'C');
+    assert.equal(score.harmonicaKey, 'C');
+    assert.equal(score.position, '第二把位');
+    assert.match(score.notes ?? '', /主音 G/);
+  }
+});
+
 test('Jasmine Flower keeps all seven rows of the selected simple Jiangsu version', () => {
   const source = bars('jasmine-flower');
   assert.equal(source.length, 28);
