@@ -75,6 +75,7 @@ interface PlacedLine {
   hasLyric: boolean;
   hasOrnament: boolean;
   techniqueRows: number;
+  articulationOffset: number;
 }
 
 function mainNoteWidth(n: Note): number {
@@ -185,8 +186,12 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth, showMeas
     const previousBar = previousLine?.measures[previousLine.measures.length - 1];
     const hasTie = rawLine.some(({ measure }) => measure.notes.some((n) => n.tie))
       || previousBar?.notes[previousBar.notes.length - 1]?.note.tie;
+    const hasArticulation = rawLine.some(({ measure }) => measure.notes.some(n => n.articulation));
+    // A common band within each row also clears incoming ties on marked notes.
+    const articulationOffset = hasFermata ? 72 : hasOrnament ? 64 : hasGrace || hasTie ? 44 : 20;
+    if (hasArticulation) y += 24;
     // Separate the optional labels from fermatas, ornaments and grace/tie arcs.
-    const numberOffset = hasFermata ? 66 : hasOrnament ? 54 : hasGrace || hasTie ? 40 : 18;
+    const numberOffset = hasArticulation ? articulationOffset + 16 : hasFermata ? 66 : hasOrnament ? 54 : hasGrace || hasTie ? 40 : 18;
     if (showMeasureNumbers) y += numberOffset + 8;
     // 自然宽度
     const mWidths = rawLine.map(({ measure: m }) => {
@@ -234,7 +239,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth, showMeas
     const hasLyric = rawLine.some(({ measure }) => measure.notes.some((n) => n.lyric));
     const techniqueRows = Math.max(0, ...rawLine.flatMap(({ measure }) => measure.notes.map(n => n.techniques?.length ?? 0)));
     const height = LAYOUT.lineBaseHeight + (hasLyric ? LAYOUT.lyricHeight : 0) + (hasOrnament ? 22 : 0) + techniqueRows * 16;
-    lines.push({ measures, y, numberY: y - numberOffset, height, hasLyric, hasOrnament, techniqueRows });
+    lines.push({ measures, y, numberY: y - numberOffset, height, hasLyric, hasOrnament, techniqueRows, articulationOffset });
     y += height + LAYOUT.lineGap;
   });
 
@@ -242,6 +247,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth, showMeas
     + (lines.some((line) => line.hasOrnament) ? 24 : 0)
     + (score.lines.some((line) => line.some((m) => m.notes.some((n) => n.fermata))) ? 24 : 0)
     + (lines.some(line => line.techniqueRows > 0) ? 24 : 0)
+    + (score.lines.some(line => line.some(m => m.notes.some(n => n.articulation))) ? 24 : 0)
     + (lines.some((line) => line.measures.some((m) => m.continuesOnNext)) ? 24 : 0)
     + (showMeasureNumbers ? 24 : 0) };
 }
@@ -307,11 +313,20 @@ function BarLine({ x, y, kind }: { x: number; y: number; kind: 'normal' | 'begin
   return <g>{els}</g>;
 }
 
-function NoteGlyph({ p, y, auxiliaryRow, techniqueRows }: { p: PlacedNote; y: number; auxiliaryRow: boolean; techniqueRows: number }) {
+function NoteGlyph({ p, y, auxiliaryRow, techniqueRows, articulationOffset }: { p: PlacedNote; y: number; auxiliaryRow: boolean; techniqueRows: number; articulationOffset: number }) {
   const n = p.note;
   const els: React.ReactNode[] = [];
   const cx = p.x;
   const acc = n.accidental === 1 ? '♯' : n.accidental === -1 ? '♭' : p.showNatural ? '♮' : '';
+  if (n.articulation) {
+    const ay = y - articulationOffset;
+    els.push(<g key="articulation" data-notation={n.articulation} fill="none" stroke={INK} strokeWidth={1.8}>
+      <title>{n.articulation === 'accent' ? '重音' : '保持音'}</title>
+      {n.articulation === 'accent'
+        ? <path d={`M ${cx - 6} ${ay - 4} L ${cx + 6} ${ay} L ${cx - 6} ${ay + 4}`} />
+        : <line x1={cx - 6} x2={cx + 6} y1={ay} y2={ay} />}
+    </g>);
+  }
   if (n.fermata) els.push(<g key="fermata" data-notation="fermata" fill={INK}>
     <path d={`M ${cx - 11} ${y - 41} Q ${cx} ${y - 63} ${cx + 11} ${y - 41}`} fill="none" stroke={INK} strokeWidth={1.8} />
     <circle cx={cx} cy={y - 44} r={2} />
@@ -536,6 +551,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
   const hasContinuations = lines.some((line) => line.measures.some((m) => m.continuesOnNext));
   const hasFermatas = score.lines.some((line) => line.some((m) => m.notes.some((n) => n.fermata)));
   const hasTechniques = lines.some(line => line.techniqueRows > 0);
+  const hasArticulations = score.lines.some(line => line.some(m => m.notes.some(n => n.articulation)));
   const techniqueFooter = hasTechniques ? 24 : 0;
   const L = LAYOUT;
   return (
@@ -569,7 +585,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
                   <text x={m.x + 23} y={line.y + 24}>{m.measure.timeSignature.split('/')[0]}</text>
                   <text x={m.x + 23} y={line.y + 47}>{m.measure.timeSignature.split('/')[1]}</text>
                 </g>}
-                {m.notes.map((p, ni) => <NoteGlyph key={ni} p={p} y={line.y} auxiliaryRow={line.hasOrnament} techniqueRows={line.techniqueRows} />)}
+                {m.notes.map((p, ni) => <NoteGlyph key={ni} p={p} y={line.y} auxiliaryRow={line.hasOrnament} techniqueRows={line.techniqueRows} articulationOffset={line.articulationOffset} />)}
                 <Beams m={m} y={line.y} />
                 <BarLine x={m.x + m.w} y={line.y} kind={endKind} />
               </g>
@@ -579,7 +595,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
         </g>
       ))}
       <g data-score-part="footer">
-      <g transform={showMeasureNumbers ? 'translate(0 -24)' : undefined}>
+      <g transform={showMeasureNumbers || hasArticulations ? `translate(0 ${-24 * (Number(showMeasureNumbers) + Number(hasArticulations))})` : undefined}>
       <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0) - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0) - techniqueFooter} width={width} />
       {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26 - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0) - techniqueFooter} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         波音：主—辅—主；辅为邻音孔位，+ 吹 / − 吸
@@ -594,6 +610,8 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
         技巧文字不展开过程音；孔位仅校验已记音高。
       </text>}
       </g>
+      {hasArticulations && <text data-notation="articulation-scope" x={L.padX} y={height - L.padTop + 26 - (showMeasureNumbers ? 24 : 0)}
+        fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>重音 &gt;：强调；保持音 —：保持音值，不额外加拍</text>}
       {showMeasureNumbers && <text data-notation="measure-number-scope" x={L.padX} y={height - L.padTop + 26}
         fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>小节号：弱起计入；续行沿用原编号</text>}
       </g>

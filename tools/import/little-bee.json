@@ -1,0 +1,24 @@
+{
+  "id": "little-bee",
+  "title": "小蜜蜂",
+  "subtitle": "香港中乐团教程版",
+  "composer": "所选教程未署曲作者",
+  "difficulty": 1,
+  "tags": [
+    "入门",
+    "儿歌"
+  ],
+  "notes": "按原页音级移写1=C并提高八度，原页未单列1=调号。保留8小节4/4、全部八分与四分音及两处四分休止，C5–G5均有自然音孔位。与曲库中英国旧歌《勤劳的小蜜蜂》（The Busy Bee）是不同旋律。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列器乐版本。",
+  "melody": "5/ 3/ 3 4/ 2/ 2 | 1/ 2/ 3/ 4/ 5/ 5/ 5 | 5/ 3/ 3 4/ 2/ 2 | 1/ 3/ 5/ 5/ 3 0 |\n2/ 2/ 2/ 2/ 2/ 3/ 4 | 3/ 3/ 3/ 3/ 3/ 4/ 5 | 5/ 3/ 3 4/ 2/ 2 | 1/ 3/ 5/ 5/ 1 0 ||",
+  "key": "C",
+  "harmonicaKey": "C",
+  "octaveShift": 1,
+  "position": "第一把位",
+  "timeSignature": "4/4",
+  "tempo": 96,
+  "sourceCheckedAt": "2026-10-23",
+  "order": 64,
+  "source": "香港中乐团《唢呐初级教程》，第26页。",
+  "sourceUrl": "https://ynyqxg.hkco.org/uploads/docs/5bd9828a7a7201.pdf#page=26",
+  "sourceFormat": "jianpu-image"
+}

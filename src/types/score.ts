@@ -46,6 +46,8 @@ export interface Note {
   tie?: boolean;
   /** 自由延长记号，不改变书面时值 */
   fermata?: boolean;
+  /** 重音 / 保持音；不改变书面音高和时值。 */
+  articulation?: 'accent' | 'tenuto';
   /** 歌词 */
   lyric?: string;
   /** 主音之前的 1–4 个短倚音；时长从演奏语境决定，不加入小节拍数 */

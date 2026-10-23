@@ -2263,6 +2263,262 @@
       "breath": "draw",
       "bend": 2,
       "overblow": false
+    },
+    {
+      "degree": 5,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 2,
+      "articulation": "accent",
+      "hole": 6,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 2,
+      "articulation": "accent",
+      "hole": 4,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 4,
+      "articulation": "accent",
+      "graceNotes": [
+        {
+          "degree": 2,
+          "accidental": 0,
+          "octave": 1,
+          "beats": 0.5,
+          "hole": 4,
+          "breath": "draw",
+          "bend": 0,
+          "overblow": false
+        }
+      ],
+      "hole": 4,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 2,
+      "beats": 1,
+      "articulation": "tenuto",
+      "hole": 7,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 2,
+      "accidental": 0,
+      "octave": 2,
+      "beats": 1,
+      "articulation": "tenuto",
+      "hole": 8,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 6,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 1,
+      "articulation": "tenuto",
+      "hole": 6,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 5,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 4,
+      "articulation": "tenuto",
+      "hole": 6,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 4,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 1,
+      "articulation": "tenuto",
+      "hole": 5,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 2,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 1,
+      "articulation": "tenuto",
+      "hole": 4,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 2,
+      "beats": 1,
+      "articulation": "accent",
+      "hole": 7,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 6,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 1,
+      "articulation": "accent",
+      "hole": 6,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 4,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 1,
+      "articulation": "accent",
+      "hole": 5,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 5,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 3,
+      "articulation": "tenuto",
+      "hole": 6,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 4,
+      "articulation": "tenuto",
+      "hole": 4,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 1,
+      "dotted": true,
+      "articulation": "tenuto",
+      "hole": 4,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 2,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 0.5,
+      "articulation": "tenuto",
+      "hole": 4,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 1,
+      "articulation": "tenuto",
+      "hole": 4,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 6,
+      "accidental": 0,
+      "octave": 0,
+      "beats": 1,
+      "articulation": "tenuto",
+      "hole": 3,
+      "breath": "draw",
+      "bend": 2,
+      "overblow": false
+    },
+    {
+      "degree": 6,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 4,
+      "articulation": "accent",
+      "hole": 6,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 6,
+      "accidental": 0,
+      "octave": 1,
+      "beats": 2,
+      "articulation": "accent",
+      "hole": 6,
+      "breath": "draw",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 2,
+      "beats": 4,
+      "tie": true,
+      "fermata": true,
+      "articulation": "accent",
+      "hole": 7,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
+    },
+    {
+      "degree": 1,
+      "accidental": 0,
+      "octave": 2,
+      "beats": 4,
+      "hole": 7,
+      "breath": "blow",
+      "bend": 0,
+      "overblow": false
     }
   ],
   "scores": [
@@ -11757,6 +12013,357 @@
             "sectionEnd": true,
             "notes": [
               33,
+              20
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "su-wu-herding-sheep",
+      "title": "苏武牧羊",
+      "subtitle": "学堂乐歌 · 香港中乐团器乐版",
+      "composer": "所选教程未署曲作者",
+      "key": "C",
+      "harmonicaKey": "C",
+      "position": "第一把位",
+      "timeSignature": "4/4",
+      "tempo": 72,
+      "difficulty": 3,
+      "tags": [
+        "传统曲",
+        "学堂乐歌",
+        "压音",
+        "重音",
+        "保持音",
+        "倚音",
+        "延长记号"
+      ],
+      "source": "香港中乐团《唢呐初级教程》，第33页。",
+      "sourceUrl": "https://ynyqxg.hkco.org/uploads/docs/5bd9828a7a7201.pdf#page=33",
+      "sourceFormat": "jianpu-image",
+      "sourceCheckedAt": "2026-10-23",
+      "builtin": true,
+      "order": 63,
+      "notes": "按原页音级移写1=C并提高八度，原页未单列1=调号。保留29个书写小节（末行5小节）、15处重音、29处保持音、3处八分前倚音及末两全音符之间的延音，前一全音符保留自由延长。音域G4–D6；低la需3孔吸气全音压音。保持音不是高八度标记，也不增加书面拍数。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列器乐版本。",
+      "lines": [
+        [
+          {
+            "notes": [
+              204,
+              205
+            ]
+          },
+          {
+            "notes": [
+              6,
+              1,
+              4,
+              6
+            ]
+          },
+          {
+            "notes": [
+              206
+            ]
+          },
+          {
+            "notes": [
+              207,
+              208,
+              207,
+              209
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              210
+            ]
+          },
+          {
+            "notes": [
+              211,
+              212,
+              211,
+              209
+            ]
+          },
+          {
+            "notes": [
+              210
+            ]
+          },
+          {
+            "notes": [
+              213,
+              214,
+              204
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              215,
+              214,
+              204
+            ]
+          },
+          {
+            "notes": [
+              6,
+              1,
+              4,
+              6
+            ]
+          },
+          {
+            "notes": [
+              206
+            ]
+          },
+          {
+            "notes": [
+              212,
+              212,
+              212,
+              209
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              216,
+              211
+            ]
+          },
+          {
+            "notes": [
+              6,
+              0,
+              32,
+              79,
+              31
+            ]
+          },
+          {
+            "notes": [
+              217
+            ]
+          },
+          {
+            "notes": [
+              1,
+              1,
+              2,
+              19
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              47
+            ]
+          },
+          {
+            "notes": [
+              1,
+              5,
+              10,
+              13,
+              1
+            ]
+          },
+          {
+            "notes": [
+              49
+            ]
+          },
+          {
+            "notes": [
+              218,
+              219,
+              211,
+              211
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              212,
+              211,
+              212,
+              220
+            ]
+          },
+          {
+            "notes": [
+              221,
+              220,
+              212,
+              211
+            ]
+          },
+          {
+            "notes": [
+              206
+            ]
+          },
+          {
+            "notes": [
+              28,
+              10,
+              4,
+              4
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              6,
+              4,
+              6,
+              0
+            ]
+          },
+          {
+            "notes": [
+              222
+            ]
+          },
+          {
+            "notes": [
+              204,
+              223
+            ]
+          },
+          {
+            "notes": [
+              224
+            ]
+          },
+          {
+            "sectionEnd": true,
+            "notes": [
+              225
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "little-bee",
+      "title": "小蜜蜂",
+      "subtitle": "香港中乐团教程版",
+      "composer": "所选教程未署曲作者",
+      "key": "C",
+      "harmonicaKey": "C",
+      "position": "第一把位",
+      "timeSignature": "4/4",
+      "tempo": 96,
+      "difficulty": 1,
+      "tags": [
+        "入门",
+        "儿歌"
+      ],
+      "source": "香港中乐团《唢呐初级教程》，第26页。",
+      "sourceUrl": "https://ynyqxg.hkco.org/uploads/docs/5bd9828a7a7201.pdf#page=26",
+      "sourceFormat": "jianpu-image",
+      "sourceCheckedAt": "2026-10-23",
+      "builtin": true,
+      "order": 64,
+      "notes": "按原页音级移写1=C并提高八度，原页未单列1=调号。保留8小节4/4、全部八分与四分音及两处四分休止，C5–G5均有自然音孔位。与曲库中英国旧歌《勤劳的小蜜蜂》（The Busy Bee）是不同旋律。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列器乐版本。",
+      "lines": [
+        [
+          {
+            "notes": [
+              17,
+              13,
+              5,
+              14,
+              10,
+              6
+            ]
+          },
+          {
+            "notes": [
+              12,
+              10,
+              13,
+              14,
+              17,
+              17,
+              1
+            ]
+          },
+          {
+            "notes": [
+              17,
+              13,
+              5,
+              14,
+              10,
+              6
+            ]
+          },
+          {
+            "notes": [
+              12,
+              13,
+              17,
+              17,
+              5,
+              20
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              13,
+              4
+            ]
+          },
+          {
+            "notes": [
+              13,
+              13,
+              13,
+              13,
+              13,
+              14,
+              1
+            ]
+          },
+          {
+            "notes": [
+              17,
+              13,
+              5,
+              14,
+              10,
+              6
+            ]
+          },
+          {
+            "sectionEnd": true,
+            "notes": [
+              12,
+              13,
+              17,
+              17,
+              0,
               20
             ]
           }

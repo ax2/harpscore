@@ -82,6 +82,10 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowDe
   if (value.dotted !== undefined && typeof value.dotted !== 'boolean') errors.push(`${path}.dotted 必须是布尔值`);
   if (value.tie !== undefined && typeof value.tie !== 'boolean') errors.push(`${path}.tie 必须是布尔值`);
   if (value.fermata !== undefined && typeof value.fermata !== 'boolean') errors.push(`${path}.fermata 必须是布尔值`);
+  if (value.articulation !== undefined && value.articulation !== 'accent' && value.articulation !== 'tenuto') {
+    errors.push(`${path}.articulation 只能是 accent 或 tenuto`);
+  }
+  if (degree === 0 && value.articulation !== undefined) errors.push(`${path} 休止符不能附带重音或保持音`);
   if (value.lyric !== undefined && typeof value.lyric !== 'string') errors.push(`${path}.lyric 必须是字符串`);
 
   let techniques: Technique[] | undefined;
@@ -108,8 +112,8 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowDe
       });
     }
   }
-  if (!allowDecorations && (degree === 0 || value.dotted !== undefined || value.tie !== undefined || value.fermata !== undefined || value.lyric !== undefined || value.techniques !== undefined)) {
-    errors.push(`${path} 装饰辅助音不能是休止符，也不能带附点、延音、延长记号、歌词或技巧`);
+  if (!allowDecorations && (degree === 0 || value.dotted !== undefined || value.tie !== undefined || value.fermata !== undefined || value.articulation !== undefined || value.lyric !== undefined || value.techniques !== undefined)) {
+    errors.push(`${path} 装饰辅助音不能是休止符，也不能带附点、延音、延长记号、重音、保持音、歌词或技巧`);
   }
 
   let ornament: Mordent | undefined;
@@ -118,7 +122,7 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowDe
       errors.push(`${path}.ornament 必须是带 auxiliary 音高的 upper-mordent 或 lower-mordent`);
     } else {
       const auxiliary = value.ornament.auxiliary;
-      if (['beats', 'dotted', 'tie', 'fermata', 'lyric', 'techniques', 'graceNotes', 'ornament'].some((field) => auxiliary[field] !== undefined)) {
+      if (['beats', 'dotted', 'tie', 'fermata', 'articulation', 'lyric', 'techniques', 'graceNotes', 'ornament'].some((field) => auxiliary[field] !== undefined)) {
         errors.push(`${path}.ornament.auxiliary 只能包含音高，不能带时值或装饰音属性`);
       }
       const pitch = parseNoteObject({ ...auxiliary, beats: 1 }, `${path}.ornament.auxiliary`, errors, false);
@@ -134,6 +138,7 @@ function parseNoteObject(value: unknown, path: string, errors: string[], allowDe
     ...(value.dotted === true ? { dotted: true } : {}),
     ...(value.tie === true ? { tie: true } : {}),
     ...(value.fermata === true ? { fermata: true } : {}),
+    ...(value.articulation === 'accent' || value.articulation === 'tenuto' ? { articulation: value.articulation } : {}),
     ...(typeof value.lyric === 'string' && value.lyric ? { lyric: value.lyric } : {}),
     ...(techniques?.length ? { techniques } : {}),
     ...(graceNotes?.length ? { graceNotes } : {}),
@@ -192,7 +197,7 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
     if (!allowDecorations || !match) throw new Error(`${path} 波音格式应为 [U:3']2'/ 或 [L:1]2`);
     const main = parseDslToken(match[3], path, false);
     const auxiliary = parseDslToken(match[2], `${path} 波音辅助音`, false);
-    if (!auxiliary.degree || auxiliary.beats !== 1 || auxiliary.dotted || auxiliary.tie || auxiliary.fermata || auxiliary.lyric) {
+    if (!auxiliary.degree || auxiliary.beats !== 1 || auxiliary.dotted || auxiliary.tie || auxiliary.fermata || auxiliary.articulation || auxiliary.lyric) {
       throw new Error(`${path} 波音辅助音只能指定音高`);
     }
     main.ornament = { kind: match[1] === 'U' ? 'upper-mordent' : 'lower-mordent', auxiliary: { degree: auxiliary.degree, accidental: auxiliary.accidental, octave: auxiliary.octave } };
@@ -206,7 +211,7 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
     const main = parseDslToken(match[2], path, false);
     main.graceNotes = parts.map((part, index) => {
       const grace = parseDslToken(part, `${path} 倚音 ${index + 1}`, false);
-      if (!grace.degree || grace.dotted || grace.tie || grace.fermata || grace.lyric || ![0.25, 0.5, 1].includes(grace.beats)) {
+      if (!grace.degree || grace.dotted || grace.tie || grace.fermata || grace.articulation || grace.lyric || ![0.25, 0.5, 1].includes(grace.beats)) {
         throw new Error(`${path} 倚音仅支持无附点的有声音高`);
       }
       return { degree: grace.degree, accidental: grace.accidental, octave: grace.octave, beats: grace.beats === 0.5 ? 0.5 : 0.25 };
@@ -221,8 +226,11 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
   if (tie) notation = notation.slice(0, -1);
   const fermata = notation.endsWith('!');
   if (fermata) notation = notation.slice(0, -1);
+  const articulation = notation.endsWith('>') ? 'accent' : notation.endsWith('_') ? 'tenuto' : undefined;
+  if (articulation) notation = notation.slice(0, -1);
   const match = notation.match(/^([#b]?)([0-7])([',]*)(\/{0,3})(\.)?$/);
   if (!match) throw new Error(`${path} 无法识别音符“${token}”`);
+  if (match[2] === '0' && articulation) throw new Error(`${path} 休止符不能附带重音或保持音`);
 
   const accidental = match[1] === '#' ? 1 : match[1] === 'b' ? -1 : 0;
   const octaveMarks = match[3];
@@ -239,6 +247,7 @@ function parseDslToken(token: string, path: string, allowDecorations = true): No
     ...(match[5] ? { dotted: true } : {}),
     ...(tie ? { tie: true } : {}),
     ...(fermata ? { fermata: true } : {}),
+    ...(articulation ? { articulation } : {}),
     ...(lyric ? { lyric } : {}),
   };
 }

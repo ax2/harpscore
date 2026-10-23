@@ -1,6 +1,6 @@
 {
   "name": "harpscore",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "HarpScore - 跨平台布鲁斯口琴乐谱软件：琴谱展示、管理与导出",
   "license": "MIT",
   "type": "module",
@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "tsx --test tests/*.test.ts",
     "scores:build": "tsx tools/build-scores.ts",
-    "scores:validate": "tsx tools/validate-scores.ts"
+    "scores:validate": "tsx tools/validate-scores.ts",
+    "release:pack": "node tools/package-release.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
