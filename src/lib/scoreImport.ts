@@ -1,6 +1,7 @@
 import type { GraceNote, Measure, Mordent, Note, Score, ScoreSourceFormat, Technique } from '../types/score';
 import { KEY_ROOTS, noteToMidi } from '../types/score';
 import { isSupportedDuration, noteDuration, tieWarnings, techniqueWarnings } from './notation';
+import { formatScoreLocation } from './scoreLocation';
 
 type JsonObject = Record<string, unknown>;
 
@@ -307,7 +308,7 @@ function beatWarnings(score: Score): string[] {
         lineIndex,
         measureIndex,
         actual,
-        message: `第 ${lineIndex + 1} 行第 ${measureIndex + 1} 小节为 ${actual} 拍，拍号要求 ${expected} 拍`,
+        message: `${formatScoreLocation(score, { lineIndex, measureIndex })}为 ${actual} 拍，拍号要求 ${expected} 拍`,
       });
     }
   }));

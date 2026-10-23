@@ -301,3 +301,5 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .restore-preview p { margin: 6px 0; }
 .filter-note { color: var(--text-dim); font-size: 11px; line-height: 1.5; }
 .display-option { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.location-help { color: var(--text-dim); margin-top: 6px; }
+.location-help .btn { margin-left: 6px; padding: 2px 7px; font-size: 12px; }

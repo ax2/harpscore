@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Score } from './types/score';
 import { analyzeScore } from './lib/harmonica';
+import { formatScoreLocation } from './lib/scoreLocation';
 import {
   loadLibrary, allScores, findScore, saveUserScore, deleteUserScore,
   importScoreJson, userLibraryBackup, type Library,
@@ -27,7 +28,9 @@ function ScoreItem({ s, active, favorite, onClick }: { s: Score; active: boolean
   );
 }
 
-function AnalysisPanel({ score }: { score: Score }) {
+function AnalysisPanel({ score, showMeasureNumbers, onShowMeasureNumbers }: {
+  score: Score; showMeasureNumbers: boolean; onShowMeasureNumbers: () => void;
+}) {
   const a = useMemo(() => analyzeScore(score, false), [score]);
   const warns = a.issues.filter((i) => i.severity === 'warning');
   const errs = a.issues.filter((i) => i.severity === 'error');
@@ -52,9 +55,14 @@ function AnalysisPanel({ score }: { score: Score }) {
       {a.totalNotes === 0 ? <span>· 无有声音符</span> : errs.length === 0
         ? <span className="ok">· 已记音高均有孔位</span>
         : <span className="err">· {errs.length} 个已记音高暂无孔位（当前不含超吹/超吸）</span>}
+      {(notationWarnings.length > 0 || errs.length > 0 || warns.length > 0) && (
+        <div className="location-help">以下按书写小节编号，弱起计入；音符序号包含休止符。
+          {!showMeasureNumbers && <button className="btn" onClick={onShowMeasureNumbers}>显示小节号</button>}
+        </div>
+      )}
       {notationWarnings.length > 0 && <div className="warn">记谱提示：{notationWarnings.join('；')}</div>}
       {errs.length > 0 && <div className="err">{errs.map((e, i) =>
-        <span key={i}>第{e.lineIndex + 1}行第{e.measureIndex + 1}小节第{e.noteIndex + 1}音{e.graceIndex !== undefined ? `的倚音${e.graceIndex + 1}` : e.ornament ? '的波音辅助音' : ''}：{e.reason}；</span>)}</div>}
+        <span key={i}>{formatScoreLocation(score, e)}：{e.reason}；</span>)}</div>}
       {score.notes && <div>演奏提示：{score.notes}</div>}
       {score.source && (
         <div className="score-source">
@@ -66,12 +74,13 @@ function AnalysisPanel({ score }: { score: Score }) {
           )}
         </div>
       )}
-      {warns.length > 0 && warns.length <= 12 && (
-        <div className="warn">
+      {warns.length > 0 && (
+        <details className="warn" open={warns.length <= 12}>
+          <summary>压音与进阶技巧位置（{warns.length} 处）</summary>
           {warns.map((w, i) => (
-            <span key={i}>第{w.lineIndex + 1}行第{w.measureIndex + 1}小节{w.graceIndex !== undefined ? `第${w.noteIndex + 1}音的倚音${w.graceIndex + 1}` : w.ornament ? `第${w.noteIndex + 1}音的波音辅助音` : ''} {w.reason}；</span>
+            <span key={i}>{formatScoreLocation(score, w)}：{w.reason}；</span>
           ))}
-        </div>
+        </details>
       )}
     </div>
   );
@@ -238,7 +247,7 @@ export default function App() {
               )}
             </div>
             <ScoreSheet score={current} showMeasureNumbers={showMeasureNumbers} />
-            <AnalysisPanel score={current} />
+            <AnalysisPanel score={current} showMeasureNumbers={showMeasureNumbers} onShowMeasureNumbers={() => setShowMeasureNumbers(true)} />
           </>
         ) : (
           <>

@@ -1,5 +1,6 @@
 import type { Note, PitchNote, Score, Technique } from '../types/score';
 import { noteToMidi } from '../types/score';
+import { formatScoreLocation } from './scoreLocation';
 
 export const TECHNIQUE_LABELS: Record<Technique, string> = {
   vibrato: '~ 振音', 'bend-release': '压音释放', slap: '舌拍', gliss: '滑音', trill: '颤音',
@@ -8,7 +9,7 @@ export const TECHNIQUE_LABELS: Record<Technique, string> = {
 /** These legacy flags do not specify all pitches involved in the gesture. */
 export function techniqueWarnings(score: Score): string[] {
   return score.lines.flatMap((line, li) => line.flatMap((measure, mi) => measure.notes.flatMap((note, ni) => {
-    const location = `第 ${li + 1} 行第 ${mi + 1} 小节第 ${ni + 1} 音`;
+    const location = formatScoreLocation(score, { lineIndex: li, measureIndex: mi, noteIndex: ni });
     if (!note.techniques?.length) return [];
     if (note.degree === 0) return [`${location}为休止符，不应带演奏技巧；请核对原谱`];
     return note.techniques.flatMap(technique => {
@@ -41,10 +42,11 @@ export function tieWarnings(score: Score): string[] {
   return notes.flatMap(({ note, li, mi, ni }, index) => {
     if (!note.tie) return [];
     const next = notes[index + 1]?.note;
-    if (next?.graceNotes?.length) return [`第 ${li + 1} 行第 ${mi + 1} 小节第 ${ni + 1} 音的延音线暂不支持跨过前倚音，请分开记谱`];
-    if (next?.ornament) return [`第 ${li + 1} 行第 ${mi + 1} 小节第 ${ni + 1} 音的延音线暂不支持跨过波音，请分开记谱`];
+    const location = formatScoreLocation(score, { lineIndex: li, measureIndex: mi, noteIndex: ni });
+    if (next?.graceNotes?.length) return [`${location}的延音线暂不支持跨过前倚音，请分开记谱`];
+    if (next?.ornament) return [`${location}的延音线暂不支持跨过波音，请分开记谱`];
     if (note.degree !== 0 && next && next.degree !== 0
       && noteToMidi(score.key, note) === noteToMidi(score.key, next)) return [];
-    return [`第 ${li + 1} 行第 ${mi + 1} 小节第 ${ni + 1} 音的延音线必须连接后续同音高音符`];
+    return [`${location}的延音线必须连接后续同音高音符`];
   });
 }
