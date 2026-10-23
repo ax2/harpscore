@@ -1,0 +1,24 @@
+{
+  "id": "see-saw",
+  "title": "跷跷板",
+  "subtitle": "See-saw, Margery Daw · Elliott 版本",
+  "composer": "Elliott（所选歌集署名）",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "6/8",
+  "tempo": 112,
+  "difficulty": 2,
+  "tags": [
+    "入门",
+    "儿歌"
+  ],
+  "source": "The Everyday Song Book (1927), No.8；John Chambers ABC 转录",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/008_See-saw_Margery_Daw.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-23",
+  "notes": "完整8小节，六八拍；第5小节在原文本中跨行，已接成完整小节。保留低 sol、末小节低 si 和所有休止。 仅录主旋律，不录歌词、伴奏及异音连奏线；速度为编辑练习建议。 原 Ab4 主音移为 C5，所有音符整体上移 4 个半音。",
+  "order": 47,
+  "melody": "1. 5,. | 1/ 1/ 1/ 5,. | 1 1/ 1/ 1/ 1/ | 3. 2 0/ |\n1 1/ 5,/ 5,/ 5,/ | 1/ 1/ 1/ 5, 5,/ | 3/ 3/ 3/ 5/ 4/ 2/ | 7,. 1/ 0/ 0/ ||",
+  "octaveShift": 1
+}

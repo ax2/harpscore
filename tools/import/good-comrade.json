@@ -1,0 +1,24 @@
+{
+  "id": "good-comrade",
+  "title": "好伙伴",
+  "subtitle": "The Good Comrade · 1927 歌集版本",
+  "composer": "民歌曲调（Folksong，所选歌集署名）",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "4/4",
+  "tempo": 96,
+  "difficulty": 2,
+  "tags": [
+    "传统曲",
+    "西方民谣"
+  ],
+  "source": "The Everyday Song Book (1927), No.148；John Chambers ABC 转录",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/148_the_Good_Comrade.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-23",
+  "notes": "13个书写小节含一拍弱起，末尾三拍互补。原文第一段末尾三拍与第二段一拍弱起接为同一完整小节；保留休止，不添加音符。 仅录主旋律，不录歌词、伴奏及异音连奏线；速度为编辑练习建议。 原 G4 主音移为 C5，所有音符整体上移 5 个半音。",
+  "order": 51,
+  "melody": "5, | 1 3 3 2 | 1 - 5, 1/ 2/ | 3 5 5 4 | 3 - 0 1/ 2/ |\n3 3 3 2 | 3. 4/ 5 4/ 3/ | 2 2 2 1 | 2. 3/ 4 5 |\n3 3 2 2 | 1 - 2 - | 3 5 2 2/ 3/ | 1 - 0 ||",
+  "octaveShift": 1
+}

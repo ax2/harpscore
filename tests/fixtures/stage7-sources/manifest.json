@@ -1,0 +1,58 @@
+[
+  {
+    "id": "lightly-row",
+    "file": "097_Lightly_Row.abc",
+    "sourceKey": "G",
+    "transpose": 5,
+    "category": "入门"
+  },
+  {
+    "id": "hickory-dickory-dock",
+    "file": "019_Dickory_Dickory_Dock.abc",
+    "sourceKey": "F",
+    "transpose": 7,
+    "category": "入门"
+  },
+  {
+    "id": "see-saw",
+    "file": "008_See-saw_Margery_Daw.abc",
+    "sourceKey": "Ab",
+    "transpose": 4,
+    "category": "入门"
+  },
+  {
+    "id": "lucy-locket",
+    "file": "067_Lucy_Locket.abc",
+    "sourceKey": "G",
+    "transpose": 5,
+    "category": "入门"
+  },
+  {
+    "id": "busy-bee",
+    "file": "034_How_Doth_the_Little_Busy_Bee.abc",
+    "sourceKey": "Eb",
+    "transpose": 9,
+    "category": "传统曲"
+  },
+  {
+    "id": "jolly-miller",
+    "file": "098_Jolly_is_the_Miller.abc",
+    "sourceKey": "A",
+    "transpose": 3,
+    "category": "传统曲"
+  },
+  {
+    "id": "good-comrade",
+    "file": "148_the_Good_Comrade.abc",
+    "sourceKey": "G",
+    "transpose": 5,
+    "category": "传统曲"
+  },
+  {
+    "id": "ash-grove",
+    "file": "131_the_Ash_Grove.abc",
+    "sourceKey": "Ab",
+    "transpose": -1,
+    "category": "传统曲"
+  }
+]

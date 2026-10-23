@@ -1,0 +1,24 @@
+{
+  "id": "hickory-dickory-dock",
+  "title": "滴答滴答钟声响",
+  "subtitle": "Dickory, Dickory Dock · Elliott 版本",
+  "composer": "Elliott（所选歌集署名）",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "6/8",
+  "tempo": 112,
+  "difficulty": 2,
+  "tags": [
+    "入门",
+    "儿歌"
+  ],
+  "source": "The Everyday Song Book (1927), No.19；John Chambers ABC 转录",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/019_Dickory_Dickory_Dock.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-23",
+  "notes": "采用歌集署名 Elliott 的旋律版本；完整8小节，保留逐个八分休止及第6小节附点四分 la。请按六八拍分组，不将休止合并成连音。 仅录主旋律，不录歌词、伴奏及异音连奏线；速度为编辑练习建议。 原 F4 主音移为 C5，所有音符整体上移 7 个半音。",
+  "order": 46,
+  "melody": "3/ 4/ 5/ 4/ 5/ 2/ | 3/ 0/ 0/ 0 3/ | 3/ 0/ 5/ 4/ 0/ 2/ | 3/ 0/ 0/ 0 3/ |\n3/ 0/ 3/ 5 5/ | 4/ 0/ 4/ 6. | 5/ 6/ 5/ 4/ 3/ 2/ | 1/ 0/ 0/ 0 0/ ||",
+  "octaveShift": 1
+}
