@@ -1,0 +1,22 @@
+[
+  {
+    "id": "left-right",
+    "file": "026_Left_Right.abc",
+    "transpose": 9
+  },
+  {
+    "id": "snowbirds",
+    "file": "029_the_Snowbirds.abc",
+    "transpose": 8
+  },
+  {
+    "id": "little-ship",
+    "file": "085_the_Little_Ship.abc",
+    "transpose": 3
+  },
+  {
+    "id": "hunting-we-will-go",
+    "file": "188_A_Hunting_We_Will_Go.abc",
+    "transpose": 12
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "id": "snowbirds",
+  "title": "雪鸟",
+  "subtitle": "The Snowbirds · B. J. Relemann",
+  "composer": "B. J. Relemann（歌集署名）",
+  "timeSignature": "3/4",
+  "difficulty": 1,
+  "tags": [
+    "入门",
+    "儿歌"
+  ],
+  "notes": "原E4主音移为C5；保留16小节，C5–C6均为自然音孔位。以四分、二分和附点二分音符练习三拍子。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列ABC版本。",
+  "melody": "1 1 1 | 2 2 2 | 3 4 5 | 5 - - | 1 1 1 | 2 2 2 | 3 4 5 | 5 - 5 |\n6 1' 6 | 5 3 5 | 4 3 2 | 3 - 5 | 6 1' 6 | 5 3 5 | 4 3 2 | 1 - - ||",
+  "key": "C",
+  "harmonicaKey": "C",
+  "octaveShift": 1,
+  "position": "第一把位",
+  "tempo": 96,
+  "sourceCheckedAt": "2026-10-23",
+  "order": 58,
+  "source": "The Everyday Song Book (1927), No.29；John Chambers ABC 转录 (2017)",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/029_the_Snowbirds.abc",
+  "sourceFormat": "music-text"
+}

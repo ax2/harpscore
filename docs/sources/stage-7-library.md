@@ -46,3 +46,18 @@
 制作摘录时曾发现脚本把行首 `|:` 当作头字段而丢弃整行；10小节断言检出参考文件只有7小节。已修正为仅识别字母开头的头字段，并重新从原始ABC生成摘录。未修改来源旋律或用调整预期数量掩盖该错误。
 
 新增可选小节号按这里的“书写小节”计数，不是演奏展开后的次数。数字谱的来源对照仍为本次作者目视核对加回归表，不冒充第二位音乐专业人士的独立审校。
+
+## 第三批：二拍、三拍入门与六八拍传统曲（2026-10-23）
+
+再加入入门/传统曲各2首；当前60项（56歌曲、4原创练习），Stage 7累计新增16首，用途分类各8首。以下核对针对链接中的单旋律ABC文本，未声称原书扫描件复核。
+
+| 用途 | ID / 曲名 | 来源与核对 |
+| --- | --- | --- |
+| 入门 | left-right / 左右齐步走 | [No.26 Left Right](https://trillian.mit.edu/~jc/music/book/EverydaySongBook/026_Left_Right.abc)，降E4主音移至C5（+9半音）。16小节2/4，28事件，低si至高re自然音。歌集未署曲作者，不擅自归给某作者。 |
+| 入门 | snowbirds / 雪鸟 | [No.29 The Snowbirds](https://trillian.mit.edu/~jc/music/book/EverydaySongBook/029_the_Snowbirds.abc)，E4主音移至C5（+8）。16小节3/4，42事件，C5–C6自然音；保留歌集B. J. Relemann署名。 |
+| 传统曲 | little-ship / 小小航船 | [No.85 The Little Ship](https://trillian.mit.edu/~jc/music/book/EverydaySongBook/085_the_Little_Ship.abc)，A4主音移至C5（+3）。17书写小节6/8，68事件，其中1休止；首半拍和末2.5拍互补。6处同音延音，第13小节第3事件的自由延长保留。音域E4–G5，4个低fa/低la压音音符，不纳入无需压音筛选。 |
+| 传统曲 | hunting-we-will-go / 我们去狩猎 | [No.188 A Hunting We Will Go](https://trillian.mit.edu/~jc/music/book/EverydaySongBook/188_A_Hunting_We_Will_Go.abc)，C4主音提高八度（+12）。21书写小节6/8，89事件；半拍弱起与2.5拍尾节互补。6处同音延音和第11、19小节的自由延长保留，C5–F6自然音。保留附点八分/十六分，未抹平为均分八分音。 |
+
+227个音符/休止事件逐小节对照音高、时值、延音和延长记号。严格参照解码器扩展了C/E调号与H/横线记号，另有固定样例检验十六分同音延音和延长落点；所有先前来源对照仍运行。见 tests/stage7Batch3.test.ts 和 tests/fixtures/stage7-batch3/。歌词及异音连奏线不收录；演奏速度是编辑建议。
+
+本次候选复查仍暂缓 Lazy Sheep、Oats and Beans 的异常小节。All Through the Night 第7小节 E3 F>F 为5拍；Good-Night Ladies 含转录者明确注明的小节线问题；Harp That Once Through Tara's Halls 含 B c d zB 五拍小节，均待进一步来源证据。Polly's Piano 的第5小节有转录者对音符/休止的推断，本批不作为无疑义入门谱纳入。以上是对特定转录的限制，不是对曲目本身的否定。

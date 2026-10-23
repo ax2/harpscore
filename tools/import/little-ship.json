@@ -1,0 +1,26 @@
+{
+  "id": "little-ship",
+  "title": "小小航船",
+  "subtitle": "The Little Ship · 英格兰旧歌",
+  "composer": "英格兰旧歌（歌集署名）",
+  "timeSignature": "6/8",
+  "difficulty": 3,
+  "tags": [
+    "传统曲",
+    "西方民谣",
+    "压音",
+    "延长记号"
+  ],
+  "notes": "原A4主音移为C5；17个书写小节，半拍弱起与末小节2.5拍互补（四分音符计拍）。保留6处同音延音和第13书写小节的自由延长。音域E4–G5，低fa和低la需压音；连续十六分同音仍保留各自音头及延音，不合并改写。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列ABC版本。",
+  "melody": "5,/ | 1 1/ 1/ 7,/ 6,/ | 5, 4,/ 3, 5,/ | 1 1/ 2 7,/ | 1.~ 1 5,/ |\n1 2/ 3 4/ | 5 3/ 1 2/ | 3 3/ 3/ 2/ 1/ | 2.~ 2 5,//~ 5,// | 1 2/ 3 4/ |\n5 3/ 1 2//~ 2// | 3 3/ 3/ 2/ 1/ | 2 0/ 3! 2/ | 1 1/ 1/ 7,/ 6,/ | 5, 4,/ 3, 5,//~ 5,// |\n1 1/ 2 7,/ | 1.~ 1 ||",
+  "key": "C",
+  "harmonicaKey": "C",
+  "octaveShift": 1,
+  "position": "第一把位",
+  "tempo": 84,
+  "sourceCheckedAt": "2026-10-23",
+  "order": 59,
+  "source": "The Everyday Song Book (1927), No.85；John Chambers ABC 转录 (2017)",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/085_the_Little_Ship.abc",
+  "sourceFormat": "music-text"
+}
