@@ -86,7 +86,7 @@
 | 小小航船 | C | 第一把位 | ★★★ | 英格兰旧歌，六八拍、低音压音与延音 |
 | 我们去狩猎 | C | 第一把位 | ★★ | 英格兰传统曲，附点与自由延长 |
 
-目前 60 项，其中 56 首歌曲、4 首原创练习。持续扩曲进度与来源核对记录见 [Stage 5 来源台账](docs/sources/stage-5-audit.md) 与 [Stage 7 均衡扩曲台账](docs/sources/stage-7-library.md)。
+目前 62 项，其中 58 首歌曲、4 首原创练习。持续扩曲进度与来源核对记录见 [Stage 5 来源台账](docs/sources/stage-5-audit.md)、[Stage 7 均衡扩曲台账](docs/sources/stage-7-library.md) 与 [Stage 9 逐首核对台账](docs/sources/stage-9-library.md)。
 
 ## 本地开发
 

@@ -2252,6 +2252,17 @@
       "breath": "blow",
       "bend": 0,
       "overblow": false
+    },
+    {
+      "degree": 6,
+      "accidental": 0,
+      "octave": 0,
+      "beats": 0.5,
+      "tie": true,
+      "hole": 3,
+      "breath": "draw",
+      "bend": 2,
+      "overblow": false
     }
   ],
   "scores": [
@@ -11472,6 +11483,281 @@
             "notes": [
               76,
               0
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "kangding-love-song",
+      "title": "康定情歌",
+      "subtitle": "四川民歌 · 香港中乐团教程版",
+      "composer": "四川民歌",
+      "key": "C",
+      "harmonicaKey": "C",
+      "position": "第四把位",
+      "timeSignature": "4/4",
+      "tempo": 84,
+      "difficulty": 3,
+      "tags": [
+        "传统曲",
+        "中国民歌",
+        "压音"
+      ],
+      "source": "香港中乐团《唢呐初级教程》，第29页《康定情歌》。",
+      "sourceUrl": "https://ynyqxg.hkco.org/uploads/docs/5bd9828a7a7201.pdf#page=29",
+      "sourceFormat": "jianpu-image",
+      "sourceCheckedAt": "2026-10-23",
+      "builtin": true,
+      "order": 61,
+      "notes": "原页按音级记谱，未单列1=调号；移写为1=C并提高一八度。羽调式主音A，C调口琴第四把位，音域A4–A5。8小节4/4，保留六处同音延音和十六分音符；低la需3孔吸气全音压音。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列来源版本。",
+      "lines": [
+        [
+          {
+            "notes": [
+              13,
+              17,
+              26,
+              66,
+              70,
+              26,
+              13,
+              6
+            ]
+          },
+          {
+            "notes": [
+              13,
+              17,
+              26,
+              66,
+              70,
+              26,
+              163,
+              5
+            ]
+          },
+          {
+            "notes": [
+              13,
+              17,
+              26,
+              66,
+              70,
+              26,
+              13,
+              6
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              17,
+              13,
+              85,
+              105,
+              85,
+              84,
+              10,
+              203,
+              32
+            ]
+          },
+          {
+            "notes": [
+              31,
+              164,
+              6,
+              17,
+              163,
+              5
+            ]
+          },
+          {
+            "notes": [
+              85,
+              84,
+              203,
+              32,
+              17,
+              13,
+              85,
+              105,
+              85,
+              84
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              10,
+              203,
+              32,
+              17,
+              70,
+              105,
+              85,
+              105,
+              85,
+              84
+            ]
+          },
+          {
+            "sectionEnd": true,
+            "notes": [
+              10,
+              2,
+              17,
+              34
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "id": "learn-to-sing",
+      "title": "一起来学唱",
+      "subtitle": "Come, Let Us Learn to Sing · 1927 歌集版",
+      "composer": "所选歌集未署曲作者",
+      "key": "C",
+      "harmonicaKey": "C",
+      "position": "第一把位",
+      "timeSignature": "4/4",
+      "tempo": 96,
+      "difficulty": 1,
+      "tags": [
+        "入门",
+        "儿歌"
+      ],
+      "source": "The Everyday Song Book (1927), No.25；John Chambers ABC 转录 (2017)",
+      "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/025_Come_Let_Us_Learn_to_Sing.abc",
+      "sourceFormat": "music-text",
+      "sourceCheckedAt": "2026-10-23",
+      "builtin": true,
+      "order": 62,
+      "notes": "原F4主音移为C5；保留来源全部15小节及三个四分休止符。音域C5–C6，均有自然音孔位，适合音阶、长短音与休止练习。中文曲名为编辑译名。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列来源版本。",
+      "lines": [
+        [
+          {
+            "notes": [
+              1,
+              17,
+              14,
+              5,
+              6
+            ]
+          },
+          {
+            "notes": [
+              33,
+              12,
+              10
+            ]
+          },
+          {
+            "notes": [
+              5,
+              14,
+              17,
+              2,
+              25
+            ]
+          },
+          {
+            "notes": [
+              37,
+              20
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              1,
+              17,
+              14,
+              5,
+              6
+            ]
+          },
+          {
+            "notes": [
+              33,
+              12,
+              10
+            ]
+          },
+          {
+            "notes": [
+              5,
+              14,
+              17,
+              2,
+              25
+            ]
+          },
+          {
+            "notes": [
+              37,
+              20
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              1,
+              5,
+              1,
+              5
+            ]
+          },
+          {
+            "notes": [
+              19,
+              2,
+              3
+            ]
+          },
+          {
+            "notes": [
+              1,
+              5,
+              1,
+              5
+            ]
+          },
+          {
+            "notes": [
+              19,
+              2,
+              3
+            ]
+          }
+        ],
+        [
+          {
+            "notes": [
+              19,
+              22,
+              26,
+              1,
+              4
+            ]
+          },
+          {
+            "notes": [
+              46,
+              8
+            ]
+          },
+          {
+            "sectionEnd": true,
+            "notes": [
+              33,
+              20
             ]
           }
         ]
