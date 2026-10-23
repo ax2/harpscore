@@ -139,6 +139,8 @@ npm run scores:validate # 校验全部内置谱
 
 Vite + React + TypeScript，乐谱为纯 SVG 渲染，无重型依赖。
 
+内置库在构建时合并重复音符记录，加载后恢复为独立的完整曲谱对象；不改变JSON导出或个人曲库格式。60项曲库的主JS从544.31kB降为294.29kB（gzip93.62kB→87.94kB），详见[曲库传输与等价验证](docs/stages/stage-8-library-payload.md)。
+
 ## 相关文章
 
 - [HarpScore：我做了一个开源的布鲁斯口琴乐谱软件](https://zicode.com/blog/harpscore/) —— 从 Prompt 到实现的全过程记录，含内置曲谱的音高校验与来源标注说明。
