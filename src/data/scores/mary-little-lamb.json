@@ -13,13 +13,13 @@
     "儿歌",
     "入门"
   ],
-  "source": "LINTJ 文字数字简谱《Mary Had a Little Lamb》；按常见 4/4 教学分句补全时值",
-  "sourceUrl": "https://www.lintj.com/collections/2020/04/08/SimpleMusic12345.html",
-  "sourceFormat": "jianpu-text",
-  "sourceCheckedAt": "2026-08-31",
+  "source": "The Everyday Song Book (1927), No.77；John Chambers ABC 转录 (2017)",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/077_Mary_Had_a_Little_Lamb.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-23",
   "builtin": true,
   "order": 10,
-  "notes": "旋律只使用 1、2、3、5，整体升八度后全部为自然音，适合练习相邻音换气与重复吐音。",
+  "notes": "采用可核对时值的 1927 年版本替换旧无节奏文字来源。F4 主音移为 C5，半拍弱起、附点节奏、第 4 完整小节高 sol 同音延音和末尾休止均保留，9 小节含弱起。歌词不录入，速度为编辑建议。",
   "lines": [
     [
       {
@@ -28,7 +28,22 @@
             "degree": 3,
             "accidental": 0,
             "octave": 1,
+            "beats": 0.5,
+            "hole": 5,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          }
+        ]
+      },
+      {
+        "notes": [
+          {
+            "degree": 3,
+            "accidental": 0,
+            "octave": 1,
             "beats": 1,
+            "dotted": true,
             "hole": 5,
             "breath": "blow",
             "bend": 0,
@@ -38,7 +53,7 @@
             "degree": 2,
             "accidental": 0,
             "octave": 1,
-            "beats": 1,
+            "beats": 0.5,
             "hole": 4,
             "breath": "draw",
             "bend": 0,
@@ -160,7 +175,19 @@
             "degree": 5,
             "accidental": 0,
             "octave": 1,
-            "beats": 2,
+            "beats": 1,
+            "dotted": true,
+            "tie": true,
+            "hole": 6,
+            "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 5,
+            "accidental": 0,
+            "octave": 1,
+            "beats": 0.5,
             "hole": 6,
             "breath": "blow",
             "bend": 0,
@@ -177,6 +204,7 @@
             "accidental": 0,
             "octave": 1,
             "beats": 1,
+            "dotted": true,
             "hole": 5,
             "breath": "blow",
             "bend": 0,
@@ -186,7 +214,7 @@
             "degree": 2,
             "accidental": 0,
             "octave": 1,
-            "beats": 1,
+            "beats": 0.5,
             "hole": 4,
             "breath": "draw",
             "bend": 0,
@@ -285,6 +313,7 @@
             "accidental": 0,
             "octave": 1,
             "beats": 1,
+            "dotted": true,
             "hole": 5,
             "breath": "blow",
             "bend": 0,
@@ -294,7 +323,7 @@
             "degree": 2,
             "accidental": 0,
             "octave": 1,
-            "beats": 1,
+            "beats": 0.5,
             "hole": 4,
             "breath": "draw",
             "bend": 0,
@@ -308,9 +337,29 @@
             "degree": 1,
             "accidental": 0,
             "octave": 1,
-            "beats": 4,
+            "beats": 2,
             "hole": 4,
             "breath": "blow",
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 1,
+            "hole": null,
+            "breath": null,
+            "bend": 0,
+            "overblow": false
+          },
+          {
+            "degree": 0,
+            "accidental": 0,
+            "octave": 0,
+            "beats": 0.5,
+            "hole": null,
+            "breath": null,
             "bend": 0,
             "overblow": false
           }

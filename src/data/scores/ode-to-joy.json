@@ -16,10 +16,10 @@
   "source": "新宁幼儿师范高等专科学校职业技能考试简谱《欢乐颂》（题目编号 1-3-3）；应用内由 1=D 移调为 1=C",
   "sourceUrl": "https://www.xnyesz.com/uploads/1/file/public/202311/20231115213157_md3qv5o7db.pdf",
   "sourceFormat": "jianpu-image",
-  "sourceCheckedAt": "2026-08-31",
+  "sourceCheckedAt": "2026-10-23",
   "builtin": true,
   "order": 2,
-  "notes": "按教学简谱逐小节核对后整体移到中高音区演奏，全部为自然音、零压音。",
+  "notes": "重新核对职业技能考试题 1-3-3，印刷第 105 页 / PDF 第 107 页全部 16 小节；补回第 12 小节低音 sol、末音与第 13 小节首音的同音延音，以及后八小节反复。1=D 移至 1=C 后整体升八度，歌词和异音连线不录入，速度为编辑建议。",
   "lines": [
     [
       {
@@ -402,7 +402,8 @@
             "bend": 0,
             "overblow": false
           }
-        ]
+        ],
+        "repeatBegin": true
       },
       {
         "notes": [
@@ -537,9 +538,9 @@
           {
             "degree": 5,
             "accidental": 0,
-            "octave": 1,
+            "octave": 0,
             "beats": 1,
-            "hole": 6,
+            "hole": 3,
             "breath": "blow",
             "bend": 0,
             "overblow": false
@@ -549,6 +550,7 @@
             "accidental": 0,
             "octave": 1,
             "beats": 1,
+            "tie": true,
             "hole": 5,
             "breath": "blow",
             "bend": 0,
@@ -734,7 +736,7 @@
             "overblow": false
           }
         ],
-        "sectionEnd": true
+        "repeatEnd": true
       }
     ]
   ]

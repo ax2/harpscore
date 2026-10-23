@@ -1,0 +1,26 @@
+{
+  "key": "C",
+  "harmonicaKey": "C",
+  "sourceCheckedAt": "2026-10-22",
+  "octaveShift": 1,
+  "id": "golden-slumbers",
+  "title": "金色梦乡",
+  "subtitle": "Golden Slumbers · 传统摇篮曲",
+  "composer": "传统曲调",
+  "position": "第一把位",
+  "timeSignature": "3/4",
+  "tempo": 72,
+  "difficulty": 3,
+  "tags": [
+    "西方歌曲",
+    "摇篮曲",
+    "三拍子",
+    "压音"
+  ],
+  "source": "The Everyday Song Book（1927）第175首，John Chambers于2017年转录的ABC；16个写出小节，前8小节保留反复。原Bb4主音移至C5。",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/175_Golden_Slumbers.abc",
+  "sourceFormat": "music-text",
+  "notes": "传统旋律版本，并非同名流行歌曲。音域E4–G5，低fa为2孔吸压全音、低la为3孔吸压全音；保留三拍长音及前半段反复，异音连奏线和歌词省略。速度为练习建议。",
+  "melody": "|: 5, 3, 4, | 5, - 3 | 2 - 1 | 6, - - |\n5, 3, 4, | 5, - 3 | 2 - 1 | 2 - - :|\n2 3 4 | 5 4 3 | 4 3 2 | 1 7, 5, |\n1 3 - | 6, - 2 | 5, 7, - | 1 - - ||",
+  "order": 36
+}

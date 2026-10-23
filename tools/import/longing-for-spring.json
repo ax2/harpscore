@@ -1,0 +1,20 @@
+{
+  "id": "longing-for-spring",
+  "title": "渴望春天",
+  "subtitle": "Sehnsucht nach dem Frühlinge · K.596",
+  "composer": "W. A. Mozart",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "6/8",
+  "tempo": 96,
+  "difficulty": 3,
+  "tags": ["古典", "前倚音", "六八拍", "压音"],
+  "source": "人民教育出版社《音乐七年级下册·简谱》印刷第 4–5 页（PDF 第 9–10 页）；完整主旋律，保留原 1=C 音区。",
+  "sourceUrl": "https://dev98.oa.henanyuexue.com/static/szjc-resources/pdf/q/f/2/7.pdf#page=9",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-10-22",
+  "notes": "16 个主小节加八分弱起，末小节与弱起互补；保留同音延音、升 do、升 fa 及倒数第二小节的前倚音 sol。倚音为装饰音，不增加小节时值，须快速连入主音 fa。省略歌词及异音连奏线；速度为四分音符的练习建议。保持 C4–C5 音区以使用常规压音，未整体升八度。",
+  "order": 26,
+  "melody": "1/ | 1 3/ 5 1'/ | 5.~ 5/ 3/ 1/ | 4 4/ 4/ 5/ 4/ | 3. 0 1/ |\n1 3/ 5 1'/ | 5.~ 5/ 3/ 1/ | 2 2/ 2/ 3/ 2/ | 1. 0 3/ |\n4 #1/ 2/ 3/ 4/ | 5 3/ 1'/ 0/ 1'/ | 1'/ 7/ 6/ 6/ 5/ #4/ | 5. 0 1/ |\n1 3/ 5 1'/ | 1'/ 6/ 4/ 2 6/ | 5/ 3/ 5/ {5}4/ 3/ 2/ | 1 0/ 0 ||"
+}

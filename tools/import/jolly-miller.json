@@ -1,0 +1,25 @@
+{
+  "id": "jolly-miller",
+  "title": "快乐的磨坊主",
+  "subtitle": "Jolly is the Miller · 英国游戏歌",
+  "composer": "英国传统游戏歌（所选歌集署名）",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "4/4",
+  "tempo": 96,
+  "difficulty": 3,
+  "tags": [
+    "传统曲",
+    "西方民谣",
+    "压音"
+  ],
+  "source": "The Everyday Song Book (1927), No.98；John Chambers ABC 转录",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/098_Jolly_is_the_Miller.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-23",
+  "notes": "完整8小节，保留附点八分/十六分和低音区跳进。低 fa 需2孔吸气全音压音，低 la 需3孔吸气全音压音；不是无压音入门谱。 仅录主旋律，不录歌词、伴奏及异音连奏线；速度为编辑练习建议。 原 A4 主音移为 C5，所有音符整体上移 3 个半音。",
+  "order": 50,
+  "melody": "1/ 1/ 1/ 1/ 1 3,/ 4,/ | 5, 5,/. 6,// 5,. 3/ | 3 3 3 1/. 2// | 3 2 2 3/ 2/ |\n1 1/ 1/ 1/. 1// 3,/ 4,/ | 5,/ 5,/ 5,/. 5,// 5,. 1/ | 3 5 5/ 5/ 1/ 2/ | 3 2 1 0 ||",
+  "octaveShift": 1
+}

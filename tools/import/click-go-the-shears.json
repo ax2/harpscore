@@ -1,0 +1,21 @@
+{
+  "id": "click-go-the-shears",
+  "title": "剪羊毛",
+  "subtitle": "Click Go the Shears · 教材旋律版",
+  "composer": "澳大利亚传统歌曲",
+  "key": "C",
+  "octaveShift": 1,
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "2/4",
+  "tempo": 92,
+  "difficulty": 2,
+  "tags": ["大洋洲民歌", "附点", "自然音"],
+  "source": "人民教育出版社《音乐七年级下册·简谱》印刷第 46 页（PDF 第 51 页）；16 小节单旋律。保留 1=C，整体升八度适配口琴。",
+  "sourceUrl": "https://dev98.oa.henanyuexue.com/static/szjc-resources/pdf/q/f/2/7.pdf#page=51",
+  "sourceFormat": "jianpu-image",
+  "sourceCheckedAt": "2026-10-22",
+  "notes": "按教材所列旋律保留附点八分与十六分节奏，以及第 4、8、12、16 小节的四分休止。末句从中音 do 跳至高音 do；省略歌词与异音连奏线。速度为练习建议。",
+  "order": 24,
+  "melody": "3 3/. 2// | 1/ 1/ 3/ 5/ | 1' 1'/. 7// | 6 0 |\n5 5/. 6// | 5 3/. 1// | 2 2/. 3// | 2 0 |\n3 3/. 2// | 1/ 1/ 3/ 5/ | 1' 1'/. 7// | 6 0 |\n2'/. 1'// 7/ 6/ | 5/ 4/ 3/ 2/ | 1 1'/. 7// | 1' 0 ||"
+}

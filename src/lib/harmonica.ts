@@ -2,8 +2,9 @@
  * 十孔布鲁斯口琴（Richter 音阶，C 调）音高引擎
  * 负责：MIDI 音高 ↔ 孔位/吹吸/压音 映射、曲谱可吹性分析
  */
-import type { Note, Score, Breath } from '../types/score';
-import { noteToMidi } from '../types/score';
+import type { PitchNote, Score, Breath } from '../types/score';
+import { KEY_ROOTS, noteToMidi } from '../types/score';
+import { notesForAnalysis } from './notation';
 
 /** 孔位演奏方式 */
 export interface HoleOption {
@@ -21,9 +22,11 @@ export interface HoleOption {
  * C 调十孔口琴完整音高表（MIDI → 演奏方式列表）
  * 吹音:  1:C4 2:E4 3:G4 4:C5 5:E5 6:G5 7:C6 8:E6 9:G6 10:C7
  * 吸音:  1:D4 2:G4 3:B4 4:D5 5:F5 6:A5 7:B5 8:D6 9:F6 10:A6
- * 吸压音(1-6孔): 1':Db4 2':F#4 2'':F4 3':Bb4 3'':A4 3''':Ab4 4':Db5 5':E5 6':Ab5
- * 吹压音(7-10孔): 7':B5 8':Eb6 9':F#6 10':Bb6 10'':A6(不常用,略)
- * 超吹(1,4,5,6孔): 1°:Eb4 4°:F5(Eb5为4孔超吹Eb5? 标准:4°=Eb5) 5°:F#5 6°:Bb5
+ * 吸压音: 1':Db4 2':F#4 2'':F4 3':Bb4 3'':A4 3''':Ab4 4':Db5 6':Ab5
+ * 吹压音: 8':Eb6 9':F#6 10':B6 10'':Bb6
+ * 5 吸/7 吹只能微降，不能压到对侧簧片的完整半音。
+ * 超吹: 1°:Eb4 4°:Eb5 5°:F#5 6°:Bb5；超吸: 7°:Db6 9°:Ab6 10°:Db7
+ * 依据 HOHNER Standard Richter 调音表与 Steve Baker 的 Bending & Overblowing 说明。
  */
 function buildTable(): Map<number, HoleOption[]> {
   const t = new Map<number, HoleOption[]>();
@@ -46,7 +49,6 @@ function buildTable(): Map<number, HoleOption[]> {
     [2, 66, 1], [2, 65, 2], // 2': F#4  2'': F4
     [3, 70, 1], [3, 69, 2], [3, 68, 3], // 3': Bb4 3'': A4 3''': Ab4
     [4, 73, 1],           // 4': Db5
-    [5, 76, 1],           // 5': E5（与 5 吹同音）
     [6, 80, 1],           // 6': Ab5
   ];
   for (const [h, m, b] of drawBends) {
@@ -54,22 +56,25 @@ function buildTable(): Map<number, HoleOption[]> {
   }
   // 吹压音（7-10 孔）
   const blowBends: [number, number, 1 | 2][] = [
-    [7, 83, 1],   // 7': B5（与 7 吸同音）
     [8, 87, 1],   // 8': Eb6
     [9, 90, 1],   // 9': F#6
-    [10, 94, 1],  // 10': Bb6
+    [10, 95, 1],  // 10': B6
+    [10, 94, 2],  // 10'': Bb6
   ];
   for (const [h, m, b] of blowBends) {
-    add(m, { hole: h, breath: 'blow', bend: b as 1, overblow: false, difficulty: (b as number) + 1 });
+    add(m, { hole: h, breath: 'blow', bend: b, overblow: false, difficulty: b + 1 });
   }
   // 超吹（1/4/5/6 孔，高级技巧）
   const overblows: [number, number][] = [[1, 63], [4, 75], [5, 78], [6, 82]];
   for (const [h, m] of overblows) {
     add(m, { hole: h, breath: 'blow', bend: 0, overblow: true, difficulty: 5 });
   }
+  for (const [h, m] of [[7, 85], [9, 92], [10, 97]]) {
+    add(m, { hole: h, breath: 'draw', bend: 0, overblow: true, difficulty: 5 });
+  }
   // 每个音按难度排序，同级优先吹音
   for (const arr of t.values()) {
-    arr.sort((a, b) => a.difficulty - b.difficulty || (a.breath === 'blow' ? -1 : 1));
+    arr.sort((a, b) => a.difficulty - b.difficulty || Number(a.breath === 'draw') - Number(b.breath === 'draw'));
   }
   return t;
 }
@@ -81,8 +86,17 @@ export const RANGE_MIN = 60; // C4
 export const RANGE_MAX = 96; // C7
 
 /** 查找某 MIDI 音高的最佳演奏方式；不可奏返回 null */
-export function findHole(midi: number, allowOverblow = false): HoleOption | null {
-  const opts = TABLE.get(midi);
+export function harmonicaRoot(key: string): number | null {
+  const root = KEY_ROOTS[key];
+  if (typeof root !== 'number') return null;
+  // Standard Richter G–B instruments start below C4. Low/High models are separate tunings.
+  return root >= 67 ? root - 12 : root;
+}
+
+export function findHole(midi: number, allowOverblow = false, harmonicaKey = 'C'): HoleOption | null {
+  const root = harmonicaRoot(harmonicaKey);
+  if (root === null) return null;
+  const opts = TABLE.get(midi - (root - 60));
   if (!opts) return null;
   const filtered = allowOverblow ? opts : opts.filter((o) => !o.overblow);
   return filtered[0] ?? null;
@@ -93,6 +107,8 @@ export interface ScoreIssue {
   lineIndex: number;
   measureIndex: number;
   noteIndex: number;
+  graceIndex?: number;
+  ornament?: boolean;
   midi: number | null;
   reason: string;
   severity: 'error' | 'warning';
@@ -105,8 +121,12 @@ export interface ScoreAnalysis {
   bendNotes: number;
   /** 需要的超吹音符数 */
   overblowNotes: number;
-  /** 总音符数（不含休止符） */
+  /** 书面主音、倚音和波音辅助音总数（不含休止，不重复计波音返回主音） */
   totalNotes: number;
+  /** 上述总音符中包含的前倚音数 */
+  graceNotes: number;
+  /** 总计中包含的波音辅助音数量（每个波音记一个辅助音） */
+  ornamentNotes: number;
   /** 最低/最高 MIDI */
   minMidi: number | null;
   maxMidi: number | null;
@@ -115,12 +135,16 @@ export interface ScoreAnalysis {
 /** 为曲谱所有音符自动推算孔位标记，并分析可吹性 */
 export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis {
   const issues: ScoreIssue[] = [];
-  let bendNotes = 0, overblowNotes = 0, totalNotes = 0;
+  let bendNotes = 0, overblowNotes = 0, totalNotes = 0, graceNotes = 0, ornamentNotes = 0;
   let minMidi: number | null = null, maxMidi: number | null = null;
+  const root = harmonicaRoot(score.harmonicaKey);
 
   score.lines.forEach((line, li) => {
     line.forEach((measure, mi) => {
-      measure.notes.forEach((note, ni) => {
+      measure.notes.forEach((main, ni) => notesForAnalysis(main).forEach((note, index) => {
+        const isGrace = index < (main.graceNotes?.length ?? 0);
+        const isOrnament = index > (main.graceNotes?.length ?? 0);
+        const location = { lineIndex: li, measureIndex: mi, noteIndex: ni, ...(isGrace ? { graceIndex: index } : {}), ...(isOrnament ? { ornament: true } : {}) };
         // 清除导入文件或上一次分析留下的派生孔位，避免不可奏音显示陈旧标记。
         note.hole = null;
         note.breath = null;
@@ -128,17 +152,22 @@ export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis
         note.overblow = false;
         if (note.degree === 0) return;
         totalNotes++;
+        if (isGrace) graceNotes++;
+        if (isOrnament) ornamentNotes++;
         const midi = noteToMidi(score.key, note, score.octaveShift ?? 0);
         if (midi === null) {
-          issues.push({ lineIndex: li, measureIndex: mi, noteIndex: ni, midi, reason: '无法解析音高', severity: 'error' });
+          issues.push({ ...location, midi, reason: '无法解析音高', severity: 'error' });
           return;
         }
         if (minMidi === null || midi < minMidi) minMidi = midi;
         if (maxMidi === null || midi > maxMidi) maxMidi = midi;
-        const opt = findHole(midi, allowOverblow);
+        const opt = findHole(midi, allowOverblow, score.harmonicaKey);
         if (!opt) {
-          const why = midi < RANGE_MIN ? '低于口琴最低音 (C4)' : midi > RANGE_MAX ? '高于口琴最高音 (C7)' : '该音需要超吹等高级技巧';
-          issues.push({ lineIndex: li, measureIndex: mi, noteIndex: ni, midi, reason: why, severity: 'error' });
+          const why = root === null ? '不支持的口琴调性'
+            : midi < root ? `低于口琴最低音 (${midiToName(root)})`
+            : midi > root + 36 + (allowOverblow ? 1 : 0) ? `高于当前模式最高音 (${midiToName(root + 36 + (allowOverblow ? 1 : 0))})`
+            : '该音需要超吹/超吸等高级技巧';
+          issues.push({ ...location, midi, reason: why, severity: 'error' });
           return;
         }
         // 自动填充演奏标记
@@ -148,18 +177,18 @@ export function analyzeScore(score: Score, allowOverblow = false): ScoreAnalysis
         note.overblow = opt.overblow;
         if (opt.overblow) {
           overblowNotes++;
-          issues.push({ lineIndex: li, measureIndex: mi, noteIndex: ni, midi, reason: `${opt.hole} 孔超吹（高级技巧）`, severity: 'warning' });
+          issues.push({ ...location, midi, reason: `${opt.hole} 孔${opt.breath === 'blow' ? '超吹' : '超吸'}（高级技巧）`, severity: 'warning' });
         } else if (opt.bend > 0) {
           bendNotes++;
-          issues.push({ lineIndex: li, measureIndex: mi, noteIndex: ni, midi, reason: `${opt.hole} 孔吸${"'".repeat(opt.bend)} ${opt.bend} 级压音`, severity: 'warning' });
+          issues.push({ ...location, midi, reason: `${opt.hole} 孔${opt.breath === 'blow' ? '吹' : '吸'}${"'".repeat(opt.bend)} ${opt.bend} 级压音`, severity: 'warning' });
         }
-      });
+      }));
     });
   });
 
   return {
     playable: issues.every((i) => i.severity !== 'error'),
-    issues, bendNotes, overblowNotes, totalNotes, minMidi, maxMidi,
+    issues, bendNotes, overblowNotes, totalNotes, graceNotes, ornamentNotes, minMidi, maxMidi,
   };
 }
 
@@ -170,7 +199,7 @@ export function midiToName(midi: number): string {
 }
 
 /** 口琴孔位标记文本，如 +4 / -3'' / +1° */
-export function holeLabel(note: Note): string {
+export function holeLabel(note: PitchNote): string {
   if (note.degree === 0 || note.hole == null || !note.breath) return '';
   const sign = note.breath === 'blow' ? '+' : '-';
   const bend = note.bend ? "'".repeat(note.bend) : '';

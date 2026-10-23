@@ -1,0 +1,25 @@
+{
+  "id": "hunting-we-will-go",
+  "title": "我们去狩猎",
+  "subtitle": "A Hunting We Will Go · 英格兰传统曲",
+  "composer": "英格兰传统曲（歌集地域署名）",
+  "timeSignature": "6/8",
+  "difficulty": 2,
+  "tags": [
+    "传统曲",
+    "西方民谣",
+    "延长记号"
+  ],
+  "notes": "原C4主音提高一八度至C5；21个书写小节，半拍弱起与末小节2.5拍互补。保留6处同音延音、2处自由延长及附点八分与十六分组合。C5–F6均有自然音孔位，入门后可练习复拍子与附点节奏。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列ABC版本。",
+  "melody": "5//~ 5// | 1' 1'/ 5 5/ | 3/. 2// 3/ 1 5/ | 6 5/ 4/. 3// 4/ | 3.~ 3 1/ |\n5 5/ 6 6/ | 7/. 6// 7/ 5 5/ | 1' 1'/ 2' 2'/ | 3'/. 2'// 3'/ 1' 5/ | 6/ 7/ 1'/ 2'/ 3'/ 4'/ |\n5/ 6/ 7/ 1'! 3/ | 4/. 3// 4/ 5 5/ | 1.~ 1/ 3/ 1/ | 5 5/ 5 5/ | 5.~ 5 5/ |\n1' 1'/ 1' 1'/ | 1'.~ 1' 5/ | 6/ 7/ 1'/ 2'/ 3'/ 4'/ | 5/ 6/ 7/ 1'! 3/ | 4/. 3// 4/ 5 5/ | 1.~ 1 ||",
+  "key": "C",
+  "harmonicaKey": "C",
+  "octaveShift": 1,
+  "position": "第一把位",
+  "tempo": 96,
+  "sourceCheckedAt": "2026-10-23",
+  "order": 60,
+  "source": "The Everyday Song Book (1927), No.188；John Chambers ABC 转录 (2017)",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/188_A_Hunting_We_Will_Go.abc",
+  "sourceFormat": "music-text"
+}

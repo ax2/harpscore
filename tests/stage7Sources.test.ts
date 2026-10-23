@@ -1,0 +1,52 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import test from 'node:test';
+import { BUILTIN_SCORES } from '../src/data/builtin';
+import { noteDuration } from '../src/lib/notation';
+import { noteToMidi } from '../src/types/score';
+
+import { decodeReferenceAbc } from './helpers/abcReference';
+type Source = { id: string; file: string; sourceKey: string; transpose: number; category: string };
+const directory = new URL('./fixtures/stage7-sources/', import.meta.url);
+const manifest: Source[] = JSON.parse(fs.readFileSync(new URL('manifest.json', directory), 'utf8'));
+
+
+for (const source of manifest) {
+  test(`${source.id}: every source pitch and duration matches, including pickup joins`, () => {
+    const raw = fs.readFileSync(new URL(source.file, directory), 'utf8');
+    assert.match(raw, new RegExp(`^K: ${source.sourceKey}$`, 'm'));
+    const decoded = decodeReferenceAbc(raw, source.transpose);
+    let expected = decoded;
+    if (source.id === 'good-comrade') {
+      assert.equal(decoded.length, 14);
+      // Source section ends after three beats; the next one-beat pickup fills
+      // that same musical measure. No note or rest is discarded or invented.
+      expected = [...decoded.slice(0, 4), [...decoded[4], ...decoded[5]], ...decoded.slice(6)];
+    }
+    if (source.id === 'ash-grove') {
+      assert.equal(decoded.length, 26);
+      assert.equal((raw.match(/:\|/g) ?? []).length, 1);
+      // Repeat the entire first stanza including its pickup, joining the two
+      // short endings to the following pickup. The new score is fully unfolded.
+      expected = [decoded[0], ...decoded.slice(1, 8), [...decoded[8], ...decoded[0]],
+        ...decoded.slice(1, 8), [...decoded[8], ...decoded[9]], ...decoded.slice(10)];
+    }
+    const score = BUILTIN_SCORES.find(score => score.id === source.id)!;
+    assert.ok(score);
+    const measures = score.lines.flat();
+    const actual = measures.map(bar => bar.notes.map(note => [noteToMidi(score.key, note), noteDuration(note)]));
+    assert.deepEqual(actual, expected);
+    assert.ok(measures.every(bar => !bar.repeatBegin && !bar.repeatEnd));
+    assert.ok(measures.every(bar => bar.notes.every(note => !note.tie)));
+    const meter = score.timeSignature.split('/').map(Number);
+    const full = meter[0] * 4 / meter[1];
+    const totals = expected.map(bar => bar.reduce((sum, event) => sum + event[1], 0));
+    assert.ok(totals.slice(1, -1).every(total => total === full));
+    assert.ok(totals[0] === full && totals.at(-1) === full || totals[0] + totals.at(-1)! === full);
+  });
+}
+
+test('source batch balances four introductory arrangements and four traditional selections', () => {
+  assert.equal(manifest.filter(source => source.category === '入门').length, 4);
+  assert.equal(manifest.filter(source => source.category === '传统曲').length, 4);
+});

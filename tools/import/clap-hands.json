@@ -1,0 +1,24 @@
+{
+  "id": "clap-hands",
+  "title": "大家一起拍拍手",
+  "subtitle": "We'll All Clap Hands Together · 1927 歌集版",
+  "composer": "传统儿童动作歌（所选歌集署名）",
+  "timeSignature": "4/4",
+  "difficulty": 1,
+  "position": "第一把位",
+  "tags": [
+    "入门",
+    "儿歌"
+  ],
+  "source": "The Everyday Song Book (1927), No.7；John Chambers ABC 转录 (2015)",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/007_Well_all_Clap_Hands_Together.abc",
+  "sourceFormat": "music-text",
+  "notes": "原 G4 主音移为 C5；9个书写小节含一拍弱起，三拍尾节互补。第一段三拍结束与第二段一拍起拍合为同一完整小节；保留末句两个八分音。 不收录歌词、伴奏和异音连奏线，速度为编辑练习建议。",
+  "melody": "5, | 1 1 1 1 | 1 - 5, 5, | 3 3 3 3 | 3 - 1 3 |\n5 5 5 5 | 5 - 3 3 | 2 2 2 3/ 2/ | 1 - - ||",
+  "key": "C",
+  "harmonicaKey": "C",
+  "octaveShift": 1,
+  "tempo": 96,
+  "sourceCheckedAt": "2026-10-23",
+  "order": 53
+}

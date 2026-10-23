@@ -1,0 +1,24 @@
+{
+  "id": "busy-bee",
+  "title": "勤劳的小蜜蜂",
+  "subtitle": "How Doth the Little Busy Bee · 英国古调",
+  "composer": "英国古调（Old English，所选歌集署名）",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "4/4",
+  "tempo": 96,
+  "difficulty": 2,
+  "tags": [
+    "传统曲",
+    "西方民谣"
+  ],
+  "source": "The Everyday Song Book (1927), No.34；John Chambers ABC 转录",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/034_How_Doth_the_Little_Busy_Bee.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-23",
+  "notes": "9个书写小节含一拍弱起，末小节三拍互补；原文末句 fa–mi 为两个八分音符。该英国古调不是常见德国童谣《小蜜蜂》的旋律。 仅录主旋律，不录歌词、伴奏及异音连奏线；速度为编辑练习建议。 原 Eb4 主音移为 C5，所有音符整体上移 9 个半音。",
+  "order": 49,
+  "melody": "5 | 1' 7 6 5 | 6 5 4 3 | 6 5 4 3 | 2 - - 3 |\n4 3 6 5 | 4 3 2 6 | 5 3 4/ 3/ 2 | 1 - - ||",
+  "octaveShift": 1
+}

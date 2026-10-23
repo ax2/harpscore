@@ -1,0 +1,19 @@
+{
+  "id": "low-blues-scale-study",
+  "title": "低音区蓝调音阶练习",
+  "subtitle": "G Blues Scale · Bend Accuracy",
+  "composer": "HarpScore 原创练习曲",
+  "key": "G",
+  "harmonicaKey": "C",
+  "position": "第二把位",
+  "timeSignature": "4/4",
+  "tempo": 72,
+  "difficulty": 3,
+  "tags": ["布鲁斯", "原创练习", "压音", "蓝调音阶"],
+  "source": "HarpScore 原创：G 蓝调六声音阶的上行、下行、半音定位和短句收束练习；可自由使用。",
+  "sourceFormat": "original",
+  "sourceCheckedAt": "2026-10-22",
+  "notes": "音集 G–Bb–C–Db–D–F；Bb4 为 3 孔吸压半音，Db5 为 4 孔吸压半音。第 5–6 小节对比 C–Db–D 与 D–Db–C，先慢速分音保持音准，再连贯演奏。八分音符等长，曲末留一拍休止；全曲为 8 小节专项练习。G4 自动标为 3 孔吹，可选同音高 2 孔吸。",
+  "order": 28,
+  "melody": "1 b3 4 b5 | 5 b7 1' - | 1' b7 5 b5 | 4 b3 1 - |\n4/ b5/ 5 4/ b5/ 5 | 5/ b5/ 4 5/ b5/ 4 | b3/ 4/ b5/ 5/ b7 5 | b3 1 - 0 ||"
+}

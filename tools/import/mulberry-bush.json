@@ -1,0 +1,26 @@
+{
+  "key": "C",
+  "harmonicaKey": "C",
+  "sourceCheckedAt": "2026-10-23",
+  "octaveShift": 1,
+  "sourceFormat": "music-text",
+  "id": "mulberry-bush",
+  "title": "桑树丛",
+  "subtitle": "The Mulberry Bush · 1927歌集版",
+  "composer": "传统曲调",
+  "position": "第一把位",
+  "timeSignature": "6/8",
+  "tempo": 96,
+  "difficulty": 2,
+  "tags": [
+    "西方歌曲",
+    "六八拍",
+    "游戏歌曲",
+    "压音"
+  ],
+  "source": "The Everyday Song Book（1927）第38首，John Chambers于2017年转录的ABC；完整8小节，原A4主音改为C5，保持相对音区。",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/038_the_Mulberry_Bush.abc",
+  "notes": "保留该歌集的十六分重复短音、低音下降句和两个八分休止。音域G4–G5，低la使用3孔吸压全音。省略歌词与异音连奏线，速度为四分拍练习建议。",
+  "melody": "1/ 1/ 1/ 1 3/ | 5 3// 3// 1 3/ | 2 2// 2// 2 1/ | 7, 6,// 6,// 5, 0/ |\n1/ 1/ 1/ 1 3/ | 5 3// 3// 1 3/ | 2 2/ 5,/ 6,/ 7,/ | 1. 1 0/ ||",
+  "order": 44
+}

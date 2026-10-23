@@ -6,6 +6,23 @@ const base = {
   title: '测试曲', key: 'C', harmonicaKey: 'C', timeSignature: '4/4', difficulty: 1, tags: [],
 };
 
+test('key validation does not accept inherited object properties as musical keys', () => {
+  for (const field of ['key', 'harmonicaKey']) {
+    assert.match(scoreFromObject({ ...base, [field]: '__proto__', melody: '1 - - -' }).error ?? '', /必须是支持的调名/);
+  }
+});
+
+test('truncated and duplicate IDs stay stable through JSON reimport', () => {
+  for (const id of ['a'.repeat(63) + '-tail', 'a'.repeat(61) + '-bc', '𠀀'.repeat(65)]) {
+    const first = scoreFromObject({ ...base, id, melody: '1 - - -' }).score!;
+    assert.deepEqual(importScoreJson(JSON.stringify(first)).score, first);
+    const duplicate = uniqueScoreId(first, [first.id]);
+    assert.notEqual(duplicate.id, first.id);
+    assert.deepEqual(importScoreJson(JSON.stringify(duplicate)).score, duplicate);
+    assert.ok([...duplicate.id].length <= 64);
+  }
+});
+
 test('imports full HarpScore JSON and removes untrusted derived fingering', () => {
   const result = scoreFromObject({
     ...base,
@@ -99,4 +116,72 @@ test('rejects unsafe or malformed source metadata', () => {
   assert.match(result.error ?? '', /sourceFormat/);
   assert.match(result.error ?? '', /sourceUrl/);
   assert.match(result.error ?? '', /sourceCheckedAt/);
+});
+
+test('rejects impossible dates, empty source formats, zero meter and unrenderable rhythms', () => {
+  for (const patch of [
+    { sourceCheckedAt: '2026-02-30' }, { sourceCheckedAt: '2026-13-01' },
+    { sourceFormat: 123 }, { sourceFormat: '' }, { timeSignature: '0/4' },
+    { melody: "1'''' - - -" }, { melody: "1''' - - -", octaveShift: 1 },
+    { melody: '0, - - -' },
+    { lines: [[{ notes: [{ degree: 1, beats: 0.3 }] }]], melody: undefined },
+  ]) assert.ok(scoreFromObject({ ...base, melody: '1 - - -', ...patch }).error, JSON.stringify(patch));
+});
+
+test('a single half-filled measure is not a complementary pickup pair', () => {
+  assert.equal(scoreFromObject({ ...base, melody: '1 -' }).warnings.length, 1);
+});
+
+test('an explicit pickup permits a complete final bar without hiding other rhythm errors', () => {
+  const result = scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | 3 - - - | 1 - - -' });
+  assert.equal(result.error, undefined);
+  assert.deepEqual(result.warnings, []);
+  assert.equal(result.score?.pickupBeats, 1);
+  const roundTrip = importScoreJson(JSON.stringify(result.score));
+  assert.deepEqual(roundTrip.score, result.score);
+  assert.deepEqual(roundTrip.warnings, []);
+  assert.equal(scoreFromObject({ ...base, melody: '5/ 1/ | 3 - - - | 1 - - -' }).warnings.length, 1);
+  // A short internal bar is never excused by an explicit pickup.
+  assert.equal(scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | 3 - | 1 - - -' }).warnings.length, 1);
+  assert.equal(scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | 3 - - - | 1 -' }).warnings.length, 1);
+  assert.deepEqual(scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | 3 - - - | 1 - -' }).warnings, []);
+  assert.deepEqual(scoreFromObject({ ...base, pickupBeats: 1, melody: '5/ 1/ | [M:3/4] 1 - -' }).warnings, []);
+});
+
+test('pickup declarations must match the actual first bar and its effective meter', () => {
+  for (const pickupBeats of [-1, 0, 4, 5, '1', null, true, NaN, Infinity, 0.5]) {
+    assert.match(scoreFromObject({ ...base, pickupBeats, melody: '5/ 1/ | 1 - - -' }).error ?? '', /pickupBeats/);
+  }
+  assert.match(scoreFromObject({ ...base, pickupBeats: 1, melody: '1' }).error ?? '', /pickupBeats/);
+  assert.match(scoreFromObject({ ...base, pickupBeats: 2, melody: '[M:2/4] 1 - | 1 -' }).error ?? '', /pickupBeats/);
+  assert.deepEqual(scoreFromObject({ ...base, timeSignature: '6/8', pickupBeats: 0.5, melody: '5/ | 1 - -' }).warnings, []);
+});
+
+test('ties require a following sounding note of the same absolute pitch', () => {
+  assert.deepEqual(scoreFromObject({ ...base, melody: '1~ - - - |\n1 - - -' }).warnings, []);
+  for (const melody of ['1~ - - -', '1~ - - - | 2 - - -', '0~ - - - | 0 - - -']) {
+    assert.match(scoreFromObject({ ...base, melody }).warnings.join(), /延音线/);
+  }
+});
+
+test('meter changes persist across rows and survive full JSON round trips', () => {
+  const result = scoreFromObject({ ...base, timeSignature: '5/4', melody: '5 3 3 2 - |\n[M:4/4] 6, 1/ 6,/ 5, - |\n6,/ 2/ 1/ 6,/ 5, -' });
+  assert.equal(result.error, undefined);
+  assert.deepEqual(result.warnings, []);
+  assert.equal(result.score!.lines[1][0].timeSignature, '4/4');
+  const imported = importScoreJson(JSON.stringify(result.score));
+  assert.deepEqual(imported.score, result.score);
+  assert.deepEqual(imported.warnings, []);
+  assert.match(scoreFromObject({ ...base, melody: '[M:3/4] 1 - - | 1 - - -' }).warnings.join(), /要求 3 拍/);
+});
+
+test('invalid or misplaced measure meters are rejected, not silently ignored', () => {
+  for (const melody of ['[M:0/4] 1', '[M:3/3] 1', '1 [M:3/4] 2', '[M:3/4]']) {
+    assert.ok(scoreFromObject({ ...base, melody }).error, melody);
+  }
+  for (const timeSignature of ['0/4', '3/3', 44, null]) {
+    assert.match(scoreFromObject({ ...base, lines: [[{ timeSignature, notes: [{ degree: 1, beats: 4 }] }]] }).error ?? '', /timeSignature/);
+  }
+  // A changed final meter must not hide a missing beat by pairing it with the opening.
+  assert.equal(scoreFromObject({ ...base, melody: '1 | [M:3/4] 1 -' }).warnings.length, 2);
 });

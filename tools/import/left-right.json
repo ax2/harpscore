@@ -1,0 +1,24 @@
+{
+  "id": "left-right",
+  "title": "左右齐步走",
+  "subtitle": "Left, Right! · 1927 歌集版",
+  "composer": "所选歌集未署曲作者",
+  "timeSignature": "2/4",
+  "difficulty": 1,
+  "tags": [
+    "入门",
+    "儿歌"
+  ],
+  "notes": "原降E4主音移为C5；保留16小节，低si至高re均有自然音孔位。适合四分音符、二分音符与跨孔练习。 不收录歌词和异音连奏线；速度为编辑练习建议，核对针对所列ABC版本。",
+  "melody": "1 3 | 1 3 | 5 1' | 5 - | 4 5 | 3 1 | 7, 1 | 2 - |\n1 3 | 1 3 | 5 1' | 6 - | 2' 7 | 1' 5 | 3 2 | 1 - ||",
+  "key": "C",
+  "harmonicaKey": "C",
+  "octaveShift": 1,
+  "position": "第一把位",
+  "tempo": 96,
+  "sourceCheckedAt": "2026-10-23",
+  "order": 57,
+  "source": "The Everyday Song Book (1927), No.26；John Chambers ABC 转录 (2017)",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/026_Left_Right.abc",
+  "sourceFormat": "music-text"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "cuckoo-song",
+  "title": "布谷鸟",
+  "subtitle": "Cuckoo, You Sing So Clear · 1927歌集版",
+  "composer": "德国传统曲调",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "3/4",
+  "tempo": 108,
+  "difficulty": 1,
+  "tags": ["西方歌曲", "入门", "自然音", "三拍子"],
+  "source": "The Everyday Song Book（1927）第117首，John Chambers于2017年转录的ABC；完整12小节旋律，原Bb调移为C调（Bb4→C5）。",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/117_Cuckoo_You_Sing_So_Clear.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-22",
+  "octaveShift": 1,
+  "notes": "开头两次sol–mi模仿布谷声，第三拍休止不要省略；第4、12小节末同样有四分休止。中段的二分长音与三拍律动保留。仅录入所选歌集的旋律，省略歌词与mf力度，数值速度为练习建议。",
+  "order": 31,
+  "melody": "5 3 0 | 5 3 0 | 2 1 2 | 1 - 0 |\n2 2 3 | 4 - 2 | 3 3 4 | 5 - 3 |\n5 - 3 | 5 - 3 | 4 3 2 | 1 - 0 ||"
+}

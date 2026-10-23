@@ -1,0 +1,25 @@
+{
+  "key": "C",
+  "harmonicaKey": "C",
+  "sourceCheckedAt": "2026-10-23",
+  "octaveShift": 1,
+  "sourceFormat": "jianpu-image",
+  "id": "what-boat",
+  "title": "什么船儿",
+  "subtitle": "山西民歌曲调 · 三八拍问答",
+  "composer": "山西民歌曲调",
+  "timeSignature": "3/8",
+  "tempo": 72,
+  "difficulty": 2,
+  "tags": [
+    "中国民歌",
+    "山西",
+    "三八拍",
+    "压音"
+  ],
+  "source": "粤教花城《音乐四年级下册·简谱》印刷第46页/PDF第47页，完整12小节。原1=F改为1=C后整体提高八度；只录山西民歌曲调，不收录游戏新词。",
+  "sourceUrl": "https://lywgyxx.szftedu.cn/xkjc/yinyue/202209/P020220910587435677420.pdf#page=47",
+  "notes": "每小节三个八分单位，附点四分音符占满一小节；完整问答与衬句均保留。低sol、la、si不可误作中音，低la为3孔吸压全音。省略歌词与异音连奏线，速度按四分拍给出练习建议。",
+  "melody": "5/ 5/ 6/ | 5/ 4/ 3/ | 5/ 2/ 5/ | 7,/ 6,/ 5,/ | 1 5,/ | 1/ 7,/ 6,/ |\n1/ 5,/ 6,/ | 5,. | 1 5,/ | 1/ 7,/ 6,/ | 1/ 5,/ 6,/ | 5,. ||",
+  "order": 40
+}

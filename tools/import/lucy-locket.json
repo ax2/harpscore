@@ -1,0 +1,24 @@
+{
+  "id": "lucy-locket",
+  "title": "露西的口袋",
+  "subtitle": "Lucy Locket · 1927 歌集版本",
+  "composer": "G. M. S.（所选歌集署名）",
+  "key": "C",
+  "harmonicaKey": "C",
+  "position": "第一把位",
+  "timeSignature": "2/4",
+  "tempo": 96,
+  "difficulty": 1,
+  "tags": [
+    "入门",
+    "儿歌"
+  ],
+  "source": "The Everyday Song Book (1927), No.67；John Chambers ABC 转录",
+  "sourceUrl": "https://trillian.mit.edu/~jc/music/book/EverydaySongBook/067_Lucy_Locket.abc",
+  "sourceFormat": "music-text",
+  "sourceCheckedAt": "2026-10-23",
+  "notes": "完整16小节，仅四分和二分时值；保留低 sol 跳进及第14小节低 si。采用歌集署名 G. M. S. 的版本，不等同于所有同名童谣旋律。 仅录主旋律，不录歌词、伴奏及异音连奏线；速度为编辑练习建议。 原 G4 主音移为 C5，所有音符整体上移 5 个半音。",
+  "order": 48,
+  "melody": "1 5, | 5, 1 | 2 5, | 5, 2 | 3 1 | 5 3 | 3 - | 2 - |\n1 5, | 5, 1 | 2 5, | 5, 2 | 3 1 | 2 7, | 2 - | 1 - ||",
+  "octaveShift": 1
+}

@@ -7,15 +7,28 @@
 export type Breath = 'blow' | 'draw';
 
 /** 曲谱核对所依据的原始材料类型 */
-export type ScoreSourceFormat = 'jianpu-text' | 'jianpu-image' | 'original';
+export type ScoreSourceFormat = 'jianpu-text' | 'jianpu-image' | 'music-text' | 'original';
 
-/** 演奏技巧标记 */
+/** 演奏技巧文字标记；不包含交替音、过程音或和声音的完整数据。 */
 export type Technique =
-  | 'vibrato'   // 颤音 ~~~
+  | 'vibrato'   // 振音 ~~~
   | 'bend-release' // 压音-释放
   | 'slap'      // 舌堵/拍击
   | 'gliss'     // 滑音
   | 'trill';    // 颤音(快速交替)
+
+/** 一个显式音高及其派生孔位；不含独立时值。 */
+export type PitchNote = Pick<Note, 'degree' | 'accidental' | 'octave' | 'hole' | 'breath' | 'bend' | 'overblow'>;
+/** 前倚音：beats 仅表示小音符形状，不占独立节拍；无递归装饰音。 */
+export type GraceNote = PitchNote & {
+  beats: 0.25 | 0.5;
+};
+
+/** 单波音：主音—显式邻音—主音；不指定演奏时值分配。 */
+export interface Mordent {
+  kind: 'upper-mordent' | 'lower-mordent';
+  auxiliary: PitchNote;
+}
 
 /** 单个音符（或休止符） */
 export interface Note {
@@ -25,14 +38,21 @@ export interface Note {
   accidental?: -1 | 0 | 1;
   /** 八度偏移：-1 低音点，0 中音，1 高音点 */
   octave?: number;
-  /** 时值（拍数）：0.25=十六分, 0.5=八分, 1=四分, 2=二分, 4=全音符 */
+  /** 时值（拍数）：0.125=三十二分, 0.25=十六分, 0.5=八分, 1=四分, 2=二分, 4=全音符 */
   beats: number;
   /** 附点 */
   dotted?: boolean;
   /** 延音线（与下一音相连） */
   tie?: boolean;
+  /** 自由延长记号，不改变书面时值 */
+  fermata?: boolean;
+  /** 重音 / 保持音；不改变书面音高和时值。 */
+  articulation?: 'accent' | 'tenuto';
   /** 歌词 */
   lyric?: string;
+  /** 主音之前的 1–4 个短倚音；时长从演奏语境决定，不加入小节拍数 */
+  graceNotes?: GraceNote[];
+  ornament?: Mordent;
 
   /** ---- 口琴演奏标记（导入时由引擎推算，也可手工指定） ---- */
   /** 孔位 1-10，休止符为 null */
@@ -50,6 +70,8 @@ export interface Note {
 /** 小节 */
 export interface Measure {
   notes: Note[];
+  /** 从本小节开始生效的拍号；省略则沿用上一小节或曲谱初始拍号 */
+  timeSignature?: string;
   /** 小节起始反复记号 */
   repeatBegin?: boolean;
   /** 小节结束反复记号 */
@@ -80,6 +102,8 @@ export interface Score {
   timeSignature: string;
   /** 速度（BPM） */
   tempo?: number;
+  /** 显式声明首小节弱起时长，以四分音符为一拍；末小节可以足拍 */
+  pickupBeats?: number;
   /** 难度 1-5 */
   difficulty: 1 | 2 | 3 | 4 | 5;
   /** 标签 */
@@ -117,10 +141,10 @@ export const KEY_ROOTS: Record<string, number> = {
 };
 
 /** 调内把音符度数换算为 MIDI 音高 */
-export function noteToMidi(key: string, n: Note, octaveShift = 0): number | null {
+export function noteToMidi(key: string, n: PitchNote, octaveShift = 0): number | null {
   if (n.degree === 0) return null;
   const root = KEY_ROOTS[key];
-  if (root === undefined) return null;
+  if (typeof root !== 'number') return null;
   const semi = DEGREE_SEMITONES[n.degree];
   if (semi === undefined) return null;
   return root + semi + (n.accidental ?? 0) + (n.octave ?? 0) * 12 + octaveShift * 12;
