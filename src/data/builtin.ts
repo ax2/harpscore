@@ -52,6 +52,10 @@ import score_49 from './scores/busy-bee.json';
 import score_50 from './scores/jolly-miller.json';
 import score_51 from './scores/good-comrade.json';
 import score_52 from './scores/ash-grove.json';
+import score_53 from './scores/clap-hands.json';
+import score_54 from './scores/ding-dong-bell.json';
+import score_55 from './scores/flowing-stream.json';
+import score_56 from './scores/polish-waltz.json';
 
 export const BUILTIN_SCORES: Score[] = [
   score_1 as unknown as Score,
@@ -106,4 +110,8 @@ export const BUILTIN_SCORES: Score[] = [
   score_50 as unknown as Score,
   score_51 as unknown as Score,
   score_52 as unknown as Score,
+  score_53 as unknown as Score,
+  score_54 as unknown as Score,
+  score_55 as unknown as Score,
+  score_56 as unknown as Score,
 ];

@@ -51,6 +51,7 @@ interface PlacedNote {
 
 interface PlacedMeasure {
   measure: Measure;
+  number: number;
   x: number; // 起始 x（含小节线后）
   w: number;
   notes: PlacedNote[];
@@ -61,6 +62,7 @@ interface PlacedMeasure {
 interface MeasureFragment {
   measure: Measure;
   original: Measure;
+  number: number;
   continuesFromPrevious: boolean;
   continuesOnNext: boolean;
 }
@@ -68,6 +70,7 @@ interface MeasureFragment {
 interface PlacedLine {
   measures: PlacedMeasure[];
   y: number;
+  numberY: number;
   height: number;
   hasLyric: boolean;
   hasOrnament: boolean;
@@ -103,7 +106,7 @@ function meterWidth(m: Measure): number {
   return m.timeSignature ? 42 : 0;
 }
 
-export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines: PlacedLine[]; width: number; height: number } {
+export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth, showMeasureNumbers = false): { lines: PlacedLine[]; width: number; height: number } {
   const W = pageWidth;
   const compact = W < 700;
   const avail = W - LAYOUT.padX * 2;
@@ -112,10 +115,12 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
 
   // Preserve authored line breaks but wrap dense rows instead of clipping the SVG.
   const rows: MeasureFragment[][] = [];
+  let measureNumber = 0;
   score.lines.forEach((rawLine) => {
     let row: MeasureFragment[] = [];
     let rowWidth = 0;
     rawLine.forEach((measure) => {
+      measureNumber++;
       const target = avail - (rows.length === 0 ? (compact ? 0 : 64) : 0);
       // Split an oversized bar at a beat boundary where possible. The fragments
       // remain one musical measure; dashed edges and “续” distinguish a wrap
@@ -145,6 +150,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
         const notes = measure.notes.slice(start, end);
         fragments.push({
           original: measure,
+          number: measureNumber,
           measure: { ...measure, notes, timeSignature: start === 0 ? measure.timeSignature : undefined,
             repeatBegin: start === 0 && measure.repeatBegin,
             repeatEnd: end === measure.notes.length && measure.repeatEnd,
@@ -172,7 +178,16 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     const firstLineIndent = li === 0 && !compact ? 64 : 0;
     const hasOrnament = rawLine.some(({ measure }) => measure.notes.some((n) => n.ornament));
     if (hasOrnament) y += 18;
-    if (rawLine.some(({ measure }) => measure.notes.some((n) => n.fermata))) y += 18;
+    const hasFermata = rawLine.some(({ measure }) => measure.notes.some((n) => n.fermata));
+    if (hasFermata) y += 18;
+    const hasGrace = rawLine.some(({ measure }) => measure.notes.some((n) => n.graceNotes?.length));
+    const previousLine = lines[lines.length - 1];
+    const previousBar = previousLine?.measures[previousLine.measures.length - 1];
+    const hasTie = rawLine.some(({ measure }) => measure.notes.some((n) => n.tie))
+      || previousBar?.notes[previousBar.notes.length - 1]?.note.tie;
+    // Separate the optional labels from fermatas, ornaments and grace/tie arcs.
+    const numberOffset = hasFermata ? 66 : hasOrnament ? 54 : hasGrace || hasTie ? 40 : 18;
+    if (showMeasureNumbers) y += numberOffset + 8;
     // 自然宽度
     const mWidths = rawLine.map(({ measure: m }) => {
       const nw = m.notes.reduce((s, n) => s + noteWidth(n), 0);
@@ -210,7 +225,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
         const auxiliaryNatural = n.ornament ? needsNatural(n.ornament.auxiliary) : false;
         return { note: n, x: cx, w, showNatural, auxiliaryNatural, graceNotes };
       });
-      const pm = { measure: m, x, w: mw, notes,
+      const pm = { measure: m, number: fragment.number, x, w: mw, notes,
         continuesFromPrevious: fragment.continuesFromPrevious, continuesOnNext: fragment.continuesOnNext };
       x += mw;
       return pm;
@@ -219,7 +234,7 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     const hasLyric = rawLine.some(({ measure }) => measure.notes.some((n) => n.lyric));
     const techniqueRows = Math.max(0, ...rawLine.flatMap(({ measure }) => measure.notes.map(n => n.techniques?.length ?? 0)));
     const height = LAYOUT.lineBaseHeight + (hasLyric ? LAYOUT.lyricHeight : 0) + (hasOrnament ? 22 : 0) + techniqueRows * 16;
-    lines.push({ measures, y, height, hasLyric, hasOrnament, techniqueRows });
+    lines.push({ measures, y, numberY: y - numberOffset, height, hasLyric, hasOrnament, techniqueRows });
     y += height + LAYOUT.lineGap;
   });
 
@@ -227,7 +242,8 @@ export function layoutScore(score: Score, pageWidth = LAYOUT.pageWidth): { lines
     + (lines.some((line) => line.hasOrnament) ? 24 : 0)
     + (score.lines.some((line) => line.some((m) => m.notes.some((n) => n.fermata))) ? 24 : 0)
     + (lines.some(line => line.techniqueRows > 0) ? 24 : 0)
-    + (lines.some((line) => line.measures.some((m) => m.continuesOnNext)) ? 24 : 0) };
+    + (lines.some((line) => line.measures.some((m) => m.continuesOnNext)) ? 24 : 0)
+    + (showMeasureNumbers ? 24 : 0) };
 }
 
 /* ---------- 渲染 ---------- */
@@ -512,8 +528,10 @@ function Legend({ y, width }: { y: number; width: number }) {
   );
 }
 
-export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pageWidth }: { score: Score; standalone?: boolean; pageWidth?: number }) {
-  const { lines, width, height } = layoutScore(score, pageWidth);
+export interface ScoreDisplayOptions { showMeasureNumbers?: boolean }
+
+export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pageWidth, showMeasureNumbers = false }: { score: Score; standalone?: boolean; pageWidth?: number } & ScoreDisplayOptions) {
+  const { lines, width, height } = layoutScore(score, pageWidth, showMeasureNumbers);
   const hasOrnaments = lines.some((line) => line.hasOrnament);
   const hasContinuations = lines.some((line) => line.measures.some((m) => m.continuesOnNext));
   const hasFermatas = score.lines.some((line) => line.some((m) => m.notes.some((n) => n.fermata)));
@@ -541,6 +559,10 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
               : m.measure.sectionEnd ? 'final' : 'normal';
             return (
               <g key={mi}>
+                {showMeasureNumbers && <text data-notation="measure-number" data-measure-number={m.number}
+                  x={m.x + 4} y={line.numberY} fontFamily={NUM_FONT} fontSize={11} fill="#6f6a60">
+                  [{m.number}]{m.continuesFromPrevious ? '续' : ''}
+                </text>}
                 {mi > 0 && m.measure.repeatBegin && <BarLine x={m.x} y={line.y} kind="repeatBegin" />}
                 {m.measure.timeSignature && <g data-notation="meter-change" fill={INK} fontFamily={NUM_FONT}
                   fontSize={16} fontWeight={600} textAnchor="middle">
@@ -557,6 +579,7 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
         </g>
       ))}
       <g data-score-part="footer">
+      <g transform={showMeasureNumbers ? 'translate(0 -24)' : undefined}>
       <Legend y={height - L.padTop + 26 - (hasOrnaments ? 24 : 0) - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0) - techniqueFooter} width={width} />
       {hasOrnaments && <text x={L.padX} y={height - L.padTop + 26 - (hasContinuations ? 24 : 0) - (hasFermatas ? 24 : 0) - techniqueFooter} fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>
         波音：主—辅—主；辅为邻音孔位，+ 吹 / − 吸
@@ -571,11 +594,14 @@ export function ScoreSheetSvg({ score, standalone = false, pageWidth = LAYOUT.pa
         技巧文字不展开过程音；孔位仅校验已记音高。
       </text>}
       </g>
+      {showMeasureNumbers && <text data-notation="measure-number-scope" x={L.padX} y={height - L.padTop + 26}
+        fontFamily={NUM_FONT} fontSize={10} fill={FAINT}>小节号：弱起计入；续行沿用原编号</text>}
+      </g>
     </svg>
   );
 }
 
-export default function ScoreSheet({ score }: { score: Score }) {
+export default function ScoreSheet({ score, showMeasureNumbers = false }: { score: Score } & ScoreDisplayOptions) {
   const paper = useRef<HTMLDivElement>(null);
   const [pageWidth, setPageWidth] = useState(LAYOUT.pageWidth);
   useEffect(() => {
@@ -590,7 +616,7 @@ export default function ScoreSheet({ score }: { score: Score }) {
   }, []);
   return (
     <div className="score-paper" ref={paper}>
-      <ScoreSheetSvg score={score} pageWidth={pageWidth} />
+      <ScoreSheetSvg score={score} pageWidth={pageWidth} showMeasureNumbers={showMeasureNumbers} />
     </div>
   );
 }

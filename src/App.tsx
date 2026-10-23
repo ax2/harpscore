@@ -81,6 +81,7 @@ export default function App() {
   const [lib, setLib] = useState<Library>(() => loadLibrary());
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showMeasureNumbers, setShowMeasureNumbers] = useState(false);
   const [filters, setFilters] = useState<LibraryFilters>(DEFAULT_FILTERS);
   const [favorites, setFavorites] = useState(loadFavorites);
   const [favoriteSaving, setFavoriteSaving] = useState(false);
@@ -216,10 +217,13 @@ export default function App() {
                 try { await setFavorite(current.id, !favorites.includes(current.id)); setFavorites(loadFavorites()); }
                 finally { setFavoriteSaving(false); }
               })}>{favorites.includes(current.id) ? '★ 已收藏' : '☆ 收藏'}</button>
-              <button className="btn primary" onClick={() => runAction(() => exportPng(current))}>导出 PNG</button>
-              <button className="btn" onClick={() => runAction(() => exportSvg(current))}>导出 SVG</button>
-              <button className="btn" onClick={() => runAction(() => exportPdf(current))}>打印 / PDF</button>
+              <button className="btn primary" onClick={() => runAction(() => exportPng(current, 2, { showMeasureNumbers }))}>导出 PNG</button>
+              <button className="btn" onClick={() => runAction(() => exportSvg(current, { showMeasureNumbers }))}>导出 SVG</button>
+              <button className="btn" onClick={() => runAction(() => exportPdf(current, { showMeasureNumbers }))}>打印 / PDF</button>
               <button className="btn" onClick={() => runAction(() => exportJson(current))}>导出 JSON</button>
+              <label className="btn display-option" title="从第1个书写小节编号，弱起计入；续行沿用原编号。SVG、PNG和打印同步显示。">
+                <input type="checkbox" checked={showMeasureNumbers} onChange={event => setShowMeasureNumbers(event.target.checked)} />小节号
+              </label>
               <div className="spacer" />
               <button className="btn" data-import-trigger onClick={() => setImportOpen(true)}>导入曲谱</button>
               {!current.builtin && (
@@ -233,7 +237,7 @@ export default function App() {
                 }}>删除</button>
               )}
             </div>
-            <ScoreSheet score={current} />
+            <ScoreSheet score={current} showMeasureNumbers={showMeasureNumbers} />
             <AnalysisPanel score={current} />
           </>
         ) : (

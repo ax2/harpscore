@@ -4,7 +4,7 @@
 import type { Score } from '../types/score';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { ScoreSheetSvg } from '../components/ScoreSheet';
+import { ScoreSheetSvg, type ScoreDisplayOptions } from '../components/ScoreSheet';
 import { flushSync } from 'react-dom';
 import { paginateRows } from './printLayout';
 
@@ -13,11 +13,11 @@ function safeName(s: string): string {
 }
 
 /** 把曲谱渲染为独立 SVG 字符串 */
-export function renderToSvgString(score: Score, pageWidth = 1080): string {
+export function renderToSvgString(score: Score, pageWidth = 1080, options: ScoreDisplayOptions = {}): string {
   const container = document.createElement('div');
   const root = createRoot(container);
   flushSync(() => {
-    root.render(React.createElement(ScoreSheetSvg, { score, standalone: true, pageWidth }));
+    root.render(React.createElement(ScoreSheetSvg, { score, standalone: true, pageWidth, ...options }));
   });
   const svg = container.querySelector('svg');
   const str = svg ? new XMLSerializer().serializeToString(svg) : '';
@@ -34,13 +34,13 @@ function download(blob: Blob, filename: string) {
   setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 
-export function exportSvg(score: Score) {
-  const str = renderToSvgString(score);
+export function exportSvg(score: Score, options: ScoreDisplayOptions = {}) {
+  const str = renderToSvgString(score, 1080, options);
   download(new Blob([str], { type: 'image/svg+xml;charset=utf-8' }), `${safeName(score.title)}.svg`);
 }
 
-export async function exportPng(score: Score, scale = 2): Promise<void> {
-  const str = renderToSvgString(score);
+export async function exportPng(score: Score, scale = 2, options: ScoreDisplayOptions = {}): Promise<void> {
+  const str = renderToSvgString(score, 1080, options);
   const svgBlob = new Blob([str], { type: 'image/svg+xml;charset=utf-8' });
   const url = URL.createObjectURL(svgBlob);
   try {
@@ -67,10 +67,10 @@ export async function exportPng(score: Score, scale = 2): Promise<void> {
 }
 
 /** Measure the actual SVG ink (including ties, lyrics and techniques) before paging. */
-export function renderPrintPages(score: Score): string[] {
+export function renderPrintPages(score: Score, options: ScoreDisplayOptions = {}): string[] {
   // 900 units across A4's printable width keeps the main fingering around 8.5 pt.
   const width = 900;
-  const source = new DOMParser().parseFromString(renderToSvgString(score, width), 'image/svg+xml');
+  const source = new DOMParser().parseFromString(renderToSvgString(score, width, options), 'image/svg+xml');
   const svg = document.importNode(source.documentElement, true) as unknown as SVGSVGElement;
   const container = document.createElement('div');
   container.style.cssText = 'position:fixed;left:-100000px;top:0;visibility:hidden;pointer-events:none';
@@ -121,8 +121,8 @@ export function renderPrintPages(score: Score): string[] {
 }
 
 /** 打印（A4 整行分页，浏览器可另存为 PDF） */
-export async function exportPdf(score: Score) {
-  const pages = renderPrintPages(score);
+export async function exportPdf(score: Score, options: ScoreDisplayOptions = {}) {
+  const pages = renderPrintPages(score, options);
   const win = window.open('', '_blank');
   if (!win) throw new Error('打印窗口被浏览器拦截，请允许弹出窗口后重试');
   win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>HarpScore</title>
